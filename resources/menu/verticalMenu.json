@@ -1,0 +1,30 @@
+{
+  "menu": [
+  
+    {
+      "name": "Photography",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "app-photography",
+      "submenu": [
+      {
+        "url": "admin/category/list",
+        "name": "Categories",
+        "icon": "menu-icon tf-icons ti ti-users",
+        "slug": "app-category-list"
+      },
+      {
+        "url": "admin/photography/list",
+        "name": "Photography",
+        "slug": "app-photography-list"
+        
+      },
+      {
+        "url": "admin/order/list",
+        "name": "Orders",
+        "slug": "app-order-list"
+        
+      }
+      ]
+    }
+  ]
+}

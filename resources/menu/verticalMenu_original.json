@@ -1,0 +1,51 @@
+{
+  "menu": [
+    
+    {
+      "menuHeader": "Role  & User Management"
+    },
+    {
+      "name": "Roles & Permissions",
+      "icon": "menu-icon tf-icons ti ti-settings",
+      "slug": "app-access",
+       "disabled": true,
+      "submenu": [
+        {
+          "url": "app/roles/list",
+          "name": "Roles",
+          "slug": "app-access-roles"
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "icon": "menu-icon tf-icons ti ti-users",
+      "slug": "app-user",
+      "submenu": [
+        {
+          "url": "app/users/list",
+          "name": "Users List",
+          "slug": "app-users-list"
+        },
+        {
+          "url": "app/site-users/list",
+          "name": "Customers",
+          "icon": "users",
+          "slug": "app-site-users-list",
+          "permission": [
+            "user-list",
+            "user-create"
+          ]
+        }
+      ]
+    },
+     {
+      "url": "admin/category/list",
+      "name": "Categories",
+      "icon": "menu-icon tf-icons ti ti-users",
+      "slug": "app-category-list"
+     
+    }
+    
+  ]
+}
