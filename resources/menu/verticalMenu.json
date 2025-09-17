@@ -17,14 +17,18 @@
         "name": "Photography",
         "slug": "app-photography-list"
         
-      },
-      {
-        "url": "admin/order/list",
-        "name": "Orders",
-        "slug": "app-order-list"
-        
       }
+     
       ]
+    },
+    {
+      "url": "admin/order/list",
+      "name": "Orders",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "app-order-list"
+      
     }
+
+    
   ]
 }

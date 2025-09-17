@@ -85,7 +85,7 @@
 
                
                 <!-- Payment -->
-                <h4 class="mt-4 mb-3 border-bottom pb-2">Payment Method</h4>
+                {{-- <h4 class="mt-4 mb-3 border-bottom pb-2">Payment Method</h4>
                 <div class="form-check mb-2">
                     <input class="form-check-input" type="radio" name="payment" id="cod" value="cod" checked>
                     <label class="form-check-label" for="cod">Cash on Delivery</label>
@@ -93,7 +93,7 @@
                 <div class="form-check mb-4">
                     <input class="form-check-input" type="radio" name="payment" id="online" value="online">
                     <label class="form-check-label" for="online">Online</label>
-                </div>
+                </div> --}}
 
                 <!-- Submit -->
                 <button type="submit" class="btn btn-dark btn-lg w-100">Place Order</button>

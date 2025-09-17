@@ -191,6 +191,8 @@ Route::get('removecart/{cartId}', [FrontController::class, 'removeTempCart'])->n
 Route::get('/checkout', [FrontController::class, 'checkout'])->name('front-checkout');
 Route::post('/add_checkout', [FrontController::class, 'add_checkout'])->name('front-add-checkout');
 Route::get('/success', [FrontController::class, 'success'])->name('front-success');
+Route::get('/checkout/success', [FrontController::class, 'stripe_success'])->name('checkout.success');
+Route::get('/checkout/cancel', [FrontController::class, 'cancel'])->name('checkout.cancel');
 
 Route::get('ajaxcartdetails', [FrontController::class, 'ajaxcartdetails'])->name('front-ajaxcartdetails');
 Route::get('deletecartitem/{itemId}', [FrontController::class, 'deletecartitem'])->name('front-deletecartitem');
@@ -477,9 +479,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('add', [OrderController::class, 'create'])->name('add');
     Route::post('store', [OrderController::class, 'store'])->name('store');
     Route::get('edit/{encrypted_id}', [OrderController::class, 'edit'])->name('edit');
+    Route::get('view/{encrypted_id}', [OrderController::class, 'view'])->name('view');
     Route::put('update/{encrypted_id}', [OrderController::class, 'update'])->name('update');
     Route::get('destroy/{encrypted_id}', [OrderController::class, 'destroy'])->name('destroy');
     Route::get('getAll', [OrderController::class, 'getAll'])->name('get-all');
+    Route::get('view/{encrypted_id}', [OrderController::class, 'view'])->name('view');
   });
 
 

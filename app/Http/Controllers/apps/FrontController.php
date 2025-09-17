@@ -228,17 +228,17 @@ public function photos()
     $country = $request->get('country');
     $state = $request->get('state');
     $zip = $request->get('zip');
-    $payment = $request->get('payment');
+    //$payment = $request->get('payment');
     $total_amount = $request->get('total_amount');
 
-    if($payment == "cod")
-    {
-      OrderDetail::create([
+  
+
+    OrderDetail::create([
             'guest_id'     => $guestId,
             // 'user_id'      => auth()->id() ?? null,
             'user_id'      => null,
-            'order_status'     => 'completed',
-            'order_type'     => $payment,
+            'order_status'     => 'pending',
+            'order_type'     => 'Online',
             'total_amount'       => $total_amount,
             'fname' =>$first_name,
             'lname' =>$last_name,
@@ -250,26 +250,94 @@ public function photos()
             'state' =>$state,
             'zip' =>$zip,
         ]);
+    
+    
+    // if($payment == "cod")
+    // {
+    //     $emailAddress = $request->get('email');
+    //     $this->sendOrderForm('Order Details', [$guestId], $other = $emailAddress);
+    //     return redirect()->route("front-success")->with('success', '');
+    //   }
+    // else
+    // {
+      $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
+      $session = $stripe->checkout->sessions->create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => 'Example Product',
+                    ],
+                    'unit_amount' => $total_amount *100, // amount in paise (INR) or cents (USD)
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout.cancel'),
+        ]);
 
+        return redirect($session->url);
 
-        // TempCart::where('guest_id', $guestId)
-        // ->where('order_status', 'pending') // only update pending carts
-        // ->update([
-        //     'order_status' => 'completed'
-        // ]);
-
-        $emailAddress = $request->get('email');
-        $this->sendOrderForm('Order Details', [$guestId], $other = $emailAddress);
-    }
+   // }
     
    
+    
+  }
+
+
+  
+
+   public function stripe_success(Request $request)
+  {
+      $guestId = $request->session()->get('guestId');
+
+      $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
+      $sessionId = $request->get('session_id');
+
+      // Retrieve full Checkout Session object
+    $session = $stripe->checkout->sessions->retrieve($sessionId, [
+        'expand' => ['payment_intent', 'customer'] // expands nested objects
+    ]);
+
+    // PaymentIntent holds transaction details
+    $paymentIntent = $session->payment_intent;
+
+    // Example: extract information
+    $paymentData = [
+        'session_id'      => $session->id,
+        'customer_email'  => $session->customer_details->email ?? null,
+        'customer_name'   => $session->customer_details->name ?? null,
+        'amount'          => $session->amount_total, // in paise
+        'currency'        => strtoupper($session->currency),
+        'payment_status'  => $session->payment_status, // e.g., "paid"
+        'payment_intent'  => is_object($paymentIntent) ? $paymentIntent->id : $paymentIntent,
+    ];
+   
+    
+    OrderDetail::where('guest_id', $guestId)
+        ->where('order_status', 'pending') // only update pending carts
+        ->update([
+            'order_status' => 'completed',
+            'order_type' => 'online',
+            'transaction_id' => $paymentData['payment_intent'],
+            'total_amount' => $paymentData['amount']/100,
+        ]);
+
+         $emailAddress = $paymentData['customer_email'];
+         $this->sendOrderForm('Order Details', [$guestId], $other = $emailAddress);
+    
+
     return redirect()->route("front-success")->with('success', '');
+   
   }
 
 
   public function success(Request $request)
   {
     $guestId = $request->session()->get('guestId');
+    
 
  TempCart::where('guest_id', $guestId)
         ->where('order_status', 'pending') // only update pending carts

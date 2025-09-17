@@ -37,7 +37,6 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Amount</th>
-                                <th>Order Type</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -91,10 +90,7 @@
                         data: 'total_amount',
                         name: 'total_amount'
                     },
-                    {
-                        data: 'order_type',
-                        name: 'order_type'
-                    },
+                   
                     {
                         data: 'actions',
                         name: 'actions',

@@ -13,6 +13,8 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\OrderDetail;
+use App\Models\TempCart;
+use App\Models\Photography;
 use App\Services\RoleService;
 use App\Services\UserService;
 use App\Services\CategoryService;
@@ -74,18 +76,15 @@ return DataTables::of($order)
     ->addColumn('total_amount', function ($row) {
         return "$".$row->total_amount;
     })
-    ->addColumn('order_type', function ($row) {
-        return ucfirst($row->order_type);
-    })
    
     ->addColumn('actions', function ($row) {
         $encryptedId = encrypt($row->id);
-        $updateButton = "<a data-bs-toggle='tooltip' title='Edit' class='btn-sm border-info' href='" . route('app-order-list') . "'><i class='text-warning' data-feather='eye'></i></a>";
+        $updateButton = "<a data-bs-toggle='tooltip' title='Edit' class='btn-sm border-info' href='" . route('app-order-view',$encryptedId) . "'><i class='text-warning' data-feather='eye'></i></a>";
         // $deleteButton = "<a data-bs-toggle='tooltip' title='Delete' class='btn-sm border-danger confirm-delete' data-idos='$encryptedId' href='" . route('app-category-destroy', $encryptedId) . "'><i class='text-danger' data-feather='trash-2'></i></a>";
         //return $updateButton . " " . $deleteButton;
         return $updateButton;
     })
-    ->rawColumns(['guest_id', 'fname','total_amount','order_type', 'actions'])
+    ->rawColumns(['guest_id', 'fname','total_amount','actions'])
     ->make(true);
 
 }
@@ -115,34 +114,34 @@ return DataTables::of($order)
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateCategoryRequest $request)
-    {
-        try {
+    // public function store(CreateCategoryRequest $request)
+    // {
+    //     try {
            
-            $subcategory = $request->category_id;
-            $categoryId = $subcategory !== '' ? $subcategory : null;
+    //         $subcategory = $request->category_id;
+    //         $categoryId = $subcategory !== '' ? $subcategory : null;
 
-            $slug = $this->generateUniqueSlug($request->get('category'));
+    //         $slug = $this->generateUniqueSlug($request->get('category'));
 
-            $categoryData['category'] = $request->category;
-            $categoryData['parent_id'] = $categoryId;
-            $categoryData['status'] = $request->get('status') == 'on' ? true : false;
+    //         $categoryData['category'] = $request->category;
+    //         $categoryData['parent_id'] = $categoryId;
+    //         $categoryData['status'] = $request->get('status') == 'on' ? true : false;
            
             
            
-            $category = $this->categoryService->create($categoryData);
+    //         $category = $this->categoryService->create($categoryData);
            
        
-            if (!empty($category)) {
-                return redirect()->route("app-category-list")->with('success', 'Category Added Successfully');
-            } else {
-                return redirect()->back()->with('error', 'Error while Adding Category');
-            }
-        } catch (\Exception $error) {
-            dd($error->getMessage());
-            return redirect()->route("app-category-list")->with('error', 'Error while adding Category');
-        }
-    }
+    //         if (!empty($category)) {
+    //             return redirect()->route("app-category-list")->with('success', 'Category Added Successfully');
+    //         } else {
+    //             return redirect()->back()->with('error', 'Error while Adding Category');
+    //         }
+    //     } catch (\Exception $error) {
+    //         dd($error->getMessage());
+    //         return redirect()->route("app-category-list")->with('error', 'Error while adding Category');
+    //     }
+    // }
 
 
 
@@ -163,24 +162,46 @@ return DataTables::of($order)
      * @param int $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function edit($encrypted_id)
+    // public function edit($encrypted_id)
+    // {
+    //     try {
+    //         $id = decrypt($encrypted_id);
+    //         $category = $this->categoryService->getClientInfo($id);
+    //          $categories = $this->categoryService->getCategory();
+
+
+    //         $page_data['page_title'] = "Category";
+    //         $page_data['form_title'] = "Edit Category";
+
+           
+
+           
+    //         return view('/content/apps/category/category_create-edit', compact('page_data', 'category','categories'));
+    //     } catch (\Exception $error) {
+    //         dd($error->getMessage());
+    //         return redirect()->route("app-category-list")->with('error', 'Error while editing Slider');
+    //     }
+    // }
+
+    public function view($encrypted_id)
     {
         try {
+           
             $id = decrypt($encrypted_id);
-            $category = $this->categoryService->getClientInfo($id);
-             $categories = $this->categoryService->getCategory();
 
+            $page_data['page_title'] = "Order Details";
+            $page_data['form_title'] = "Order Details";
 
-            $page_data['page_title'] = "Category";
-            $page_data['form_title'] = "Edit Category";
+            $order = OrderDetail::where('id',$id)->first();
+            $carts = TempCart::where('temp_carts.guest_id', $order->guest_id)
+            ->join('photographies', 'temp_carts.photo_id', '=', 'photographies.id')
+            ->select('temp_carts.*', 'photographies.title', 'photographies.slug', 'photographies.front_image','photographies.back_image')
+            ->get();
 
-           
-
-           
-            return view('/content/apps/category/category_create-edit', compact('page_data', 'category','categories'));
+           return view('content.apps.photography.order_view',compact('page_data','order','carts'));
         } catch (\Exception $error) {
             dd($error->getMessage());
-            return redirect()->route("app-category-list")->with('error', 'Error while editing Slider');
+            return redirect()->route("app-order-list")->with('error', 'Error while view Order');
         }
     }
 
