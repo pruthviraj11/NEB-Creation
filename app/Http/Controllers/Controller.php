@@ -62,7 +62,7 @@ if ($photos->isNotEmpty()) {
             </tr>
             <tr>
                 <td style='padding:8px; font-weight:bold;'>Total Amount:</td>
-                <td style='padding:8px;'>₹{$order->total_amount}</td>
+                <td style='padding:8px;'>${$order->total_amount}</td>
             </tr>
             <tr>
                 <td style='padding:8px; font-weight:bold;'>Order Status:</td>
