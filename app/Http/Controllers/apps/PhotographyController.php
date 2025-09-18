@@ -74,11 +74,12 @@ class PhotographyController extends Controller
 
     return DataTables::of($photos)
         ->addColumn('back_image', function ($row) {
-        if ($row->back_image && Storage::disk('public')->exists($row->back_image)) {
-          $url = Storage::url($row->back_image);
-          return '<img src="' . $url . '" alt="Image" width="60" height="60">';
+        if (!empty($row->back_image) && Storage::disk('public')->exists($row->back_image)) {
+            $url = Storage::url($row->back_image);
+        } else {
+            $url = asset('no_image/no_image.png');
         }
-        return '<span>No Image</span>';
+        return '<img src="' . $url . '" alt="Image" width="60" height="60">';
       })
         ->addColumn('title', function ($row) {
             return $row->title;
