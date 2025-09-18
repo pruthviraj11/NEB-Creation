@@ -39,7 +39,7 @@
                 @csrf 
                 <input type="hidden" name="photo_id" value="{{ $photo->id }}">
                 <input type="hidden" name="cart_price" value="{{ $cartPrice }}">
-                <div class="photo-card">
+                <div class="photo-card w-100">
                     <span class="price-tag">${{$price}}</span>
                     @php
                         $imageUrl =
