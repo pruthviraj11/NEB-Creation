@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <div class="col-6 col-md-2 fw-bold text-md-center mb-2 mb-md-0">
-                    ₹ {{$cart->amount}}
+                    $ {{$cart->amount}}
                 </div>
                 <div class="col-12 col-md-2 text-md-end text-start">
                     <a href="{{ route('front-remove-cart', $cart->id) }}" 
@@ -72,7 +72,7 @@
           
             <div class="row align-items-center pt-3 fw-bold">
                 <h3 class="col-6 col-md-8 text-end">Total:</h3>
-                <h3 class="col-6 col-md-2 text-md-center">₹ {{$total}}</h3>
+                <h3 class="col-6 col-md-2 text-md-center">$ {{$total}}</h3>
                 <h3 class="col-12 col-md-2"></h3>
             </div>
 
