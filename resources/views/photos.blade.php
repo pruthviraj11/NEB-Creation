@@ -41,7 +41,14 @@
                 <input type="hidden" name="cart_price" value="{{ $cartPrice }}">
                 <div class="photo-card">
                     <span class="price-tag">${{$price}}</span>
-                    <img src="{{Storage::url($photo->front_image)}}" class="img-fluid w-100" alt="Photo">
+                    @php
+                        $imageUrl =
+                            isset($photo->front_image) && Storage::disk('public')->exists($photo->front_image)
+                                ? Storage::url($photo->front_image)
+                                : asset('no_image/no_image_photo.png');
+                        @endphp
+
+                    <img src="{{$imageUrl}}" class="img-fluid w-100" alt="Photo">
 
                     <div class="overlay-part overlay-top-left d-none d-md-flex">
                     </div>

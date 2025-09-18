@@ -94,7 +94,14 @@
          
 
 <div class="col-md-6 p-0">
-    <img src="{{Storage::url($photo->front_image)}}" alt="Product Image" class="img-fluid rounded shadow w-100 h-100 object-fit-cover">
+        @php
+            $imageUrl =
+                isset($photo->front_image) && Storage::disk('public')->exists($photo->front_image)
+                    ? Storage::url($photo->front_image)
+                    : asset('no_image/no_slider_photo.png');
+        @endphp
+
+    <img src="{{$imageUrl}}" alt="Product Image" class="img-fluid rounded shadow w-100 h-100 object-fit-cover">
 </div>
 
             <!-- Right: Details -->
