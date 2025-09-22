@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\apps;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Contact\CreateContactRequest;
 use App\Models\Photography;
 use App\Models\Category;
 use App\Models\TempCart;
 use App\Models\OrderDetail;
+
+use App\Services\ContactService;
 
 use Illuminate\Support\Facades\Storage;
 
@@ -20,14 +23,14 @@ class FrontController extends Controller
    * @return void
    */
 
-  
+   protected ContactService $contactService;
 
 
-//   public function __construct(ContactService $contactService)
-//   {
-//     // $this->middleware('auth');
-//     $this->contactService = $contactService;
-//   }
+  public function __construct(ContactService $contactService)
+  {
+    // $this->middleware('auth');
+    $this->contactService = $contactService;
+  }
 
   /**
    * Show the application dashboard.
@@ -115,11 +118,38 @@ public function photos()
   public function contact_us()
   {
     $pageTitle['page_name'] = "Contact Us";
-    
-   $photos = Photography::where('status','1')->get();
-    
-    return view('contact_us',compact('pageTitle','photos'));
+    return view('contact_us',compact('pageTitle'));
   }
+
+  public function store(CreateContactRequest $request)
+  {
+    try {
+      $ContactData['name'] = $request->get('name');
+      $ContactData['email'] = $request->get('email');
+      $ContactData['mobile'] = $request->get('mobile');
+      $ContactData['message'] = $request->get('message');
+
+      $contact = $this->contactService->create($ContactData);
+      $lastId = $contact->id;
+
+      // $other = ['email_address' => 'vcprajapati.mscit@gmail.com'];
+      $emailAddress = 'vcprajapati.mscit@gmail.com';
+     $this->sendContactForm('Contact Us', [$lastId], $other = $emailAddress);
+
+
+
+
+      if (!empty($contact)) {
+        return redirect()->route("front-contact")->with('success', 'Contact Information Inserted Successfully');
+      } else {
+        return redirect()->back()->with('error', 'Error while Adding Contact');
+      }
+    } catch (\Exception $error) {
+      dd($error->getMessage());
+      return redirect()->route("front-contact")->with('error', 'Error while adding Contact');
+    }
+  }
+
 
   public function photo_details($slug,Request $request)
   {

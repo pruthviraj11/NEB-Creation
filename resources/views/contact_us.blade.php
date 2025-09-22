@@ -29,18 +29,52 @@
                     <div class="col-md-7">
                         <div class="contact-form">
                             <h3 class="mb-4 fw-bold">Get In Touch</h3>
-                            <form>
+
+                            @if (session('success'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ session('success') }}
+                                    {{-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> --}}
+                                </div>
+                            @endif
+
+                            {{-- Error Message --}}
+                            @if (session('error'))
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ session('error') }}
+                                    {{-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> --}}
+                                </div>
+                            @endif
+
+
+
+                            <form action="{{ route('contact-store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
                                 <div class="mb-3">
-                                    <input type="text" class="form-control" placeholder="Full Name">
+                                    <input type="text" name="name" class="form-control" placeholder="Full Name">
+                                    <span class="text-danger">
+                                    @error('name')
+                                        {{ $message }}
+                                    @enderror
+                                </span>
                                 </div>
                                 <div class="mb-3">
-                                    <input type="email" class="form-control" placeholder="E-mail">
+                                    <input type="email" name="email" class="form-control" placeholder="E-mail">
+                                    <span class="text-danger">
+                                    @error('email')
+                                        {{ $message }}
+                                    @enderror
+                                </span>
                                 </div>
                                 <div class="mb-3">
-                                    <textarea class="form-control" rows="3" placeholder="Message"></textarea>
+                                    <textarea class="form-control" name="message" rows="3" placeholder="Message"></textarea>
+                                    <span class="text-danger">
+                                    @error('message')
+                                        {{ $message }}
+                                    @enderror
+                                </span>
                                 </div>
                                 <button type="submit">Contact Us</button>
-                            </form>
+                        </form>
                         </div>
                     </div>
 

@@ -197,7 +197,7 @@ Route::get('/checkout/cancel', [FrontController::class, 'cancel'])->name('checko
 Route::get('ajaxcartdetails', [FrontController::class, 'ajaxcartdetails'])->name('front-ajaxcartdetails');
 Route::get('deletecartitem/{itemId}', [FrontController::class, 'deletecartitem'])->name('front-deletecartitem');
 
-
+Route::post('/store', [FrontController::class, 'store'])->name('contact-store');
 
 // Route::get('/', function () {
 //     return redirect()->route('login');
