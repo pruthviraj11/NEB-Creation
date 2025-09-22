@@ -27,6 +27,13 @@
       "icon": "menu-icon tf-icons ti ti-receipt",
       "slug": "app-order-list"
       
+    },
+    {
+      "url": "admin/contact/list",
+      "name": "Contacts",
+       "icon": "menu-icon tf-icons ti ti-address-book",
+      "slug": "app-contact-list"
+      
     }
 
     

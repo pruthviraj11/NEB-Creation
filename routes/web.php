@@ -166,6 +166,7 @@ use App\Http\Controllers\apps\CategoryController;
 use App\Http\Controllers\apps\PhotographyController;
 use App\Http\Controllers\apps\OrderController;
 use App\Http\Controllers\apps\FrontController;
+use App\Http\Controllers\apps\ContactController;
 
 
 
@@ -484,6 +485,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('destroy/{encrypted_id}', [OrderController::class, 'destroy'])->name('destroy');
     Route::get('getAll', [OrderController::class, 'getAll'])->name('get-all');
     Route::get('view/{encrypted_id}', [OrderController::class, 'view'])->name('view');
+  });
+
+
+  Route::prefix('contact')->name('app-contact-')->group(function () {
+    Route::get('list', action: [ContactController::class, 'index'])->name('list');
+    Route::get('destroy/{encrypted_id}', [ContactController::class, 'destroy'])->name('destroy');
+    Route::get('getAll', [ContactController::class,'getAll'])->name('get-all');
   });
 
 
