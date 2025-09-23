@@ -46,6 +46,8 @@ class Controller extends BaseController
                 'photographies.title',
                 'order_details.fname',
                 'order_details.lname',
+                'order_details.order_type',
+                'order_details.transaction_id',
                 'order_details.total_amount',
                 'order_details.order_status'
             )
@@ -63,27 +65,7 @@ class Controller extends BaseController
             {
                 $order = $photos->first(); 
 
-                //  $total_amount = 0;
-                // foreach ($photos as $photo_info) 
-                // {
-                //     if($photo_info->is_richard_photo == "Yes")
-                //     {
-                //         if($photo_info->discount_price !='')
-                //         {
-                //             $total_amount += $photo_info->discount_price;
-                //         }
-                //         else
-                //         {
-                //             $total_amount += $photo_info->price;
-                //         }
-
-
-                //     }
-                //     else
-                //         {
-                //             $total_amount = $order->total_amount;
-                //         }    
-                // }
+                
 
 
                  
@@ -93,6 +75,16 @@ class Controller extends BaseController
                         <tr>
                             <td style='padding:8px; font-weight:bold;'>Name:</td>
                             <td style='padding:8px;'>{$order->fname} {$order->lname}</td>
+                        </tr>
+
+                        <tr>
+                            <td style='padding:8px; font-weight:bold;'>Transaction Id:</td>
+                            <td style='padding:8px;'>{$order->transaction_id}</td>
+                        </tr>
+
+                        <tr>
+                            <td style='padding:8px; font-weight:bold;'>Payment Mode:</td>
+                            <td style='padding:8px;'>{$order->order_type}</td>
                         </tr>
                         
                         <tr>
