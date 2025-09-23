@@ -335,7 +335,8 @@
                             </div>
 
 
-                            <div class="col-md-12 mb-3">
+                            <div class="row">
+                            <div class="col-md-6 my-3">
                                 <label class="form-label" for="first_name">Display Home Page?</label>
                                 <select name="is_home" class="form-control">
                                 <option value="no" {{ ($photograpghy != '' && $photograpghy->is_home == 'no') ? 'selected' : '' }}>No</option>
@@ -343,7 +344,17 @@
                                 </select>
 
                             </div>
-                            
+
+                            <div class="col-md-6 my-3">
+                                <label class="form-label" for="first_name">Is Richard Photo?</label>
+                                <select name="is_richard" class="form-control">
+                                 <option value="No" {{ (empty($photograpghy) || $photograpghy->is_richard_photo == 'No') ? 'selected' : '' }}>No</option>
+                                    <option value="Yes" {{ (!empty($photograpghy) && $photograpghy->is_richard_photo == 'Yes') ? 'selected' : '' }}>Yes</option>
+                                </select>
+                                </select>
+
+                            </div>
+                            </div>
                             
 
 

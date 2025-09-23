@@ -10,24 +10,14 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
 
-class Photography extends Model
+class Setting extends Model
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
-    protected $table = 'photographies';
+    protected $table = 'settings';
     protected $fillable = [
-        'category_id',
-        'parent_id',
-        'title',
-        'slug',
-        'front_image',
-        'back_image',
-        'price',
-        'discount_price',
-        'description',
-        'short_description',
-        'is_home',
-        'is_richard_photo',
-        'status',
+        'admin_email',
+        'partner_email',
+        'printify_email',
     ];
 }

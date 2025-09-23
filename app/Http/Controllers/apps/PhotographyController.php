@@ -157,6 +157,7 @@ class PhotographyController extends Controller
             $Photography['description'] = $request->get('description');
             $Photography['short_description'] = $request->get('short_description');
             $Photography['is_home'] = $request->get('is_home');
+            $Photography['is_richard_photo'] = $request->get('is_richard');
             $Photography['status'] = $request->get('status') == 'on' ? true : false;
 
 
@@ -349,6 +350,7 @@ class PhotographyController extends Controller
             $Photography['description'] = $request->get('description');
             $Photography['short_description'] = $request->get('short_description');
             $Photography['is_home'] = $request->get('is_home');
+            $Photography['is_richard_photo'] = $request->get('is_richard');
             $Photography['status'] = $request->get('status') == 'on' ? true : false;
 
 

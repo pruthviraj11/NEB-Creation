@@ -12,6 +12,7 @@ use App\Models\Category;
 use App\Models\TempCart;
 use App\Models\OrderDetail;
 use App\Models\Contact;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -33,50 +34,98 @@ class Controller extends BaseController
 
           
              $photos = TempCart::where('temp_carts.guest_id', $orderId)
-    ->where('temp_carts.order_status', 'pending')
-    ->join('photographies', 'temp_carts.photo_id', '=', 'photographies.id')
-    ->join('order_details', 'temp_carts.guest_id', '=', 'order_details.guest_id')
-    ->select(
-        'temp_carts.*',
-        'photographies.back_image',
-        'photographies.title',
-        'order_details.fname',
-        'order_details.lname',
-        'order_details.total_amount',
-        'order_details.order_status'
-    )
-    ->get();
+            ->where('temp_carts.order_status', 'pending')
+            ->join('photographies', 'temp_carts.photo_id', '=', 'photographies.id')
+            ->join('order_details', 'temp_carts.guest_id', '=', 'order_details.guest_id')
+            ->select(
+                'temp_carts.*',
+                'photographies.back_image',
+                'photographies.is_richard_photo',
+                'photographies.price',
+                'photographies.discount_price',
+                'photographies.title',
+                'order_details.fname',
+                'order_details.lname',
+                'order_details.total_amount',
+                'order_details.order_status'
+            )
+            ->get();
+
+           
+
+            
+            $setting = Setting::first();
+           
 
    
+            $orderInfo = '';
+            if ($photos->isNotEmpty()) 
+            {
+                $order = $photos->first(); 
+
+                //  $total_amount = 0;
+                // foreach ($photos as $photo_info) 
+                // {
+                //     if($photo_info->is_richard_photo == "Yes")
+                //     {
+                //         if($photo_info->discount_price !='')
+                //         {
+                //             $total_amount += $photo_info->discount_price;
+                //         }
+                //         else
+                //         {
+                //             $total_amount += $photo_info->price;
+                //         }
 
 
+                //     }
+                //     else
+                //         {
+                //             $total_amount = $order->total_amount;
+                //         }    
+                // }
 
-    $orderInfo = '';
-if ($photos->isNotEmpty()) {
-    $order = $photos->first(); 
-    $orderInfo = "
-        <h4 style='margin:10px 0;'>Order Summary</h4>
-        <table style='width:100%; border-collapse:collapse;'>
-            <tr>
-                <td style='padding:8px; font-weight:bold;'>Name:</td>
-                <td style='padding:8px;'>{$order->fname} {$order->lname}</td>
-            </tr>
-            <tr>
-                <td style='padding:8px; font-weight:bold;'>Total Amount:</td>
-                <td style='padding:8px;'>${$order->total_amount}</td>
-            </tr>
-            <tr>
-                <td style='padding:8px; font-weight:bold;'>Order Status:</td>
-                <td style='padding:8px;'>{$order->order_status}</td>
-            </tr>
-        </table>
-    ";
-}
+
+                 
+                $orderInfo = "
+                    <h4 style='margin:10px 0;'>Order Summary</h4>
+                    <table style='width:100%; border-collapse:collapse;'>
+                        <tr>
+                            <td style='padding:8px; font-weight:bold;'>Name:</td>
+                            <td style='padding:8px;'>{$order->fname} {$order->lname}</td>
+                        </tr>
+                        
+                        <tr>
+                            <td style='padding:8px; font-weight:bold;'>Order Status:</td>
+                            <td style='padding:8px;'>{$order->order_status}</td>
+                        </tr>
+
+                            <tr>
+                                <td style='padding:8px; font-weight:bold;'>Total Amount:</td>
+                                <td style='padding:8px;'><span style='margin-right:2px;'>$</span><span>{$order->total_amount}</span></td>
+                            </tr>
+
+
+                    </table>
+                ";
+            }
+
+$richardProducts = $photos->where('is_richard_photo', 'Yes');
 
 $attachments = [];
+$richaredphotos = [];
 foreach ($photos as $photo) {
     if ($photo->back_image && Storage::disk('public')->exists($photo->back_image)) {
-        $attachments[] = public_path(Storage::url($photo->back_image)); // only path inside 'public' disk
+        
+           
+            $attachments[] = public_path(Storage::url($photo->back_image)); // only path inside 'public' disk
+            
+             if($photo->is_richard_photo == "Yes")
+            {
+                $richaredphotos[] = public_path(Storage::url($photo->back_image)); // only path inside 'public' disk 
+            }
+        
+        
     }
 
 
@@ -106,8 +155,24 @@ foreach ($photos as $photo) {
 ";
 
             
-              \Mail::to(trim($emailAddress))->send(new DynamicEmail("Order Details", $template, $attachments));
+              \Mail::to(trim($emailAddress))->send(new DynamicEmail("Your Order Details", $template, $attachments));
               
+              if(!empty($setting->admin_email))
+              {
+                    \Mail::to(trim($setting->admin_email))->send(new DynamicEmail("New Order Received", $template, $attachments));
+              } 
+
+              if(!empty($setting->partner_email))
+              {
+                    \Mail::to(trim($setting->partner_email))->send(new DynamicEmail("New Order Received", $template, $attachments));
+              } 
+
+             // Send to Printify email (only Richard products)
+            if ($richardProducts->isNotEmpty() && !empty($setting->printify_email)) {
+                \Mail::to(trim($setting->printify_email))
+                    ->send(new DynamicEmail("Order Details", $template, $richaredphotos));
+            }
+
 
         }     
     }

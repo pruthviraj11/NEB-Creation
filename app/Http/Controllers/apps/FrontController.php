@@ -355,6 +355,8 @@ public function photos()
             'total_amount' => $paymentData['amount']/100,
         ]);
 
+        
+
          $emailAddress = $paymentData['customer_email'];
          $this->sendOrderForm('Order Details', [$guestId], $other = $emailAddress);
     

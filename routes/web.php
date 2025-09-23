@@ -167,6 +167,9 @@ use App\Http\Controllers\apps\PhotographyController;
 use App\Http\Controllers\apps\OrderController;
 use App\Http\Controllers\apps\FrontController;
 use App\Http\Controllers\apps\ContactController;
+use App\Http\Controllers\apps\SettingController;
+
+
 
 
 
@@ -492,6 +495,14 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('list', action: [ContactController::class, 'index'])->name('list');
     Route::get('destroy/{encrypted_id}', [ContactController::class, 'destroy'])->name('destroy');
     Route::get('getAll', [ContactController::class,'getAll'])->name('get-all');
+  });
+
+
+  Route::prefix('setting')->name('app-setting-')->group(function () {
+    Route::get('list', action: [SettingController::class, 'index'])->name('list');
+    Route::put('update', [SettingController::class, 'update'])->name('update');
+    // Route::get('destroy/{encrypted_id}', [ContactController::class, 'destroy'])->name('destroy');
+    // Route::get('getAll', [ContactController::class,'getAll'])->name('get-all');
   });
 
 

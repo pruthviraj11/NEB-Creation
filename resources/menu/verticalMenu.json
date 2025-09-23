@@ -34,6 +34,13 @@
        "icon": "menu-icon tf-icons ti ti-address-book",
       "slug": "app-contact-list"
       
+    },
+    {
+      "url": "admin/setting/list",
+      "name": "Setting",
+      "icon": "menu-icon tf-icons ti ti-settings",
+      "slug": "app-setting-list"
+      
     }
 
     
