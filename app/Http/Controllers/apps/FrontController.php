@@ -7,6 +7,8 @@ use App\Models\Photography;
 use App\Models\Category;
 use App\Models\TempCart;
 use App\Models\OrderDetail;
+use App\Models\Setting;
+
 
 use App\Services\ContactService;
 
@@ -133,7 +135,9 @@ public function photos()
       $lastId = $contact->id;
 
       // $other = ['email_address' => 'vcprajapati.mscit@gmail.com'];
-      $emailAddress = 'vcprajapati.mscit@gmail.com';
+
+      $dbemail = Setting::first();
+      $emailAddress = $dbemail->admin_email;
      $this->sendContactForm('Contact Us', [$lastId], $other = $emailAddress);
 
 
