@@ -10,27 +10,16 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
 
-class TempCart extends Model
+
+class BulkPurchase extends Model
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
-    protected $table = 'temp_carts';
+    protected $table = 'bulk_purchases';
     protected $fillable = [
-        'guest_id',
-        'user_id',
-        'photo_id',
-        'quntity',
-        'amount',
-        'total_amount',
-        'is_creative_art',
-        'creative_info',
-        'is_bulk_purchase',
-        'bulk_info',
-        'extra_bulk',
-        'is_canvas',
-        'is_gift_product',
-        'gift_product_id',
-        'varient_id',
-        'order_status',
+        'title',
+        'max_quntity',
+        'price',
+        'status',
     ];
 }

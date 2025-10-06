@@ -8,6 +8,14 @@ use App\Models\Category;
 use App\Models\TempCart;
 use App\Models\OrderDetail;
 use App\Models\Setting;
+use App\Models\CreativeArt;
+use App\Models\GiftProduct;
+use App\Models\BulkPurchase;
+use App\Models\ProductVarient;
+
+
+
+
 
 
 use App\Services\ContactService;
@@ -166,11 +174,23 @@ public function photos()
 
     $features= Photography::where('category_id', $photo->category_id)->where('id', '!=', $photo->id)->get();
    
+   $creatives = CreativeArt::where('status','1')->get();
+
+   $giftProducts = GiftProduct::where('status',1)->get();
+
+   $bulkpurchases = BulkPurchase::where('status',1)->get();
+
+   $varients = ProductVarient::where('status',1)->get();
+
+   
+  
+   
+   
     $pageTitle['page_name'] = $photo->title;
     
    
     
-    return view('photo_details',compact('pageTitle','photo','features'));
+    return view('photo_details',compact('pageTitle','photo','features','creatives','giftProducts','bulkpurchases','varients'));
   }
 
   public function add_cart(Request $request)
@@ -178,21 +198,110 @@ public function photos()
     $guestId = $request->session()->get('guestId');
     $photo_Id = $request->get('photo_id');
 
+   
+    $creative_arts = $request->get('creative_art');
+    if($creative_arts != '')
+    {
+        $is_creative_art = "yes";
+        $creative_values = implode(",",$creative_arts);
+
+    }
+    else
+      {
+        $is_creative_art = "no";
+        $creative_values = NULL;
+      }  
+
+
+     $bulk_info = $request->get('bulk_id');
+     $bquntity = $request->get('bulk_quntity');
+
+     if (!empty($bulk_info)) 
+    {
+      $is_bulk = "yes";
+      $bulk_data = [];
+        foreach ($bulk_info as $index => $bulk_id_value) {
+            $quantity = isset($bquntity[$index]) ? $bquntity[$index] : 0;
+            $bulk_data[] = [
+                'bulk_id' => $bulk_id_value,
+                'bulk_quantity' => $quantity
+            ];
+        }
+
+   
+    
+    $bulk_id = implode(",", array_column($bulk_data, 'bulk_id'));
+    $bulk_quntity = implode(",", array_column($bulk_data, 'bulk_quantity'));
+
+   
+    
+} else {
+    $is_bulk = "no";
+    $bulk_id = NULL;
+    $bulk_quntity = NULL;
+    $bulk_data = [];
+}
+
+
+  $canvas = $request->get('canvas');
+  
+
+
+     $gift_info = $request->get('gift_id');
+
+     if($gift_info != '')
+     {
+         $is_gift = "yes";
+         $gift_id = implode(",",$gift_info);
+        
+     }  
+     else
+     {
+        $is_gift = "no";
+        $gift_id = NULL;
+         
+     }
+
+     $varient_info = $request->get('varient');
+
+     if($varient_info != '')
+     {
+        
+         $varient_id = implode(",",$varient_info);
+        
+     }  
+     else
+     {
+        
+        $varient_id = NULL;
+         
+     }
+
+    
+   
     $checkData = TempCart::where('guest_id',$guestId)->where('photo_id',$photo_Id)->where('order_status','pending')->count();
     if ($checkData == 0)
     {
-        $amount = $request->get('cart_price');
+        $amount = $request->get('total_price');
         $quantity = 1; // default = 1
 
-        
         TempCart::create([
             'guest_id'     => $guestId,
             // 'user_id'      => auth()->id() ?? null,
             'user_id'      => null,
             'photo_id'     => $photo_Id,
-            'quantity'     => $quantity,
-            'amount'       => $amount,
-            'total_amount' => $amount * $quantity,
+            // 'quantity'     => $quantity,
+            // 'amount'       => $amount,
+            'total_amount' => $amount,
+            'is_creative_art' => $is_creative_art,
+            'creative_info' => $creative_values,
+            'is_bulk_purchase' => $is_bulk,
+            'bulk_info' => $bulk_id,
+            'extra_bulk' => $bulk_quntity,
+            'is_canvas' => $request->get('canvas') ? 'yes' : NULL,
+            'is_gift_product' => $is_gift,
+            'gift_product_id' => $gift_id,
+            'varient_id' => $varient_id,
             'order_status' => 'pending',
         ]);
     }
@@ -217,8 +326,60 @@ public function photos()
     ->get();
 
 
+    $varients = ProductVarient::where('status',1)->get();
+
+
+    foreach ($carts as $cart) 
+    {
+
+      /*----- Creative Section ------*/
+      
+      if ($cart->is_creative_art == "yes") {
+      
+          $creativeIds = explode(',', $cart->creative_info);
+
+          $creativeIds = array_filter(array_map('trim', $creativeIds));
+
+          $creative_datas = CreativeArt::whereIn('id', $creativeIds)->get();
+
+          $cart->creative_items = $creative_datas;
+        
+      }
+
+
+      /*----- Bulk Purchase Section ------*/
+      if ($cart->is_bulk_purchase == "yes") 
+      {
+          $bulkIds = explode(',', $cart->bulk_info);
+
+          $bulkIds = array_filter(array_map('trim', $bulkIds));
+
+          $bulk_datas = BulkPurchase::whereIn('id', $bulkIds)->get();
+
+          $cart->bulk_items = $bulk_datas;
+      }
+
+
+      /*----- Gift product Section ------*/
+
+      if ($cart->is_gift_product == "yes") {
+      
+          $giftIds = explode(',', $cart->gift_product_id);
+
+          $giftIds = array_filter(array_map('trim', $giftIds));
+
+          $gift_datas = GiftProduct::whereIn('id', $giftIds)->get();
+
+          $cart->gift_items = $gift_datas;
+        
+      }
+
+    
+
+
+    }
     $pageTitle['page_name'] = "Cart";
-    return view('cart',compact('pageTitle','carts'));
+    return view('cart',compact('pageTitle','carts','varients'));
   }
 
    public function removeTempCart($cardId)

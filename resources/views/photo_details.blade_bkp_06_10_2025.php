@@ -1,17 +1,5 @@
 @extends('layouts.homeLayout')
 @section('title', $pageTitle['page_name']." | ".'NEB Creation')
-<!-- Bootstrap CSS (if not already included) -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Bootstrap-Select CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
-
-<!-- Bootstrap JS (if not already included) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Bootstrap-Select JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
-
 @push('styles')
 <style>
 .photoSwiper {
@@ -26,7 +14,58 @@
         align-items: stretch;
     }
 
-    
+    /* .photo-card {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        border-radius: 8px;
+    }
+
+    .photo-card img {
+        width: 342px;
+        display: block;
+        transition: transform 0.3s ease;
+    }
+
+    .photo-card:hover img {
+        transform: scale(1.1);
+    } */
+
+    /* .price-tag {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+      
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .overlay-part {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        pointer-events: none;
+    }
+
+    .overlay-top-left {
+        top: 0;
+        left: 0;
+    }
+
+    .overlay-bottom-right {
+        bottom: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        color: #fff;
+        font-weight: bold;
+        font-size: 16px;
+    } */
 
     /* Swiper arrows */
     .swiper-button-next,
@@ -53,8 +92,7 @@
         <div class="row align-items-center">
 
          
- <form action="{{ route('front-add-cart') }}" method="POST" class="d-flex flex-column flex-sm-row align-items-start gap-2">
-                @csrf 
+
 <div class="col-md-6 p-0">
         @php
             $imageUrl =
@@ -76,96 +114,114 @@
                     @php
                         if($photo->discount_price !='')
                         {
-                            $mainPrice = $photo->discount_price;
+                            $mainPrice = "$".$photo->discount_price;
                             $discountPrice = "$".$photo->price;
                             $cartPrice = $photo->discount_price;
                         }
                         else
                         {
-                            $mainPrice = $photo->price;
+                            $mainPrice = "$".$photo->price;
                             $discountPrice = '';
                             $cartPrice = $photo->price;
                         }
                     @endphp
                     
-                    <span class="fw-bold text-dark product_price">${{$mainPrice}}</span>
+                    <span class="fw-bold text-dark">{{$mainPrice}}</span>
                     {{-- <del class="me-2 text-danger">{{$discountPrice}}</del> --}}
                 </h4>
 
               
-                
+                 <form action="{{ route('front-add-cart') }}" method="POST" class="d-flex flex-column flex-sm-row align-items-start gap-2">
+                @csrf 
                 <input type="hidden" name="photo_id" value="{{ $photo->id }}">
                 <input type="hidden" name="cart_price" value="{{ $cartPrice }}">
-                <input type="hidden" name="total_price" class="total_price" value="{{$cartPrice}}" >
-                <div class="clearfix"></div>
 
-                 
+                     <div class="row">
+                        <div class="col-md-12">
+                            <input type="text" name="total_price" class="total_price" value="{{$cartPrice}}" >
+                        </div>
+                     </div>
+               
                 
-                <div class="row">
+                 <div class="row">
                     <div class="col-md-12">
-                        <h5 class="fw-bold">Creative Arts</h5>
                         @foreach($creatives as $creative)
-                            <div class="form-check mb-2">
-                                <input 
-                                    class="form-check-input creative_art_checkbox" 
-                                    type="checkbox" 
-                                    name="creative_art[]" 
-                                    id="creative_art_{{ $creative->id }}" 
-                                    value="{{ $creative->id }}"
-                                    data-id="{{ $creative->price }}">
-                                
-                                <label class="form-check-label" for="creative_art_{{ $creative->id }}">
-                                    {{ $creative->title }} — ${{ $creative->price }}
-                                </label>
-                            </div>
-                         @endforeach
+                        <div class="form-check mb-2">
+                            <input 
+                                class="form-check-input creative_art_checkbox" 
+                                type="checkbox" 
+                                name="creative_art[]" 
+                                id="creative_art_{{ $creative->id }}" 
+                                value="{{ $creative->price }}">
+                            
+                            <label class="form-check-label" for="creative_art_{{ $creative->id }}">
+                                {{ $creative->title }} — ${{ $creative->price }}
+                            </label>
+                        </div>
+                    @endforeach
                 
+                </div>
+
+                <div class="col-md-12">
+                    <p class="fw-bold mb-2">Bulk Purchase</p>
+
+                        <!-- 5x7 Option -->
+                        <div class="form-check d-flex align-items-center mb-2">
+                            <input 
+                                class="form-check-input bulk-check me-2" 
+                                type="checkbox" 
+                                id="bulk_5x7" 
+                                value="2.00">
+                            
+                            <label class="form-check-label me-3" for="bulk_5x7">
+                            5x7 — 20+ — $2.00 each
+                            </label>
+
+                            <input 
+                                type="number" 
+                                class="form-control bulk-qty" 
+                                id="qty_5x7" 
+                                min="20" 
+                                max="2000" 
+                                value="20"
+                                style="width: 80px;" 
+                                >
+                        </div>
+
+                            <!-- 4x6 Option -->
+                            <div class="form-check d-flex align-items-center mb-2">
+                                <input 
+                                    class="form-check-input bulk-check me-2" 
+                                    type="checkbox" 
+                                    id="bulk_4x6" 
+                                    value="0.50">
+                                
+                                <label class="form-check-label me-3" for="bulk_4x6">
+                                    4x6 — 20+ — $0.50 each
+                                </label>
+
+                                <input 
+                                    type="number" 
+                                    class="form-control bulk-qty" 
+                                    id="qty_4x6" 
+                                    min="20" 
+                                    max="2000" 
+                                    value="20"
+                                    style="width: 80px;" 
+                                    >
+                            </div>
+
+ 
                     </div>
 
-                            <div class="col-md-12">
-                                {{-- {{dd($bulkpurchases)}} --}}
-                                 <h5 class="fw-bold mt-2">Bulk Purchase</h5>
-                                @foreach($bulkpurchases as $bulk)
-                                <div class="form-check d-flex align-items-center mb-2">
-                                    <input 
-                                        class="form-check-input bulk-check me-2" 
-                                        type="checkbox" 
-                                        name="bulk_id[]"
-                                        id="{{$bulk->id}}" 
-                                        value="{{$bulk->id}}"
-                                        data-id ="{{$bulk->price}}">
-                                    
-                                    <label class="form-check-label me-3" for="{{$bulk->id}}">
-                                    {{-- 5x7 — 20+ — $2.00 each --}}
-                                   {{$bulk->title}} — {{$bulk->max_quntity}}+ — {{$bulk->price}} each
-                                    </label>
-
-                                    <input 
-                                        type="number" 
-                                        name="bulk_quntity[]"
-                                        class="form-control bulk-qty" 
-                                        id="{{$bulk->id}}" 
-                                        min="{{$bulk->max_quntity}}" 
-                                        max="2000" 
-                                        value="{{$bulk->max_quntity}}"
-                                        style="width: 80px;" 
-                                        >
-                                </div>
-                                @endforeach
-                              
-        
-                            </div>
-
                     <div class="col-md-12">
-                         
-                         <h5 class="fw-bold mt-2">Canvas</h5>
+                         <p class="fw-bold mb-2">Canvas</p>
 
-  
+  <!-- 5x7 Option -->
                         <div class="form-check d-flex align-items-center mb-2">
                             <input 
                                 class="form-check-input canvas_input me-2" 
                                 type="checkbox" 
-                                name="canvas"
                                 id="canvas" 
                                 value="195">
                             
@@ -175,15 +231,25 @@
 
                             
                         </div>
-
-                           <button type="submit" name="action" value="add_to_cart" class="btn btn-dark btn-md w-sm-auto ms-0">
-                    <i class="bi bi-cart-plus"></i> Add to Cart
-                </button>
                     </div>
-                   
 
-             
-            
+
+               
+               
+</div>
+
+
+
+                
+
+
+
+                     
+
+                {{-- <button type="submit" name="action" value="add_to_cart" class="btn btn-dark btn-md w-sm-auto ms-0">
+                    <i class="bi bi-cart-plus"></i> Add to Cart
+                </button> --}}
+            </form>
 
             @php
     $currentUrl = urlencode(url()->current()); // Current page URL
@@ -225,21 +291,16 @@
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">{{ $product->product_name }}</h5>
 
-                    @if($product->product_varient == 1)
-                        @php
-                       
-                        $pvarients = explode(",", $product->varient_id);
-                        $pvarients = array_map('trim', $pvarients);
-                        $filteredVarients = $varients->whereIn('id', $pvarients);
-                    @endphp
+                    @if($product->product_varient)
                     <div class="mb-2">
                         <label for="varient_{{ $product->id }}" class="form-label small text-muted">Variant:</label>
-                        <select id="varient_{{ $product->id }}" name="varient[]" class="form-select form-select-sm">
+                        <select id="varient_{{ $product->id }}" name="varient" class="form-select form-select-sm">
                             <option value="">Select Variant</option>
-                                @foreach($filteredVarients as $varient)
-                        <option value="{{ $varient->id }}">{{ $varient->title }}</option>
-                    @endforeach
-                           
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
                         </select>
                     </div>
                     @endif
@@ -249,9 +310,7 @@
                     <div class="form-check mb-3">
                         <input class="form-check-input gift-checkbox" 
                                type="checkbox" 
-                               name="gift_id[]"
-                               value="{{ $product->id }}" 
-                               data-id ="{{ $product->product_price }}" 
+                               value="{{ $product->product_price }}" 
                                id="gift_{{ $product->id }}">
                         <label class="form-check-label" for="gift_{{ $product->id }}">
                             Select
@@ -268,7 +327,7 @@
   
 </div>
 
-</form>
+
 
 
 @if(!empty($features) && $features->count() > 0)
@@ -412,34 +471,25 @@ $(document).ready(function() {
 
         // Add creative art prices if checked
         $('.creative_art_checkbox:checked').each(function() {
-            //total += parseFloat($(this).val()) || 0;
-            total += parseFloat($(this).data('id'));
+            total += parseFloat($(this).val()) || 0;
             anyChecked = true;
         });
 
         // Add bulk prices
         $('.bulk-check').each(function() {
-            //const price = parseFloat($(this).val()) || 0;
-            const price = parseFloat($(this).data('id'));
+            const price = parseFloat($(this).val()) || 0;
             const qtyInput = $(this).closest('.form-check').find('.bulk-qty');
             let qty = parseInt(qtyInput.val()) || 20;
-           
 
-            // if (qty < 20) {
-            //     qty = 20;
-            //     qtyInput.val(20);
-            // }
-
-            // if ($(this).is(':checked')) {
-            //     const extraQty = qty - 20;
-            //     if (extraQty > 0) total += extraQty * price;
-            // }
-
-             if ($(this).is(':checked')) {
-               total += qty * price;
+            if (qty < 20) {
+                qty = 20;
+                qtyInput.val(20);
             }
 
-
+            if ($(this).is(':checked')) {
+                const extraQty = qty - 20;
+                if (extraQty > 0) total += extraQty * price;
+            }
         });
 
         // Add canvas price
@@ -449,8 +499,7 @@ $(document).ready(function() {
 
 
         $('.gift-checkbox').each(function() {
-            //const price = parseFloat($(this).val()) || 0;
-            const price = parseFloat($(this).data('id'));
+            const price = parseFloat($(this).val()) || 0;
            
 
             if ($(this).is(':checked')) {
@@ -464,8 +513,6 @@ $(document).ready(function() {
 
         // Set total price input
         $('.total_price').val(total.toFixed(2));
-        $(".product_price").html("$"+total.toFixed(2));
-        
 
         // Debug log
         console.log("Total Amount:", total.toFixed(2));
