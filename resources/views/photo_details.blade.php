@@ -14,7 +14,7 @@
         align-items: stretch;
     }
 
-    .photo-card {
+    /* .photo-card {
         position: relative;
         overflow: hidden;
         cursor: pointer;
@@ -29,13 +29,13 @@
 
     .photo-card:hover img {
         transform: scale(1.1);
-    }
+    } */
 
-    .price-tag {
+    /* .price-tag {
         position: absolute;
         top: 10px;
         left: 10px;
-        /* background-color: rgba(0, 0, 0, 0.7); */
+      
         color: #fff;
         padding: 5px 10px;
         border-radius: 4px;
@@ -65,7 +65,7 @@
         color: #fff;
         font-weight: bold;
         font-size: 16px;
-    }
+    } */
 
     /* Swiper arrows */
     .swiper-button-next,
@@ -193,9 +193,73 @@
            
             <!-- Slide 1 -->
             @foreach($features as $feature)
+            @php
+            if($feature->discount_price != '')
+            {
+                $fprice = $feature->discount_price;
+                $fcartPrice = $feature->discount_price;
+            }
+            else
+            {
+                $fprice = $feature->price;
+                $fcartPrice = $feature->price;
+            }
+            @endphp
             <div class="swiper-slide photo-slide bg-transparent">
                 <div class="">
-                    <div class="photo-card">
+
+                    
+                        <form action="{{ route('front-add-cart') }}" method="POST" class="d-flex flex-column flex-sm-row align-items-start gap-2">
+                                @csrf 
+                                <input type="hidden" name="photo_id" value="{{ $feature->id }}">
+                                <input type="hidden" name="cart_price" value="{{ $fcartPrice }}">
+
+                                <div class="photo-card w-100">
+                                    <span class="price-tag">${{$fprice}}</span>
+
+                                        @php
+                                        $fimageUrl =
+                                            isset($feature->front_image) && Storage::disk('public')->exists($feature->front_image)
+                                                ? Storage::url($feature->front_image)
+                                                : asset('no_image/no_photo.png');
+                                        @endphp
+
+                                    <img src="{{$fimageUrl}}" class="img-fluid w-100" alt="{{$feature->title}}">
+
+                                    <div class="overlay-part overlay-top-left d-none d-md-flex">
+                                    </div>
+
+                                    <div class="overlay-part overlay-bottom-right d-none d-md-flex">
+                                        <div>
+                                            <span>${{$fprice}}</span>
+                                            <div class="link-btns mt-3">
+                                                <button type="submit" class="btn btn-outline btn-dark m-0 btn-sm">
+                                                    <i class="bi bi-cart-plus"></i> Add to Cart
+                                                </button>
+                                                <a href="{{route('front-photo_details',$feature->slug)}}" class="btn btn-outline btn-dark m-0 btn-sm">
+                                                    <i class="bi bi-eye"></i> View
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="link-btns d-flex align-items-center d-md-none mt-3 w-100">
+                                <button type="submit" class="btn btn-dark m-0 btn-sm">
+                                    <i class="bi bi-cart-plus"></i> Add to Cart
+                                </button>
+                                <a href="{{route('front-photo_details',$feature->slug)}}" class="btn btn-dark m-0 btn-sm">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+                            </div>
+                                                
+                
+                
+                        </form>
+                   
+
+
+
+                    {{-- <div class="photo-card">
                         <a href="{{route('front-photo_details',$feature->slug)}}" title={{$feature->title}}>
                             
                             @php
@@ -221,7 +285,7 @@
                     </div>
                     <a href="{{route('front-photo_details',$feature->slug)}}" title={{$feature->title}} class="btn btn-dark btn-sm ms-0 mt-2">
                         <i class="bi bi-cart-plus"></i> Add to Cart
-                    </a>
+                    </a> --}}
                 </div>
             </div>
             @endforeach
