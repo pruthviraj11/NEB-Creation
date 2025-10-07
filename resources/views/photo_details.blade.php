@@ -236,11 +236,8 @@
                         <label for="varient_{{ $product->id }}" class="form-label small text-muted">Variant:</label>
                         <select id="varient_{{ $product->id }}" name="varient[]" class="form-select form-select-sm">
                             <option value="">Select Variant</option>
-                                
-                            
-                            
-                            {{-- @foreach($filteredVarients as $varient)
-                        <option value="{{ $varient->id }}">{{ $varient->title }}</option> --}}
+                            @foreach($filteredVarients as $varient)
+                        <option value="{{ $varient->id }}">{{ $varient->title }}</option>
                     @endforeach
                            
                         </select>
