@@ -168,6 +168,12 @@ use App\Http\Controllers\apps\OrderController;
 use App\Http\Controllers\apps\FrontController;
 use App\Http\Controllers\apps\ContactController;
 use App\Http\Controllers\apps\SettingController;
+use App\Http\Controllers\apps\CreativeController;
+use App\Http\Controllers\apps\BulkController;
+use App\Http\Controllers\apps\VarientController;
+use App\Http\Controllers\apps\GiftProductController;
+
+
 
 
 
@@ -495,6 +501,55 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('list', action: [ContactController::class, 'index'])->name('list');
     Route::get('destroy/{encrypted_id}', [ContactController::class, 'destroy'])->name('destroy');
     Route::get('getAll', [ContactController::class,'getAll'])->name('get-all');
+  });
+
+
+  /*----------- Creative Arts ------------*/
+   
+    Route::prefix('creative')->name('app-creative-')->group(function () {
+    Route::get('list', [CreativeController::class, 'index'])->name('list');
+    Route::get('add', [CreativeController::class, 'create'])->name('add');
+    Route::post('store', [CreativeController::class, 'store'])->name('store');
+    Route::get('edit/{encrypted_id}', [CreativeController::class, 'edit'])->name('edit');
+    Route::put('update/{encrypted_id}', [CreativeController::class, 'update'])->name('update');
+    Route::get('destroy/{encrypted_id}', [CreativeController::class, 'destroy'])->name('destroy');
+    Route::get('getAll', [CreativeController::class, 'getAll'])->name('get-all');
+  });
+
+
+
+   /*----------- Bulk purchasse ------------*/
+    Route::prefix('bulk')->name('app-bulk-')->group(function () {
+    Route::get('list', [BulkController::class, 'index'])->name('list');
+    Route::get('add', [BulkController::class, 'create'])->name('add');
+    Route::post('store', [BulkController::class, 'store'])->name('store');
+    Route::get('edit/{encrypted_id}', [BulkController::class, 'edit'])->name('edit');
+    Route::put('update/{encrypted_id}', [BulkController::class, 'update'])->name('update');
+    Route::get('destroy/{encrypted_id}', [BulkController::class, 'destroy'])->name('destroy');
+    Route::get('getAll', [BulkController::class, 'getAll'])->name('get-all');
+  });
+
+
+  /*----------- Varient purchasse ------------*/
+    Route::prefix('varient')->name('app-varient-')->group(function () {
+    Route::get('list', action: [VarientController::class, 'index'])->name('list');
+    Route::get('add', [VarientController::class, 'create'])->name('add');
+    Route::post('store', [VarientController::class, 'store'])->name('store');
+    Route::get('edit/{encrypted_id}', [VarientController::class, 'edit'])->name('edit');
+    Route::put('update/{encrypted_id}', [VarientController::class, 'update'])->name('update');
+    Route::get('destroy/{encrypted_id}', [VarientController::class, 'destroy'])->name('destroy');
+    Route::get('getAll', [VarientController::class, 'getAll'])->name('get-all');
+  });
+
+  /*----------- Gift  Product ------------*/
+    Route::prefix('gift_product')->name('app-gift_product-')->group(function () {
+    Route::get('list', action: [GiftProductController::class, 'index'])->name('list');
+    Route::get('add', [GiftProductController::class, 'create'])->name('add');
+    Route::post('store', [GiftProductController::class, 'store'])->name('store');
+    Route::get('edit/{encrypted_id}', [GiftProductController::class, 'edit'])->name('edit');
+    Route::put('update/{encrypted_id}', [GiftProductController::class, 'update'])->name('update');
+    Route::get('destroy/{encrypted_id}', [GiftProductController::class, 'destroy'])->name('destroy');
+    Route::get('getAll', [GiftProductController::class, 'getAll'])->name('get-all');
   });
 
 

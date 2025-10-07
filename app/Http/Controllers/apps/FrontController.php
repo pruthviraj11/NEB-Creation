@@ -63,7 +63,7 @@ class FrontController extends Controller
         ->join('photographies', 'temp_carts.photo_id', '=', 'photographies.id')
         ->select(
             'temp_carts.id',
-            'temp_carts.amount',
+            'temp_carts.total_amount',
             'photographies.title',
             'photographies.slug',
             'photographies.front_image'

@@ -270,7 +270,8 @@
 
 </form>
 
-
+<?php
+/*
 @if(!empty($features) && $features->count() > 0)
 <div class="container">
     <h2 class="text-center fs-1 mb-4">Featured Photos</h2>
@@ -390,6 +391,8 @@
     </div>
 </div>
 @endif
+*/
+?>
 
 
 

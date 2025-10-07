@@ -57,9 +57,9 @@
                         <div>
                             <span>${{$price}}</span>
                             <div class="link-btns mt-3">
-                                <button type="submit" class="btn btn-outline btn-dark m-0 btn-sm">
+                                {{-- <button type="submit" class="btn btn-outline btn-dark m-0 btn-sm">
                                     <i class="bi bi-cart-plus"></i> Add to Cart
-                                </button>
+                                </button> --}}
                                 <a href="{{route('front-photo_details',$photo->slug)}}" class="btn btn-outline btn-dark m-0 btn-sm">
                                     <i class="bi bi-eye"></i> View
                                 </a>
@@ -69,9 +69,9 @@
                 </div>
 
                 <div class="link-btns justify-content-between d-flex d-md-none mt-3">
-                    <button type="submit" class="btn btn-dark m-0 btn-sm">
+                    {{-- <button type="submit" class="btn btn-dark m-0 btn-sm">
                         <i class="bi bi-cart-plus"></i> Add to Cart
-                    </button>
+                    </button> --}}
                     <a href="{{route('front-photo_details',$photo->slug)}}" class="btn btn-dark m-0 btn-sm">
                         <i class="bi bi-eye"></i> View
                     </a>

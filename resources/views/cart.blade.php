@@ -115,7 +115,7 @@
                                     - ${{ number_format($gift->product_price, 2) }}
                                 @endif
 
-                                {{-- @if($gift->product_varient == 1)
+                                @if($gift->product_varient == 1)
                                     @php
                                     
                                 
@@ -129,7 +129,7 @@
                                     @endif
 
                             
-                            @endif --}}
+                            @endif
 
 
                             </li>

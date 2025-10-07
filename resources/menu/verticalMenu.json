@@ -35,6 +35,44 @@
       "slug": "app-contact-list"
       
     },
+
+
+  {
+        "name": "Creative",
+        "icon": "menu-icon tf-icons ti ti-camera",
+        "slug": "app-creative",
+        "submenu": [
+        {
+          "url": "admin/creative/list",
+          "name": "Creative Arts",
+          "icon": "menu-icon tf-icons ti ti-address-book",
+          "slug": "app-creative-list"
+        },
+        {
+          "url": "admin/bulk/list",
+          "name": "Bulk Purchase",
+          "icon": "menu-icon tf-icons ti ti-address-book",
+          "slug": "app-bulk-list"
+        },
+        {
+          "url": "admin/varient/list",
+          "name": "Varient",
+          "icon": "menu-icon tf-icons ti ti-address-book",
+          "slug": "app-varient-list"
+        },
+        {
+          "url": "admin/gift_product/list",
+          "name": "Gift Products",
+          "icon": "menu-icon tf-icons ti ti-address-book",
+          "slug": "app-gift_product-list"
+        }
+      
+        ]
+      },
+
+
+
+    
     {
       "url": "admin/setting/list",
       "name": "Setting",

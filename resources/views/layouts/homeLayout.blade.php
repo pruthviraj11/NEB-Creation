@@ -174,7 +174,7 @@ $(document).ready(function(){
                                     <div class="card-body p-2 d-flex justify-content-between align-items-start">
                                         <div>
                                             <h6 class="card-title mb-1"><strong>${item.title}</strong></h6>
-                                            <p class="card-text pt-2">$${item.amount}</p>
+                                            <p class="card-text pt-2">$${item.total_amount}</p>
                                         </div>
                                         <a class="btn btn-sm btn-outline-danger delete-item" data-id="${item.id}">
                                             <i class="bi bi-trash"></i>

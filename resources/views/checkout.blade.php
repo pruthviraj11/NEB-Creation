@@ -109,10 +109,10 @@
                 <ul class="list-group mb-3">
                     @php $total = 0; @endphp
                     @foreach($carts as $cart)
-                        @php $total += $cart->amount; @endphp
+                        @php $total += $cart->total_amount; @endphp
                         <li class="list-group-item d-flex justify-content-between lh-sm">
                             <div><h6 class="my-0">{{ $cart->title }}</h6></div>
-                            <span>₹{{ $cart->amount }}</span>
+                            <span>₹{{ $cart->total_amount }}</span>
                         </li>
                     @endforeach
                     <li class="list-group-item d-flex justify-content-between">
