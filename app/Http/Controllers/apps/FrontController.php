@@ -12,6 +12,8 @@ use App\Models\CreativeArt;
 use App\Models\GiftProduct;
 use App\Models\BulkPurchase;
 use App\Models\ProductVarient;
+use App\Models\ProductVarientPrice;
+
 
 
 
@@ -182,9 +184,7 @@ public function photos()
 
    $varients = ProductVarient::where('status',1)->get();
 
-   
-  
-   
+     
    
     $pageTitle['page_name'] = $photo->title;
     
