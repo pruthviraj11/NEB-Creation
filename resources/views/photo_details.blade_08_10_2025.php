@@ -265,8 +265,8 @@
  </div>
 
 
-        <div class="container mb-5" id="hiddenContent" style="display:block; margin-top:10px;">
-
+        <div class="container mb-5" id="hiddenContent" style="display:none; margin-top:10px;">
+            <h3 class="mb-4 text-center text-primary">Gift Products</h3>
             <div class="row g-4">
                 {{-- @foreach ($giftProducts as $product)
                     <div class="col-sm-6 col-md-6">
@@ -319,84 +319,71 @@
                 @endforeach --}}
 
                 @foreach ($giftProducts as $product)
-                    <div class="col-sm-6 col-md-6 mb-4">
-                        <div class="card h-100 shadow-lg border-0 d-flex flex-row align-items-center p-3 rounded-4 hover-shadow">
-                    <img src="{{ Storage::url($product->product_image) }}" alt="{{ $product->product_name }}"
-                        class="img-fluid rounded-3"
-                        style="max-width: 100%; height: 190px; object-fit: cover; border: 1px solid #eee;">
+    <div class="col-sm-6 col-md-6 mb-4">
+        <div class="card h-100 shadow-lg border-0 d-flex flex-row align-items-center p-3 rounded-4 hover-shadow">
+            <img src="{{ Storage::url($product->product_image) }}" alt="{{ $product->product_name }}"
+                 class="img-fluid rounded-3"
+                 style="max-width: 100%; height: 190px; object-fit: cover; border: 1px solid #eee;">
 
-                    <div class="card-body d-flex flex-column justify-content-center ps-3">
-                        <h5 class="card-title fw-semibold">{{ $product->product_name }}</h5>
+            <div class="card-body d-flex flex-column justify-content-center ps-3">
+                <h5 class="card-title fw-semibold">{{ $product->product_name }}</h5>
 
-                      @if ($product->product_varient == 1)
-                          @php
-                              $productsVarient = \App\Models\ProductVarientPrice::where('gift_product_id', $product->id)
-                                  ->join('product_varients', 'gift_product_varient_prices.gift_varient_id', '=', 'product_varients.id')
-                                  ->select('gift_product_varient_prices.*', 'product_varients.title as varient_name')
-                                  ->get();
-                          @endphp
-
-
-                              <div class="mb-3">
-                                  <label class="form-label small text-secondary fw-medium mb-2">
-                                      Select Size
-                                  </label>
-                                  <div class="d-flex flex-wrap gap-2">
-                                      @foreach ($productsVarient as $index => $varient_info)
-                                          <label class="size-box-label">
-                                              <input
-                                                  type="radio"
-                                                  name="varient_{{ $product->id }}"
-                                                  value="{{ $varient_info->id }}"
-                                                  data-price="{{ $varient_info->price }}"
-                                                  class="size-box-input varientRadio"
-                                                  @if($index == 0) checked @endif
-                                              >
-                                              <span class="size-box">{{ $varient_info->varient_name }}</span>
-                                          </label>
-                                      @endforeach
-                                  </div>
-                              </div>
-
-                      @else
-                      @php
-                      $productsVarient =[];
-                      @endphp
-                      @endif
-
-
-                      <p class="card-text mb-3 text-dark fw-bold fs-5 varientPrice" id="varientPrice_{{ $product->id }}">
-                        @if(!empty($productsVarient) && $productsVarient->isNotEmpty())
-
-                            ${{ number_format($productsVarient[0]->price, 2) }}
-                        @else
-
-                            ${{ number_format($product->product_price, 2) }}
-                        @endif
-                    </p>
+                @if ($product->product_varient == 1)
+                    @php
+                        $pvarients = explode(',', $product->varient_id);
+                        $pvarients = array_map('trim', $pvarients);
+                        $filteredVarients = $varients->whereIn('id', $pvarients);
+                    @endphp
+                    <div class="mb-3">
+                        <label for="varient_{{ $product->id }}" class="form-label small text-secondary fw-medium">
+                            Size
+                        </label>
+                        {{-- <select id="varient_{{ $product->id }}" name="varient[]" class="form-select form-select-sm">
+                            <option value="" disabled selected>Select Size</option>
+                            @foreach ($filteredVarients as $varient)
+                                <option value="{{ $varient->id }}">{{ $varient->title }}</option>
+                            @endforeach
+                        </select> --}}
+   <div class="mb-3">
+    <label class="form-label small text-secondary fw-medium mb-2">
+        Select Size
+    </label>
+    <div class="d-flex flex-wrap gap-2">
+        @foreach ($filteredVarients as $varient)
+            <label class="size-box-label">
+                <input
+                    type="radio"
+                    name="varient_{{ $product->id }}"
+                    value="{{ $varient->id }}"
+                    class="size-box-input"
+                    autocomplete="off"
+                >
+                <span class="size-box">{{ $varient->title }}</span>
+            </label>
+        @endforeach
+    </div>
+</div>
 
 
-                          <div class="form-check form-switch">
-                              <input
-                                    class="form-check-input gift-checkbox"
-                                    type="checkbox"
-                                    name="gift_id[]"
-                                    value="{{ $product->id }}"
-                                    id="gift_{{ $product->id }}"
-                                    @if(!empty($productsVarient) && $productsVarient->isNotEmpty())
-                                        data-id="{{ number_format($productsVarient[0]->price, 2) }}"
-                                    @else
-                                        data-id="{{ number_format($product->product_price, 2) }}"
-                                    @endif
-                                >
-                              <label class="form-check-label" for="gift_{{ $product->id }}">
-                                  Select Gift
-                              </label>
-                          </div>
-                      </div>
+                    </div>
+                @endif
+
+                <p class="card-text mb-3 text-dark fw-bold fs-5">
+                     ${{ number_format($product->product_price, 2) }}
+                </p>
+
+                <div class="form-check form-switch">
+                    <input class="form-check-input gift-checkbox " type="checkbox" name="gift_id[]"
+                           value="{{ $product->id }}" data-id="{{ $product->product_price }}"
+                           id="gift_{{ $product->id }}">
+                    <label class="form-check-label" for="gift_{{ $product->id }}">
+                        Select Gift
+                    </label>
                 </div>
             </div>
-      @endforeach
+        </div>
+    </div>
+@endforeach
 
 
 
@@ -588,8 +575,7 @@
 
                     $('.gift-checkbox').each(function() {
                         //const price = parseFloat($(this).val()) || 0;
-                        const price = parseFloat($(this).attr('data-id')) || 0;
-
+                        const price = parseFloat($(this).data('id'));
 
 
                         if ($(this).is(':checked')) {
@@ -620,39 +606,41 @@
         </script>
 
 
+
+
+        <script src="{{ asset('home/js/swiper-bundle.min.js') }}"></script>
+
+
         <script>
-         $(document).ready(function () {
-    // On page load, set default price based on checked variant (if any)
-    $('.varientRadio:checked').each(function () {
-        const price = parseFloat($(this).data('price'));
-        const productId = $(this).attr('name').replace('varient_', '');
-        $(`#varientPrice_${productId}`).text(`$${price.toFixed(2)}`);
-        $(`#gift_${productId}`).attr('data-id', price); // ✅ set checkbox data-id
-    });
-
-    // When user selects a new variant
-    $(document).on('change', '.varientRadio', function () {
-        const price = parseFloat($(this).data('price'));
-        const productId = $(this).attr('name').replace('varient_', '');
-
-        // ✅ Update displayed price
-        $(`#varientPrice_${productId}`).text(`$${price.toFixed(2)}`);
-
-        // ✅ Update checkbox price data-id dynamically
-        $(`#gift_${productId}`).attr('data-id', price);
-    });
-});
-
-
+            var swiper = new Swiper(".photoSwiper", {
+                slidesPerView: {{ $features->count() }},
+                spaceBetween: 30,
+                loop: true,
+                autoplay: {
+                    delay: 2000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                breakpoints: {
+                    0: {
+                        slidesPerView: 1
+                    },
+                    768: {
+                        slidesPerView: 2
+                    },
+                    992: {
+                        slidesPerView: 3
+                    },
+                },
+            });
         </script>
-
-
-
-
-
-
-
-
 
         <script>
   const box = document.getElementById("showBox");
