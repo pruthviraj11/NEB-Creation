@@ -19,5 +19,7 @@ class Setting extends Model
         'admin_email',
         'partner_email',
         'printify_email',
+        'delivery_charge',
+        'tax_rate',
     ];
 }
