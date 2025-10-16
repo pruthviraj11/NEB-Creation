@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\CreativeArt;
 use App\Models\BulkPurchase;
 use App\Models\ProductVarient;
+use App\Models\GiftProduct;
 
 
 class VarientRepository
@@ -20,7 +21,14 @@ class VarientRepository
     {
         return ProductVarient::create($data);
     }
-  
+
+     public function gift_create(array $data)
+    {
+        return GiftProduct::create($data);
+    }
+
+
+
 
 
 
@@ -30,12 +38,16 @@ class VarientRepository
     }
 
     public function delete($id)
-{
+    {
+        return ProductVarient::where('id', $id)->delete();
+    }
 
-    return ProductVarient::where('id', $id)->delete();
-   
-    
+    public function delete_gift($id)
+{
+    return GiftProduct::where('id', $id)->delete();
 }
+
+
 
     public function getAll()
     {
@@ -43,5 +55,14 @@ class VarientRepository
         return ProductVarient::all();
     }
 
-   
+
+    public function update_gift($id, array $data)
+    {
+        return GiftProduct::where('id', $id)->update($data);
+    }
+
+
+
+
+
 }

@@ -44,7 +44,7 @@
                                     Product Name</label>
                                 <input type="text" id="product_name" class="form-control" placeholder="Product Name"
                                     name="product_name"
-                                    value="{{ old('size') ?? ($gift != '' ? $gift->title : '') }}">
+                                    value="{{ old('size') ?? ($gift != '' ? $gift->product_name : '') }}">
                                 <span class="text-danger">
                                     @error('product_name')
                                         {{ $message }}
@@ -56,12 +56,47 @@
                                 <label class="form-label" for="image"><strong>Photo Image<strong></label>
                                 <input type="file" id="image" name="image" class="form-control"
                                     accept="image/*">
-                               
+
                                 <span class="text-danger">
                                     @error('image')
                                         {{ $message }}
                                     @enderror
                                 </span>
+
+
+                                {{-- @if ($gift && $gift->image)
+                                    @php
+                                        $GiftimageUrl =
+                                            isset($gift->image) && Storage::disk('public')->exists($gift->image)
+                                                ? Storage::url($gift->image)
+                                                : asset('no_image/no_image.png');
+
+                                    @endphp
+
+
+                                    <div class="position-relative d-inline-block project-image-wrapper"
+                                        style="width: 150px;">
+
+                                        <img src="{{ $GiftimageUrl }}" class="img-fluid"
+                                            style="height: 150px; object-fit: cover; width: 100%;">
+
+                                        <a href="javascript:void(0);"
+                                            class="btn btn-sm btn-danger delete-file position-absolute top-0 end-0 m-1"
+                                            data-idos="{{ $gift->id }}" data-image="banner"
+                                            style="padding: 2px 6px; border-radius: 50%;">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                fill="white" viewBox="0 0 24 24">
+                                                <path d="M3 6h18v2H3zm2 3h14l-1.5 13.5h-11L5 9zm5-6h4v2h-4z" />
+                                            </svg>
+                                        </a>
+
+
+                                        </div>
+
+                                @endif --}}
+
+
                             </div>
 
                             <div class="col-md-12 col-sm-6 mb-1">
@@ -69,7 +104,7 @@
                                     Price($)</label>
                                 <input type="text" id="price" class="form-control" placeholder="Price"
                                     name="price"
-                                    value="{{ old('price') ?? ($gift != '' ? $gift->title : '') }}">
+                                    value="{{ old('price') ?? ($gift != '' ? $gift->product_price : '') }}">
                                 <span class="text-danger">
                                     @error('price')
                                         {{ $message }}
@@ -78,31 +113,80 @@
                             </div>
 
                             <div class="row">
-                            <div class="col-md-6 col-sm-6 mb-1">
+                            <div class="col-md-12 col-sm-6 mb-1">
                             <label class="form-label" for="is_varient">
                                     Is Varient?</label>
-                                <select name="is_varient" id="is_varient" class="form-control is_varient" >
-                                 <option value="0">No</option>
-                                 <option value="1">Yes</option>
-                                </select>
-
-                            </div>  
-                            
-                            <div class="col-md-6 col-sm-6 mb-1 varientSection" style="display:none">
-                                 <label class="form-label" for="varients">
-                                    Select Varient</label>
-                                <select name="varients[]" id="varients" class="form-control varients multiple" >
-                                    @foreach($varients as $varient)
-                                    <option value="{{$varient->id}}">{{$varient->title}}</option>
-                                    @endforeach
-                                 
-                                </select>
-
-                            </div> 
+                            <select name="is_varient" id="is_varient" class="form-control">
+                                <option value="0" {{ isset($gift) && is_object($gift) && $gift->product_varient == 0 ? 'selected' : '' }}>No</option>
+                                <option value="1" {{ isset($gift) && is_object($gift) && $gift->product_varient == 1 ? 'selected' : '' }}>Yes</option>
+                            </select>
                             </div>
 
 
-                           
+
+                              <!---  Dynamic Varient wise Flow ------>
+                              <div class="container mt-3">
+
+
+                                      <div id="variantContainer">
+                                          {{-- 🔹 If editing: show existing variant-price records --}}
+                                          @if(isset($product_varients) && count($product_varients) > 0)
+                                              @foreach($product_varients as $key => $pv)
+                                                    <div class="row varientRow mb-2">
+                                                        <input type="hidden" name="variant_row_id[]" value="{{ $pv->id }}">
+
+                                                        <div class="col-md-6 col-sm-6 mb-1 mt-2">
+                                                            <label class="form-label">Select Variant</label>
+                                                            <select name="varients[]" class="form-control varients">
+                                                                @foreach($varients as $varient)
+                                                                    <option value="{{ $varient->id }}" {{ $pv->gift_varient_id == $varient->id ? 'selected' : '' }}>
+                                                                        {{ $varient->title }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-5 col-sm-5 mb-1 mt-2">
+                                                            <label class="form-label">Price</label>
+                                                            <input type="text" name="varient_price[]" class="form-control varient_price" value="{{ $pv->price }}" />
+                                                        </div>
+
+                                                        <div class="col-md-1 col-sm-1 mb-1 mt-4">
+                                                            <button type="button" class="btn btn-danger btn-sm removeRow" data-id="{{ $pv->id }}">✕</button>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                          @else
+                                              {{-- 🔹 Default empty row (for Add mode or no variants found) --}}
+                                              <div class="row varientRow mb-2">
+                                                  <div class="col-md-6 col-sm-6 mb-1 mt-2">
+                                                      <label class="form-label">Select Variant</label>
+                                                      <select name="varients[]" class="form-control varients">
+                                                          @foreach($varients as $varient)
+                                                              <option value="{{ $varient->id }}">{{ $varient->title }}</option>
+                                                          @endforeach
+                                                      </select>
+                                                  </div>
+
+                                                  <div class="col-md-5 col-sm-5 mb-1 mt-2">
+                                                      <label class="form-label">Price</label>
+                                                      <input type="text" name="varient_price[]" class="form-control varient_price" />
+                                                  </div>
+
+                                                  <div class="col-md-1 col-sm-1 mb-1 mt-4">
+                                                      <button type="button" class="btn btn-danger btn-sm removeRow" style="display:none;">✕</button>
+                                                  </div>
+                                              </div>
+                                          @endif
+                                      </div>
+
+                                      <div class="mt-3">
+                                          <button type="button" class="btn btn-success btn-sm" id="addRow">+ Add More</button>
+                                      </div>
+                                  </div>
+
+
+
 
                             {{-- Status --}}
                             <div class="col-md-6 mb-3">
@@ -143,25 +227,79 @@
 @section('page-script')
     <script src="{{ asset('assets/js/forms-editors.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
    $(document).ready(function(){
-    
-    $(".is_varient").change(function(){
-        $val = $(this).val();
-        if($val == 1)
-        {
-            $(".varientSection").show();
-            
-        }
-        else
-        {
-           $(".varientSection").hide(); 
-        }
 
-    });
+  $('#is_varient').change(function() {
+    if ($(this).val() == '1') {
+        $('.container.mt-3').show();
+    } else {
+        $('.container.mt-3').hide();
+    }
+}).trigger('change');
    });
+</script>
+
+<script>
+$(document).ready(function() {
+    // 🔹 Template for new row
+    let variantTemplate = `
+        <div class="row varientRow mb-2">
+            <div class="col-md-6 col-sm-6 mb-1 mt-2">
+                <label class="form-label">Select Variant</label>
+                <select name="varients[]" class="form-control varients">
+                    @foreach($varients as $varient)
+                        <option value="{{ $varient->id }}">{{ $varient->title }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-5 col-sm-5 mb-1 mt-2">
+                <label class="form-label">Price</label>
+                <input type="text" name="varient_price[]" class="form-control varient_price" />
+            </div>
+
+            <div class="col-md-1 col-sm-1 mb-1 mt-4">
+                <button type="button" class="btn btn-danger btn-sm removeRow">✕</button>
+            </div>
+        </div>
+    `;
+
+    // 🔹 Add new row
+    $('#addRow').click(function() {
+        $('#variantContainer').append(variantTemplate);
+        $('.removeRow').show(); // always show remove button on new rows
+    });
+
+    // 🔹 Remove row
+    // $(document).on('click', '.removeRow', function() {
+    //     $(this).closest('.varientRow').remove();
+    // });
+
+
+    $(document).on('click', '.removeRow', function() {
+    const variantId = $(this).data('id');
+    if (variantId) {
+        // Track deleted row IDs
+        $('#variantContainer').append(`<input type="hidden" name="deleted_variant_ids[]" value="${variantId}">`);
+    }
+    $(this).closest('.varientRow').remove();
+});
+
+    // 🔹 Initially hide remove button if only one row exists
+    if ($('.varientRow').length <= 1) {
+        $('.removeRow').hide();
+    } else {
+        $('.removeRow').show();
+    }
+});
+
+
+
+
 </script>
 
 

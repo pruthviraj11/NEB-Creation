@@ -3,9 +3,8 @@
 namespace App\Http\Requests\Creative;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateVarientRequest extends FormRequest
+class CreateGiftProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +23,8 @@ class UpdateVarientRequest extends FormRequest
      */
     public function rules()
     {
-       return [
-           'size' => 'required',
-
+        return [
+            'product_name' => 'required',
         ];
     }
 }

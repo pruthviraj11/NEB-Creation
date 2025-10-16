@@ -18,6 +18,13 @@ class VarientService
         $user = $this->varientRepository->create($userData);
         return $user;
     }
+    public function gift_create($userData)
+    {
+        $user = $this->varientRepository->gift_create($userData);
+        return $user;
+    }
+
+
 
     public function getCategory()
     {
@@ -49,5 +56,18 @@ class VarientService
     {
         $useres = $this->varientRepository->getAllSiteUser();
         return $useres;
+    }
+
+    public function deleteGift($id)
+    {
+        $deleted = $this->varientRepository->delete_gift($id);
+        return $deleted;
+    }
+
+
+    public function updateGift($id, $userData)
+    {
+        $updated = $this->varientRepository->update_gift($id, $userData);
+        return $updated;
     }
 }

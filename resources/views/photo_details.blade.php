@@ -463,7 +463,7 @@
                                             data-id ="{{ $bulk->price }}">
 
                                         <label class="form-check-label  checkbox_text me-3" for="{{ $bulk->id }}">
-                                           
+
                                             {{ $bulk->title }} — {{ $bulk->max_quntity }}+ — {{ $bulk->price }} each
                                         </label>
 
@@ -473,7 +473,7 @@
                                     </div>
                                 @endforeach
                             </div> --}}
-                            {{-- 
+                            {{--
                             <div>
 
                                 <h5 class="fw-bold mt-2">Canvas</h5>
@@ -672,7 +672,7 @@
                 @endforeach --}}
 
 
-    {{-- 
+    {{--
             </div>
 
 

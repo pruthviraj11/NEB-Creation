@@ -34,7 +34,7 @@
                         <thead>
                             <tr>
 
-                                <th>Size</th>
+                                <th>Product Name</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -75,13 +75,11 @@
                 processing: true,
                 serverSide: true,
                 "lengthMenu": [10, 25, 50, 100, 200],
-                ajax: "{{ route('app-varient-get-all') }}",
+                ajax: "{{ route('app-gift_product-get-all') }}",
                 columns: [{
-                        data: 'title',
-                        name: 'title'
+                        data: 'product_name',
+                        name: 'product_name'
                     },
-                   
-
                     {
                         data: 'status',
                         name: 'status'
@@ -126,7 +124,7 @@
                 buttonsStyling: false
             }).then(function(result) {
                 if (result.value) {
-                    window.location.href = '/admin/varient/destroy/' + id;
+                    window.location.href = '/admin/gift_product/destroy/' + id;
                     Swal.fire({
                         icon: 'success',
                         title: 'Deleted!',

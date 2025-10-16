@@ -50,7 +50,7 @@ class FrontController extends Controller
    * @return \Illuminate\Contracts\Support\Renderable
    */
   /*----------- Check Guest ID ---------*/
-  
+
   public function checkGuestId($guest_id, Request $request)
     {
         $guestId = $guest_id;
@@ -73,7 +73,7 @@ class FrontController extends Controller
         ->get();
 
       return response()->json($cartsdata);
-        
+
     }
 
     public function deletecartitem($itemId, Request $request)
@@ -93,36 +93,36 @@ class FrontController extends Controller
             'message' => 'Item not found or could not be deleted'
         ], 404);
     }
-    
 
 
-    
-  
-  
+
+
+
+
   public function index()
   {
     $pageTitle['page_name'] = "Home";
-    
+
     $photos = Photography::where('is_home','yes')->where('status','1')->orderBy('id','desc')->get();
-    
+
     return view('index',compact('pageTitle','photos'));
   }
 
   public function about_us()
   {
     $pageTitle['page_name'] = "About Us";
-    
+
    $photos = Photography::where('status','1')->get();
-    
+
     return view('about_us',compact('pageTitle','photos'));
   }
 
 public function photos()
   {
     $pageTitle['page_name'] = "Photos";
-    
+
    $photos = Photography::where('status','1')->orderBy('id','desc')->get();
-    
+
     return view('photos',compact('pageTitle','photos'));
   }
 
@@ -168,14 +168,14 @@ public function photos()
   public function photo_details($slug,Request $request)
   {
     $guestId = $request->session()->get('guestId');
-    
+
     $photo = Photography::where('photographies.slug', $slug)
     ->join('categories', 'photographies.category_id', '=', 'categories.id')
     ->select('photographies.*', 'categories.category as category_title')
     ->first();
 
     $features= Photography::where('category_id', $photo->category_id)->where('id', '!=', $photo->id)->get();
-   
+
    $creatives = CreativeArt::where('status','1')->get();
 
    $giftProducts = GiftProduct::where('status',1)->get();
@@ -184,12 +184,12 @@ public function photos()
 
    $varients = ProductVarient::where('status',1)->get();
 
-     
-   
+
+
     $pageTitle['page_name'] = $photo->title;
-    
-   
-    
+
+
+
     return view('photo_details',compact('pageTitle','photo','features','creatives','giftProducts','bulkpurchases','varients'));
   }
 
@@ -198,7 +198,7 @@ public function photos()
     $guestId = $request->session()->get('guestId');
     $photo_Id = $request->get('photo_id');
 
-   
+
     $creative_arts = $request->get('creative_art');
     if($creative_arts != '')
     {
@@ -210,13 +210,13 @@ public function photos()
       {
         $is_creative_art = "no";
         $creative_values = NULL;
-      }  
+      }
 
 
      $bulk_info = $request->get('bulk_id');
      $bquntity = $request->get('bulk_quntity');
 
-     if (!empty($bulk_info)) 
+     if (!empty($bulk_info))
     {
       $is_bulk = "yes";
       $bulk_data = [];
@@ -228,13 +228,13 @@ public function photos()
             ];
         }
 
-   
-    
+
+
     $bulk_id = implode(",", array_column($bulk_data, 'bulk_id'));
     $bulk_quntity = implode(",", array_column($bulk_data, 'bulk_quantity'));
 
-   
-    
+
+
 } else {
     $is_bulk = "no";
     $bulk_id = NULL;
@@ -244,7 +244,7 @@ public function photos()
 
 
   $canvas = $request->get('canvas');
-  
+
 
 
      $gift_info = $request->get('gift_id');
@@ -253,32 +253,32 @@ public function photos()
      {
          $is_gift = "yes";
          $gift_id = implode(",",$gift_info);
-        
-     }  
+
+     }
      else
      {
         $is_gift = "no";
         $gift_id = NULL;
-         
+
      }
 
      $varient_info = $request->get('varient');
 
      if($varient_info != '')
      {
-        
+
          $varient_id = implode(",",$varient_info);
-        
-     }  
+
+     }
      else
      {
-        
+
         $varient_id = NULL;
-         
+
      }
 
-    
-   
+
+
     $checkData = TempCart::where('guest_id',$guestId)->where('photo_id',$photo_Id)->where('order_status','pending')->count();
     if ($checkData == 0)
     {
@@ -313,12 +313,12 @@ public function photos()
 
 
 
-  
+
 
   public function cart(Request $request)
   {
     $guestId = $request->session()->get('guestId');
-    
+
     $carts = TempCart::where('temp_carts.guest_id', $guestId)
     ->where('temp_carts.order_status', 'pending')
     ->join('photographies', 'temp_carts.photo_id', '=', 'photographies.id')
@@ -329,13 +329,13 @@ public function photos()
     $varients = ProductVarient::where('status',1)->get();
 
 
-    foreach ($carts as $cart) 
+    foreach ($carts as $cart)
     {
 
       /*----- Creative Section ------*/
-      
+
       if ($cart->is_creative_art == "yes") {
-      
+
           $creativeIds = explode(',', $cart->creative_info);
 
           $creativeIds = array_filter(array_map('trim', $creativeIds));
@@ -343,12 +343,12 @@ public function photos()
           $creative_datas = CreativeArt::whereIn('id', $creativeIds)->get();
 
           $cart->creative_items = $creative_datas;
-        
+
       }
 
 
       /*----- Bulk Purchase Section ------*/
-      if ($cart->is_bulk_purchase == "yes") 
+      if ($cart->is_bulk_purchase == "yes")
       {
           $bulkIds = explode(',', $cart->bulk_info);
 
@@ -363,7 +363,7 @@ public function photos()
       /*----- Gift product Section ------*/
 
       if ($cart->is_gift_product == "yes") {
-      
+
           $giftIds = explode(',', $cart->gift_product_id);
 
           $giftIds = array_filter(array_map('trim', $giftIds));
@@ -371,10 +371,10 @@ public function photos()
           $gift_datas = GiftProduct::whereIn('id', $giftIds)->get();
 
           $cart->gift_items = $gift_datas;
-        
+
       }
 
-    
+
 
 
     }
@@ -402,7 +402,7 @@ public function photos()
 
     // Get saved billing details from session (if any) for prefilling form
     $billingDetails = $request->session()->get('billing_details', []);
-    
+
     // Add a session flash message if billing details are being prefilled
     if (!empty($billingDetails) && !$request->session()->has('prefill_notified')) {
         $request->session()->flash('info', 'Your billing details have been restored from your previous attempt.');
@@ -423,7 +423,7 @@ public function photos()
   public function add_checkout(Request $request)
   {
      $pageTitle['page_name'] = "CheckOut";
-    
+
     $guestId = $request->session()->get('guestId');
 
     $first_name = $request->get('first_name');
@@ -437,12 +437,12 @@ public function photos()
     $zip = $request->get('zip');
     //$payment = $request->get('payment');
     $product_total = $request->get('product_total');
-    
+
     // Get delivery charge and tax rate from settings instead of hardcoded values
     $settings = Setting::first();
     $settings_delivery_charge = $settings ? $settings->delivery_charge : 5.00;
     $settings_tax_rate = $settings ? $settings->tax_rate : 9.25;
-    
+
     $delivery_charge = $request->get('delivery_charge', $settings_delivery_charge);
     $tax_rate = $request->get('tax_rate', $settings_tax_rate);
     $tax_amount = $request->get('tax_amount');
@@ -491,8 +491,8 @@ public function photos()
             'state' =>$state,
             'zip' =>$zip,
         ]);
-    
-    
+
+
     // if($payment == "cod")
     // {
     //     $emailAddress = $request->get('email');
@@ -502,13 +502,13 @@ public function photos()
     // else
     // {
       $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
-      
+
       // Determine the amount to send to Stripe
       // If promo code applied, use subtotal before discount; otherwise use total
-      $stripeAmount = (!empty($applied_promo_code) && $discount_amount > 0) 
-          ? $total_before_discount 
+      $stripeAmount = (!empty($applied_promo_code) && $discount_amount > 0)
+          ? $total_before_discount
           : $total_amount;
-      
+
       // Prepare session data
       $sessionData = [
             'payment_method_types' => ['card'],
@@ -545,13 +545,13 @@ public function photos()
         return redirect($session->url);
 
    // }
-    
-   
-    
+
+
+
   }
 
 
-  
+
 
    public function stripe_success(Request $request)
   {
@@ -578,8 +578,8 @@ public function photos()
         'payment_status'  => $session->payment_status, // e.g., "paid"
         'payment_intent'  => is_object($paymentIntent) ? $paymentIntent->id : $paymentIntent,
     ];
-   
-    
+
+
     OrderDetail::where('guest_id', $guestId)
         ->where('order_status', 'pending') // only update pending carts
         ->update([
@@ -589,25 +589,25 @@ public function photos()
             'total_amount' => $paymentData['amount']/100,
         ]);
 
-        
+
 
          $emailAddress = $paymentData['customer_email'];
          $this->sendOrderForm('Order Details', [$guestId], $other = $emailAddress);
-    
+
     // Clear billing details and promo code data from session as payment is successful
     $request->session()->forget('billing_details');
     $request->session()->forget('applied_promo_code');
     $request->session()->forget('prefill_notified');
 
     return redirect()->route("front-success")->with('success', '');
-   
+
   }
 
 
   public function success(Request $request)
   {
     $guestId = $request->session()->get('guestId');
-    
+
 
  TempCart::where('guest_id', $guestId)
         ->where('order_status', 'pending') // only update pending carts
@@ -622,22 +622,22 @@ public function photos()
 
     // Remove guestId from session
    // $request->session()->forget('guestId');
-     
+
     $pageTitle['page_name'] = "Success";
 
     return view('success',compact('pageTitle'));
-   
+
   }
 
 
   /**
    * Validate and apply promo code using Stripe API
-   * 
+   *
    * To use this feature:
    * 1. Create coupons in Stripe Dashboard
    * 2. Create promotional codes linked to those coupons
    * 3. Customers can enter codes on checkout page OR on Stripe checkout page
-   * 
+   *
    * @param Request $request
    * @return \Illuminate\Http\JsonResponse
    */
@@ -646,7 +646,7 @@ public function photos()
     try {
         $promoCode = strtoupper(trim($request->get('promo_code')));
         $subtotal = $request->get('total_before_discount', $request->get('total_amount', 0)); // Subtotal includes product + delivery + tax
-        
+
         if (empty($promoCode)) {
             return response()->json([
                 'success' => false,
@@ -656,11 +656,11 @@ public function photos()
 
         // Initialize Stripe
         $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
-        
+
         try {
             // Log the promo code being searched
             \Log::info('Searching for promo code: ' . $promoCode);
-            
+
             // First, try to retrieve the promotional code - check both active and inactive
             $promotionCodes = $stripe->promotionCodes->all([
                 'code' => $promoCode,
@@ -678,7 +678,7 @@ public function photos()
                 // Try searching without case sensitivity and without active filter
                 $allPromoCodes = $stripe->promotionCodes->all(['limit' => 100]);
                 $matchingCodes = [];
-                
+
                 foreach ($allPromoCodes->data as $code) {
                     if (strtoupper($code->code) === $promoCode) {
                         $matchingCodes[] = [
@@ -689,12 +689,12 @@ public function photos()
                         ];
                     }
                 }
-                
+
                 \Log::info('Manual search results:', [
                     'searched_code' => $promoCode,
                     'matching_codes' => $matchingCodes
                 ]);
-                
+
                 return response()->json([
                     'success' => false,
                     'message' => 'Invalid or expired promo code. Code searched: ' . $promoCode,
@@ -744,7 +744,7 @@ public function photos()
                 // Percentage discount
                 $discountPercentage = $coupon->percent_off;
                 $discountAmount = round(($subtotal * $discountPercentage) / 100, 2);
-                
+
                 // Apply max discount limit if set
                 if ($coupon->amount_off && $discountAmount > ($coupon->amount_off / 100)) {
                     $discountAmount = $coupon->amount_off / 100;
@@ -797,14 +797,14 @@ public function photos()
     try {
         $stripeSecret = config('services.stripe.secret');
         $stripe = new \Stripe\StripeClient($stripeSecret);
-        
+
         // Determine if using test or live keys
         $isTestMode = strpos($stripeSecret, 'sk_test_') === 0;
         $isLiveMode = strpos($stripeSecret, 'sk_live_') === 0;
-        
+
         // Get all promotional codes
         $allPromoCodes = $stripe->promotionCodes->all(['limit' => 100]);
-        
+
         $codes = [];
         foreach ($allPromoCodes->data as $promoCode) {
             $codes[] = [
@@ -824,7 +824,7 @@ public function photos()
                 ]
             ];
         }
-        
+
         return response()->json([
             'success' => true,
             'stripe_environment' => $isTestMode ? 'TEST' : ($isLiveMode ? 'LIVE' : 'UNKNOWN'),
@@ -835,7 +835,7 @@ public function photos()
                 return strtoupper($code['code']) === 'REGTEST';
             })
         ]);
-        
+
     } catch (\Exception $e) {
         return response()->json([
             'success' => false,
@@ -848,21 +848,21 @@ public function photos()
   {
     try {
         $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
-        
+
         // First create a coupon
         $coupon = $stripe->coupons->create([
             'percent_off' => 15,
             'duration' => 'once',
             'name' => 'REGTEST Discount',
         ]);
-        
+
         // Then create the promotional code
         $promoCode = $stripe->promotionCodes->create([
             'coupon' => $coupon->id,
             'code' => 'REGTEST',
             'active' => true,
         ]);
-        
+
         return response()->json([
             'success' => true,
             'message' => 'REGTEST promo code created successfully!',
@@ -877,7 +877,7 @@ public function photos()
                 'active' => $promoCode->active,
             ]
         ]);
-        
+
     } catch (\Stripe\Exception\InvalidRequestException $e) {
         return response()->json([
             'success' => false,
@@ -896,35 +896,35 @@ public function photos()
   public function cancel(Request $request)
   {
     $guestId = $request->session()->get('guestId');
-    
+
     // Optional: Log the cancellation for analytics
     \Log::info('Payment cancelled for guest: ' . $guestId);
-    
+
     // Check if user has items in cart
     $cartCount = TempCart::where('guest_id', $guestId)
                         ->where('order_status', 'pending')
                         ->count();
-    
+
     if ($cartCount === 0) {
         // If no items in cart, redirect to home or cart page
         return redirect()->route('front-view-cart')->with('info', 'Your cart is empty. Add items to proceed with checkout.');
     }
-    
+
     // Redirect back to checkout page with a message
     return redirect()->route('front-checkout')->with('warning', 'Payment was cancelled. Your items are still in your cart. You can try again or modify your order.');
   }
 
 
-  
 
 
-  
-
-  
-
-  
 
 
- 
-  
+
+
+
+
+
+
+
+
 }
