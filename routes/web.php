@@ -174,14 +174,6 @@ use App\Http\Controllers\apps\VarientController;
 use App\Http\Controllers\apps\GiftProductController;
 
 
-
-
-
-
-
-
-
-
 use Illuminate\Support\Facades\Auth;
 
 // Main Page Route
@@ -481,7 +473,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('getAll', [PhotographyController::class, 'getAll'])->name('get-all');
     Route::get('category/{catId}', [PhotographyController::class, 'getParentCategory'])->name('parent-category');
   Route::get('remove_files/{encrypted_id}/{file_type}', [PhotographyController::class, 'remove_files'])->name('remove-files');
-  
+
   });
 
 
@@ -508,7 +500,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
 
   /*----------- Creative Arts ------------*/
-   
+
     Route::prefix('creative')->name('app-creative-')->group(function () {
     Route::get('list', [CreativeController::class, 'index'])->name('list');
     Route::get('add', [CreativeController::class, 'create'])->name('add');
