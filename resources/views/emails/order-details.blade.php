@@ -197,7 +197,16 @@
                                     @foreach($giftItems as $gift)
                                     @php
                                         try {
-                                            $imageUrl = Storage::url($gift->product_image ?? '');
+                                            $filePath = $gift->product_image ?? '';
+                                           // $imageUrl = Storage::url($gift->product_image ?? '');
+                                            if (!empty($filePath) && Storage::disk('public')->exists($filePath)) {
+                                                // Generate full URL for email (absolute)
+                                                $imageUrl = url(Storage::url($filePath));
+                                            } else {
+                                                // Fallback image
+                                                $imageUrl = '';
+                                            }
+
                                             $productName = htmlspecialchars($gift->product_name ?? 'N/A', ENT_QUOTES);
                                             $price = floatval($gift->product_price ?? 0);
                                             
