@@ -142,8 +142,8 @@ return DataTables::of(source: $gift)
         if ($request->hasFile('image')) {
             $photo = $request->file('image');
             $photoName = time() . '.' . $photo->getClientOriginalExtension();
-            $photo->storeAs('public/photos/gifts', $photoName);
-            $giftData['product_image'] = 'photos/gifts/' . $photoName;
+            $photo->storeAs('public/photos/original', $photoName);
+            $giftData['product_image'] = 'photos/original/' . $photoName;
         }
 
 
@@ -245,8 +245,8 @@ return DataTables::of(source: $gift)
         if ($request->hasFile('image')) {
             $photo = $request->file('image');
             $photoName = time() . '.' . $photo->getClientOriginalExtension();
-            $photo->storeAs('public/photos/gifts', $photoName);
-            $giftData['product_image'] = 'photos/gifts/' . $photoName;
+            $photo->storeAs('public/photos/original', $photoName);
+            $giftData['product_image'] = 'photos/original/' . $photoName;
         }
 
         // Update main gift record
