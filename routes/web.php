@@ -545,6 +545,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::put('update/{encrypted_id}', [GiftProductController::class, 'update'])->name('update');
     Route::get('destroy/{encrypted_id}', [GiftProductController::class, 'destroy'])->name('destroy');
     Route::get('getAll', [GiftProductController::class, 'getAll'])->name('get-all');
+    Route::get('remove_files/{encrypted_id}', [GiftProductController::class, 'remove_files'])->name('gift_remove-files');
+  
+  
   });
 
 

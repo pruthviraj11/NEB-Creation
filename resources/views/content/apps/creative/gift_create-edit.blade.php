@@ -64,11 +64,11 @@
                                 </span>
 
 
-                                {{-- @if ($gift && $gift->image)
+                                @if ($gift && $gift->product_image)
                                     @php
                                         $GiftimageUrl =
-                                            isset($gift->image) && Storage::disk('public')->exists($gift->image)
-                                                ? Storage::url($gift->image)
+                                            isset($gift->product_image) && Storage::disk('public')->exists($gift->product_image)
+                                                ? Storage::url($gift->product_image)
                                                 : asset('no_image/no_image.png');
 
                                     @endphp
@@ -94,7 +94,7 @@
 
                                         </div>
 
-                                @endif --}}
+                                @endif
 
 
                             </div>
@@ -300,6 +300,48 @@ $(document).ready(function() {
 
 
 
+</script>
+
+
+<script>
+    $(document).on("click", ".delete-file", function(e) {
+        e.preventDefault();
+        var id = $(this).data("idos");
+        
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+                confirmButton: 'btn btn-primary',
+                cancelButton: 'btn btn-outline-danger ms-1'
+            },
+            buttonsStyling: false
+        }).then(function(result) {
+            if (result.value) {
+                window.location.href = '/admin/gift_product/remove_files/' + id;
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Record has been deleted.',
+                    customClass: {
+                        confirmButton: 'btn btn-success'
+                    }
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'Your imaginary record is safe :)',
+                    icon: 'error',
+                    customClass: {
+                        confirmButton: 'btn btn-success'
+                    }
+                });
+            }
+        });
+    });
 </script>
 
 

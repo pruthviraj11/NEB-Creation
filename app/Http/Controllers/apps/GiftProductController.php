@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class GiftProductController extends Controller
 {
@@ -67,7 +68,15 @@ class GiftProductController extends Controller
     $gift = GiftProduct::where('status','1')->get();
 
 return DataTables::of(source: $gift)
-    ->addColumn('product_name', function ($row) {
+    ->addColumn('product_image', function ($row) {
+        if (!empty($row->product_image) && Storage::disk('public')->exists($row->product_image)) {
+            $url = Storage::url($row->product_image);
+        } else {
+            $url = asset('no_image/no_image.png');
+        }
+        return '<img src="' . $url . '" alt="Image" width="60" height="60">';
+      })
+->addColumn('product_name', function ($row) {
         return $row->product_name;
     })
 
@@ -84,7 +93,7 @@ return DataTables::of(source: $gift)
         $deleteButton = "<a data-bs-toggle='tooltip' title='Delete' class='btn-sm border-danger confirm-delete' data-idos='$encryptedId' href='" . route('app-gift_product-destroy', $encryptedId) . "'><i class='text-danger' data-feather='trash-2'></i></a>";
         return $updateButton . " " . $deleteButton;
     })
-    ->rawColumns(['category', 'status', 'actions'])
+    ->rawColumns(['product_image','category', 'status', 'actions'])
     ->make(true);
 
 }
@@ -312,34 +321,25 @@ return DataTables::of(source: $gift)
 
 
     public function remove_files($encrypted_id)
-    {
-    // Your logic to delete the file
-    // Example:
+{
+    
+    $photo = GiftProduct::findOrFail($encrypted_id);
 
+    $filePath = $photo->product_image;
 
+    if ($filePath && Storage::disk('public')->exists($filePath)) {
+        Storage::disk('public')->delete($filePath);
 
-
-    $client = Client::findOrFail($encrypted_id);
-
-     $filePath = public_path('clients/' . $client->image);
-        $ClientData['image'] = NULL;
-
-
-
-
-
-    if (File::exists($filePath))
-    {
-        File::delete($filePath);
-
-       $updated = $this->varientService->updateClient($encrypted_id, $ClientData);
-        // Optionally update the database if needed
+        $photo->update([
+            'product_image' => null,
+        ]);
 
         return redirect()->back()->with('success', 'File deleted successfully.');
     }
 
     return redirect()->back()->with('error', 'File not found.');
 }
+
 
     private function generateUniqueSlug($title, $id = null)
     {

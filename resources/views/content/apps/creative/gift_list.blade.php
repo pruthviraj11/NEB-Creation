@@ -33,7 +33,7 @@
                     <table class="user-list-table table dt-responsive w-100" id="users-table">
                         <thead>
                             <tr>
-
+                                <th>Image</th>
                                 <th>Product Name</th>
                                 <th>Status</th>
                                 <th>Actions</th>
@@ -76,7 +76,13 @@
                 serverSide: true,
                 "lengthMenu": [10, 25, 50, 100, 200],
                 ajax: "{{ route('app-gift_product-get-all') }}",
-                columns: [{
+                columns: [
+                    {
+                        data: 'product_image',
+                        name: 'product_image'
+                    },
+                    
+                    {
                         data: 'product_name',
                         name: 'product_name'
                     },
