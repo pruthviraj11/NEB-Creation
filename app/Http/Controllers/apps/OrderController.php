@@ -15,6 +15,13 @@ use App\Models\Category;
 use App\Models\OrderDetail;
 use App\Models\TempCart;
 use App\Models\Photography;
+use App\Models\CreativeArt;
+use App\Models\GiftProduct;
+use App\Models\BulkPurchase;
+use App\Models\ProductVarient;
+use App\Models\ProductVarientPrice;
+
+
 use App\Services\RoleService;
 use App\Services\UserService;
 use App\Services\CategoryService;
@@ -193,12 +200,69 @@ return DataTables::of($order)
             $page_data['form_title'] = "Order Details";
 
             $order = OrderDetail::where('id',$id)->first();
+           
+           
+            // $carts = TempCart::where('temp_carts.guest_id', $order->guest_id)
+            // ->join('photographies', 'temp_carts.photo_id', '=', 'photographies.id')
+            // ->select('temp_carts.*', 'photographies.title', 'photographies.slug', 'photographies.front_image','photographies.back_image')
+            // ->get();
+
             $carts = TempCart::where('temp_carts.guest_id', $order->guest_id)
+            ->where('temp_carts.order_status', 'completed')
             ->join('photographies', 'temp_carts.photo_id', '=', 'photographies.id')
             ->select('temp_carts.*', 'photographies.title', 'photographies.slug', 'photographies.front_image','photographies.back_image')
             ->get();
+            $varients = ProductVarient::where('status',1)->get();
 
-           return view('content.apps.photography.order_view',compact('page_data','order','carts'));
+            foreach ($carts as $cart)
+    {
+
+      /*----- Creative Section ------*/
+
+      if ($cart->is_creative_art == "yes") {
+
+          $creativeIds = explode(',', $cart->creative_info);
+
+          $creativeIds = array_filter(array_map('trim', $creativeIds));
+
+          $creative_datas = CreativeArt::whereIn('id', $creativeIds)->get();
+
+          $cart->creative_items = $creative_datas;
+
+      }
+
+
+      /*----- Bulk Purchase Section ------*/
+      if ($cart->is_bulk_purchase == "yes")
+      {
+          $bulkIds = explode(',', $cart->bulk_info);
+
+          $bulkIds = array_filter(array_map('trim', $bulkIds));
+
+          $bulk_datas = BulkPurchase::whereIn('id', $bulkIds)->get();
+
+          $cart->bulk_items = $bulk_datas;
+      }
+
+
+      /*----- Gift product Section ------*/
+
+      if ($cart->is_gift_product == "yes") {
+
+          $giftIds = explode(',', $cart->gift_product_id);
+
+          $giftIds = array_filter(array_map('trim', $giftIds));
+
+          $gift_datas = GiftProduct::whereIn('id', $giftIds)->get();
+
+          $cart->gift_items = $gift_datas;
+
+      }
+    }
+
+
+
+           return view('content.apps.photography.order_view',compact('page_data','order','carts','varients'));
         } catch (\Exception $error) {
             dd($error->getMessage());
             return redirect()->route("app-order-list")->with('error', 'Error while view Order');

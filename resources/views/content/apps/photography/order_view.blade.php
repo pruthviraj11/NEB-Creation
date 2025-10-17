@@ -68,39 +68,164 @@
 
                              </div>
 
-                             <div class="col-md-12 details mt-1">
-                                <h5>Order Details</h5>
-                                <div class="row mb-2">
-                                      <div class="col-md-1"><strong>#</strong></div>
-                                      <div class="col-md-2"><strong>Image</strong></div>
-                                      <div class="col-md-4"><strong>Title</strong></div>
-                                      <div class="col-md-1"><strong>Quntity</strong></div>
-                                      <div class="col-md-1"><strong>Amount</strong></div>
-                                </div>
-                                @php
-                                    $totalAmount = 0;
-                                @endphp
-                                @foreach($carts as $cart)
-                                    @php
-                                        $totalAmount += $cart->amount;
-                                    @endphp
-                                <div class="row mb-2">
-                                      <div class="col-md-1">{{ $loop->iteration }}</div>
-                                      <div class="col-md-2"><img src="{{Storage::url($cart->back_image)}}" class="w-50"></div>
-                                      <div class="col-md-4">{{$cart->title}}</div>
-                                      <div class="col-md-1">1</div>
-                                      <div class="col-md-1">{{$cart->amount}}</div>
-                                </div>
-                                @endforeach
+                            <div class="col-md-12 details mt-3">
+    
+     <h5>Order Details</h5>
 
-                                <div class="row mb-2">
-                                      <div class="col-md-1"></div>
-                                      <div class="col-md-2"></div>
-                                      <div class="col-md-4"></div>
-                                      <div class="col-md-1"><strong>Total</strong></div>
-                                      <div class="col-md-1"><strong>${{$totalAmount}}</strong></div>
-                                </div>
-                            </div>
+    {{-- Table Header --}}
+    <div class="row fw-semibold text-secondary border-bottom pb-2 mb-2">
+        <div class="col-md-1 text-center">#</div>
+        <div class="col-md-2">Image</div>
+        <div class="col-md-4">Title & Details</div>
+        <div class="col-md-1 text-center">Qty</div>
+        <div class="col-md-2 text-end">Amount ($)</div>
+    </div>
+
+    @php $totalAmount = 0; @endphp
+
+    @foreach($carts as $cart)
+        @php $totalAmount += $cart->total_amount; @endphp
+
+        <div class="row align-items-start border-bottom py-3 mb-2">
+            <div class="col-md-1 text-center">{{ $loop->iteration }}</div>
+
+            <div class="col-md-2">
+                <img src="{{ Storage::url($cart->back_image) }}" 
+                     alt="{{ $cart->title }}" 
+                     class="img-fluid rounded shadow-sm" 
+                     style="max-width: 80px; object-fit: cover;">
+            </div>
+
+            <div class="col-md-4">
+                <h6 class="fw-bold mb-1">{{ $cart->title }}</h6>
+
+                {{-- Creative Section --}}
+                @if($cart->is_creative_art == "yes" && isset($cart->creative_items))
+                    <div class="ms-2 mb-1">
+                        <span class="fw-semibold">Creative Arts:</span>
+                        <ul class="list-unstyled mb-0 ms-3">
+                            @foreach($cart->creative_items as $creative)
+                                <li>
+                                    {{ $creative->title }}
+                                    @if(isset($creative->price))
+                                        - ${{ number_format($creative->price, 2) }}
+                                    @endif
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                {{-- Bulk Purchase Section --}}
+                @if($cart->is_bulk_purchase == "yes" && isset($cart->bulk_items))
+                    @php
+                        $cartexplode = explode(",", $cart->extra_bulk);
+                        $cartexplode = array_map('trim', $cartexplode);
+                    @endphp
+                    <div class="ms-2 mb-1">
+                        <span class="fw-semibold">Bulk Purchase:</span>
+                        <ul class="list-unstyled mb-0 ms-3">
+                            @foreach($cart->bulk_items as $index => $bulk)
+                                <li>
+                                    {{ $bulk->title }} — {{ $bulk->max_quntity }}+ — ${{ $bulk->price }} each
+                                    @if(isset($cartexplode[$index]))
+                                        : <em>Qty ({{ $cartexplode[$index] }})</em>
+                                    @endif
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                {{-- Canvas Section --}}
+                @if($cart->is_canvas == "yes")
+                    <div class="ms-2 mb-1">
+                        <span class="fw-semibold">Canvas Offer:</span>
+                        <p class="mb-0 ms-3 small text-muted">Buy 2 16x20's $195 Get 1 Free</p>
+                    </div>
+                @endif
+
+                {{-- Gift Product Section --}}
+                @if($cart->is_gift_product == "yes" && isset($cart->gift_items))
+                    @php
+                        $gproducts = explode(",", $cart->gift_product_id);
+                        $gproducts = array_map('trim', $gproducts);
+                        $filteredGiftItems = $cart->gift_items->whereIn('id', $gproducts);
+                    @endphp
+
+                    <div class="ms-2">
+                        <span class="fw-semibold">Gift Products:</span>
+                        <ul class="list-unstyled mb-0 ms-3">
+                            @foreach($filteredGiftItems as $gift)
+                                <li class="d-flex align-items-center mb-2">
+                                    <img src="{{ Storage::url($gift->product_image) }}" 
+                                         class="rounded shadow-sm me-2" 
+                                         alt="{{ $gift->product_name }}" 
+                                         style="width: 40px; height: 40px; object-fit: cover;">
+                                    <div>
+                                        <strong>{{ $gift->product_name }}</strong>
+                                        @if(isset($gift->product_price))
+                                            - ${{ number_format($gift->product_price, 2) }}
+                                        @endif
+                                        @if($gift->product_varient == 1)
+                                            @php
+                                                $gvarients = explode(",", $cart->varient_id);
+                                                $product_variant = \App\Models\ProductVarient::where('id', $gvarients)->first();
+                                            @endphp
+                                            @if(isset($product_variant))
+                                                <span class="d-block small text-muted">Variant Size: {{ $product_variant->title }}</span>
+                                                <span class="d-block small text-muted">Variant Size: {{ $product_variant->title }}</span>
+                                            @endif
+                                        @endif
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            </div>
+
+            <div class="col-md-1 text-center">1</div>
+            <div class="col-md-2 text-end fw-semibold">${{ number_format($cart->total_amount, 2) }}</div>
+        </div>
+    @endforeach
+
+    {{-- Total Row --}}
+    <div class="row pt-4 justify-content-end">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-3">
+                <h6 class="fw-bold border-bottom pb-2 mb-3">Order Summary</h6>
+                
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Subtotal:</span>
+                    <span class="fw-semibold">${{ number_format($totalAmount, 2) }}</span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Delivery Charge:</span>
+                    <span class="fw-semibold">${{ number_format($order->delivery_charge, 2) }}</span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Tax (9.25%):</span>
+                    <span class="fw-semibold">${{ number_format($order->tax_amount, 2) }}</span>
+                </div>
+
+                <div class="border-top mt-3 pt-2 d-flex justify-content-between align-items-center">
+                    <span class="fw-bold fs-6 text-dark">Total Amount:</span>
+                    <span class="fw-bold fs-6 text-success">
+                        ${{ number_format($order->total_amount, 2) }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  
+
+</div>
 
                             <div class="col-md-12 details">
                                 <h5>Payment Information</h5>
@@ -151,6 +276,32 @@
         color:#fff;
         padding:5px; 
     }
+    .details h4 {
+    color: #2c3e50;
+    border-color: #dee2e6;
+}
+
+.details img {
+    transition: transform 0.2s ease-in-out;
+}
+.details img:hover {
+    transform: scale(1.05);
+}
+
+.details ul li {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.details span.text-primary {
+    font-size: 0.95rem;
+}
+
+.fw-semibold
+{
+    color:#242745 !important;
+}
+
 </style>    
 
 @section('page-script')
