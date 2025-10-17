@@ -277,34 +277,86 @@ public function photos()
 
      }
 
+ $amount = $request->get('total_price');
+$quantity = 1; // default = 1
 
+    // $checkData = TempCart::where('guest_id',$guestId)->where('photo_id',$photo_Id)->where('order_status','pending')->count();
+    // if ($checkData == 0)
+    // {
+       
 
-    $checkData = TempCart::where('guest_id',$guestId)->where('photo_id',$photo_Id)->where('order_status','pending')->count();
-    if ($checkData == 0)
-    {
-        $amount = $request->get('total_price');
-        $quantity = 1; // default = 1
+    //     TempCart::create([
+    //         'guest_id'     => $guestId,
+    //         // 'user_id'      => auth()->id() ?? null,
+    //         'user_id'      => null,
+    //         'photo_id'     => $photo_Id,
+    //         // 'quantity'     => $quantity,
+    //         // 'amount'       => $amount,
+    //         'total_amount' => $amount,
+    //         'is_creative_art' => $is_creative_art,
+    //         'creative_info' => $creative_values,
+    //         'is_bulk_purchase' => $is_bulk,
+    //         'bulk_info' => $bulk_id,
+    //         'extra_bulk' => $bulk_quntity,
+    //         'is_canvas' => $request->get('canvas') ? 'yes' : NULL,
+    //         'is_gift_product' => $is_gift,
+    //         'gift_product_id' => $gift_id,
+    //         'varient_id' => $varient_id,
+    //         'order_status' => 'pending',
+    //     ]);
+    // }
+    // else
+    //    TempCart::update([
+    //     'total_amount'     => $amount,
+    //     'is_creative_art'  => $is_creative_art,
+    //     'creative_info'    => $creative_values,
+    //     'is_bulk_purchase' => $is_bulk,
+    //     'bulk_info'        => $bulk_id,
+    //     'extra_bulk'       => $bulk_quntity,
+    //     'is_canvas'        => $request->get('canvas') ? 'yes' : null,
+    //     'is_gift_product'  => $is_gift,
+    //     'gift_product_id'  => $gift_id,
+    //     'varient_id'       => $varient_id,
+    // ]); 
 
-        TempCart::create([
-            'guest_id'     => $guestId,
-            // 'user_id'      => auth()->id() ?? null,
-            'user_id'      => null,
-            'photo_id'     => $photo_Id,
-            // 'quantity'     => $quantity,
-            // 'amount'       => $amount,
-            'total_amount' => $amount,
-            'is_creative_art' => $is_creative_art,
-            'creative_info' => $creative_values,
-            'is_bulk_purchase' => $is_bulk,
-            'bulk_info' => $bulk_id,
-            'extra_bulk' => $bulk_quntity,
-            'is_canvas' => $request->get('canvas') ? 'yes' : NULL,
-            'is_gift_product' => $is_gift,
-            'gift_product_id' => $gift_id,
-            'varient_id' => $varient_id,
-            'order_status' => 'pending',
-        ]);
-    }
+    $cartItem = TempCart::where('guest_id', $guestId)
+    ->where('photo_id', $photo_Id)
+    ->where('order_status', 'pending')
+    ->first(); // fetch the first matching record
+
+if (!$cartItem) {
+    // Record does not exist → create it
+    TempCart::create([
+        'guest_id'         => $guestId,
+        'user_id'          => null,
+        'photo_id'         => $photo_Id,
+        'total_amount'     => $amount,
+        'is_creative_art'  => $is_creative_art,
+        'creative_info'    => $creative_values,
+        'is_bulk_purchase' => $is_bulk,
+        'bulk_info'        => $bulk_id,
+        'extra_bulk'       => $bulk_quntity,
+        'is_canvas'        => $request->get('canvas') ? 'yes' : null,
+        'is_gift_product'  => $is_gift,
+        'gift_product_id'  => $gift_id,
+        'varient_id'       => $varient_id,
+        'order_status'     => 'pending',
+    ]);
+} else {
+    // Record exists → update it
+    $cartItem->update([
+        'total_amount'     => $amount,
+        'is_creative_art'  => $is_creative_art,
+        'creative_info'    => $creative_values,
+        'is_bulk_purchase' => $is_bulk,
+        'bulk_info'        => $bulk_id,
+        'extra_bulk'       => $bulk_quntity,
+        'is_canvas'        => $request->get('canvas') ? 'yes' : null,
+        'is_gift_product'  => $is_gift,
+        'gift_product_id'  => $gift_id,
+        'varient_id'       => $varient_id,
+    ]);
+}
 
 
     $pageTitle['page_name'] = "Cart";

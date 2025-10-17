@@ -366,87 +366,71 @@
                                     <div class="card-body pb-2">
 
                                         @foreach ($giftProducts as $product)
-                                            <div class="d-flex align-items-center list-cards justify-content-between mb-2">
-                                                <div class="small-img">
-                                                    <img src="{{ Storage::url($product->product_image) }}"
-                                                        alt="{{ $product->product_name }}" />
-                                                </div>
+    @php
+        $productsVarient = collect();
 
-                                                <h6 class="card-title fw-semibold">{{ $product->product_name }}</h6>
+        // Fetch product variants only if applicable
+        if ($product->product_varient == 1) {
+            $productsVarient = \App\Models\ProductVarientPrice::where('gift_product_id', $product->id)
+                ->join('product_varients', 'gift_product_varient_prices.gift_varient_id', '=', 'product_varients.id')
+                ->select('gift_product_varient_prices.*', 'product_varients.title as varient_name')
+                ->get();
+        }
+    @endphp
 
-                                                <p class="card-text p-0 m-0 text-dark fw-bold varientPrice"
-                                                    id="varientPrice_{{ $product->id }}">
-                                                    @if (!empty($productsVarient) && $productsVarient->isNotEmpty())
-                                                        ${{ number_format($productsVarient[0]->price, 2) }}
-                                                    @else
-                                                        ${{ number_format($product->product_price, 2) }}
-                                                    @endif
-                                                </p>
+    <div class="d-flex align-items-center list-cards justify-content-between mb-2">
+        <div class="small-img">
+            <img src="{{ Storage::url($product->product_image) }}" alt="{{ $product->product_name }}" />
+        </div>
 
-                                                <div>
-                                                    @if ($product->product_varient == 1)
-                                                        @php
-                                                            $productsVarient = \App\Models\ProductVarientPrice::where(
-                                                                'gift_product_id',
-                                                                $product->id,
-                                                            )
-                                                                ->join(
-                                                                    'product_varients',
-                                                                    'gift_product_varient_prices.gift_varient_id',
-                                                                    '=',
-                                                                    'product_varients.id',
-                                                                )
-                                                                ->select(
-                                                                    'gift_product_varient_prices.*',
-                                                                    'product_varients.title as varient_name',
-                                                                )
-                                                                ->get();
-                                                        @endphp
+        <h6 class="card-title fw-semibold">{{ $product->product_name }}</h6>
 
+        {{-- Price display --}}
+        <p class="card-text p-0 m-0 text-dark fw-bold varientPrice" id="varientPrice_{{ $product->id }}">
+            @if ($product->product_varient == 1 && $productsVarient->isNotEmpty())
+                ${{ number_format($productsVarient->first()->price, 2) }}
+            @else
+                ${{ number_format($product->product_price, 2) }}
+            @endif
+        </p>
 
-                                                        <div class="">
+        {{-- Variant options --}}
+        <div>
+            @if ($product->product_varient == 1 && $productsVarient->isNotEmpty())
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                    <label class="form-label small text-secondary fw-medium m-0">
+                        Select Size
+                    </label>
+                    @foreach ($productsVarient as $index => $varient_info)
+                        <label class="size-box-label">
+                            <input type="radio"
+                                   name="varient_{{ $product->id }}"
+                                   value="{{ $varient_info->id }}"
+                                   data-price="{{ $varient_info->price }}"
+                                   class="size-box-input varientRadio"
+                                   @checked($index == 0)>
+                            <span class="size-box">{{ $varient_info->varient_name }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            @endif
+        </div>
 
-                                                            <div class="d-flex flex-wrap  align-items-center gap-2">
-                                                                <label
-                                                                    class="form-label small text-secondary fw-medium m-0">
-                                                                    Select Size
-                                                                </label>
-                                                                @foreach ($productsVarient as $index => $varient_info)
-                                                                    <label class="size-box-label">
-                                                                        <input type="radio"
-                                                                            name="varient_{{ $product->id }}"
-                                                                            value="{{ $varient_info->id }}"
-                                                                            data-price="{{ $varient_info->price }}"
-                                                                            class="size-box-input varientRadio"
-                                                                            @if ($index == 0) checked @endif>
-                                                                        <span
-                                                                            class="size-box">{{ $varient_info->varient_name }}</span>
-                                                                    </label>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    @else
-                                                        <div>
-                                                            @php
-                                                                $productsVarient = [];
-                                                            @endphp
-                                                        </div>
-                                                    @endif
-                                                </div>
+        {{-- Select checkbox --}}
+        <div class="form-check">
+            <input class="form-check-input gift-checkbox"
+                   type="checkbox"
+                   name="gift_id[]"
+                   value="{{ $product->id }}"
+                   data-id="{{ $product->product_varient == 1 && $productsVarient->isNotEmpty() ? $productsVarient->first()->price : $product->product_price }}"
+                   id="gift_{{ $product->id }}">
+            <label class="form-check-label" for="gift_{{ $product->id }}">
+                
+            </label>
+        </div>
+    </div>
+@endforeach
 
-
-                                                <div class="form-check mb-3">
-                                                    <input class="form-check-input gift-checkbox" type="checkbox"
-                                                        name="gift_id[]" value="{{ $product->id }}"
-                                                        data-id ="{{ $product->product_price }}"
-                                                        id="gift_{{ $product->id }}">
-                                                    <label class="form-check-label" for="gift_{{ $product->id }}">
-                                                        Select
-                                                    </label>
-                                                </div>
-
-                                            </div>
-                                        @endforeach
                                     </div>
                                 </div>
                             </div>
