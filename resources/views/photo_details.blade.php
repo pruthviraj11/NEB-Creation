@@ -252,10 +252,10 @@
 
                             <div
                                 class="mb-3 d-flex flex-column flex-lg-row align-items-lg-center align-items-start  justify-content-between">
-                                <div class="form-check">
+                                <div class="form-check col-sm-12 col-md-5">
                                     <input checked class="form-check-input" type="checkbox" id="downloadCheckbox">
                                     <label class="form-check-label" for="downloadCheckbox" id="downloadLabel">
-                                        Download
+                                        Download PDF (no extra charge)
                                     </label>
                                 </div>
 
