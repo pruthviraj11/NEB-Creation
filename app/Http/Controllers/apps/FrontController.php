@@ -103,7 +103,7 @@ class FrontController extends Controller
   {
     $pageTitle['page_name'] = "Home";
 
-    $photos = Photography::where('is_home','yes')->where('status','1')->orderBy('id','desc')->get();
+    $photos = Photography::where('is_home','yes')->where('status','1')->orderBy('id','desc')->take(8)->get();
 
     return view('index',compact('pageTitle','photos'));
   }

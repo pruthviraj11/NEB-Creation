@@ -19,7 +19,7 @@
                 <div class="swiper-container" id="horizontal-slider" data-mwc="1" data-mwa="0">
                     <div class="swiper-wrapper">
                         <!--=============== 1 ===============-->
-                        <div class="swiper-slide">
+                        {{-- <div class="swiper-slide">
                             <div class="bg" style="background-image:url('{{asset('home/images/22.jpg')}}')"></div>
                             <div class="overlay"></div>
                             <div class="zoomimage"><img src="{{asset('home/images/22.jpg')}}" class="intense" alt=""><i class="bi bi-arrows-expand"></i></div>
@@ -31,47 +31,47 @@
                                     <h4><a href="#">View</a></h4>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <!--=============== 2 ===============-->
                         <div class="swiper-slide">
-                            <div class="bg" style="background-image:url('{{asset('home/images/16.jpg')}}')"></div>
+                            <div class="bg" style="background-image:url('{{asset('home/images/slider1.png')}}')"></div>
                             <div class="overlay"></div>
-                            <div class="zoomimage"><img src="{{asset('home/images/16.jpg')}}" class="intense" alt=""><i class="bi bi-arrows-expand"></i></div>
+                            <div class="zoomimage"><img src="{{asset('home/images/slider1.png')}}" class="intense" alt=""><i class="bi bi-arrows-expand"></i></div>
                             <div class="slide-title-holder">
-                                <div class="slide-title">
+                                {{-- <div class="slide-title">
                                     <span class="subtitle">At posuere sem accumsan </span>
                                     <div class="separator-image"><img src="{{asset('home/images/separator.png')}}" alt=""></div>
                                     <h3 class="transition"> <a href="#">In tortor neque</a> </h3>
                                     <h4><a href="#">View</a></h4>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <!--=============== 3 ===============-->
                         <div class="swiper-slide">
-                            <div class="bg" style="background-image:url('{{asset('home/images/57.jpg')}}')"></div>
+                            <div class="bg" style="background-image:url('{{asset('home/images/slider2.png')}}')"></div>
                             <div class="overlay"></div>
-                            <div class="zoomimage"><img src="{{asset('home/images/57.jpg')}}" class="intense" alt=""><i class="bi bi-arrows-expand"></i></div>
+                            <div class="zoomimage"><img src="{{asset('home/images/slider2.png')}}" class="intense" alt=""><i class="bi bi-arrows-expand"></i></div>
                             <div class="slide-title-holder">
-                                <div class="slide-title">
+                                {{-- <div class="slide-title">
                                     <span class="subtitle">At posuere sem accumsan </span>
                                     <div class="separator-image"><img src="{{asset('home/images/separator.png')}}" alt=""></div>
                                     <h3 class="transition"> <a href="#">Vestibulum tincidunt</a> </h3>
                                     <h4><a href="#">View</a></h4>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <!--=============== 4 ===============-->
                         <div class="swiper-slide">
-                            <div class="bg" style="background-image:url('{{asset('home/images/46.jpg')}}')"></div>
+                            <div class="bg" style="background-image:url('{{asset('home/images/slider3.png')}}')"></div>
                             <div class="overlay"></div>
-                            <div class="zoomimage"><img src="{{asset('home/images/46.jpg')}}" class="intense" alt=""><i class="bi bi-arrows-expand"></i></div>
+                            <div class="zoomimage"><img src="{{asset('home/images/slider3.png')}}" class="intense" alt=""><i class="bi bi-arrows-expand"></i></div>
                             <div class="slide-title-holder">
-                                <div class="slide-title">
+                                {{-- <div class="slide-title">
                                     <span class="subtitle">At posuere sem accumsan </span>
                                     <div class="separator-image"><img src="{{asset('home/images/separator.png')}}" alt=""></div>
                                     <h3 class="transition"> <a href="#">Libero bibendum</a> </h3>
                                     <h4><a href="#">View</a></h4>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -160,6 +160,7 @@
                 </div>
                  </form>
             </div>
+            
        
             @endforeach
              
@@ -169,6 +170,9 @@
 
            
         </div>
+          <div>
+            <a href="{{ route('front-photos') }}" class="btn btn-dark btn-md w-auto add-btn-cart mt-5">View More</a>
+          </div>
       
     </div>
 </section>
