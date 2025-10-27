@@ -81,8 +81,8 @@
                     <!-- Contact Info -->
                     <div class="col-md-5 d-flex flex-column justify-content-center">
                         <div class="contact-info ps-md-4 mt-4 mt-md-0">
-                            <h5><i class="bi bi-telephone"></i> Contact</h5>
-                            <p><a href="#" class="contact_site">nebcreation.com</a></p>
+                            {{-- <h5><i class="bi bi-telephone"></i> Contact</h5> --}}
+                            {{-- <p><a href="#" class="contact_site">nebcreation.com</a></p> --}}
 
                             <h5><i class="bi bi-geo-alt"></i> Address</h5>
                             <p class="w-75">40/b Rahgari Chok <br>San Francisco, California</p>
