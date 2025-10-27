@@ -189,7 +189,7 @@
                                 <p style='margin:5px 0; font-weight:bold; color:#17365d;'>Gift Products:</p>
                                 <table style='width:90%; margin-left:10px; border-collapse:collapse; font-size:14px;'>
                                     <tr style='background-color:#fafafa;'>
-                                        <th style='padding:6px; text-align:left; border:1px solid #ddd;'>Image</th>
+                                        {{-- <th style='padding:6px; text-align:left; border:1px solid #ddd;'>Image</th> --}}
                                         <th style='padding:6px; text-align:left; border:1px solid #ddd;'>Title</th>
                                         <th style='padding:6px; text-align:left; border:1px solid #ddd;'>Price</th>
                                         <th style='padding:6px; text-align:left; border:1px solid #ddd;'>Variant</th>
@@ -197,11 +197,14 @@
                                     @foreach($giftItems as $gift)
                                     @php
                                         try {
-                                            $filePath = $gift->product_image ?? '';
+                                           // $filePath = $gift->product_image ?? '';
+                                           $filePath = $gift->product_image;
                                            // $imageUrl = Storage::url($gift->product_image ?? '');
                                             if (!empty($filePath) && Storage::disk('public')->exists($filePath)) {
                                                 // Generate full URL for email (absolute)
-                                                $imageUrl = url(Storage::url($filePath));
+                                               // $imageUrl = url(Storage::url($filePath));
+                                               $imageUrl = public_path(Storage::url($filePath));
+                                               
                                             } else {
                                                 // Fallback image
                                                 $imageUrl = '';
@@ -225,14 +228,19 @@
                                             $varientSize = 'NA';
                                         }
                                     @endphp
+                                   
                                     <tr>
-                                        <td style='padding:6px; border:1px solid #ddd; text-align:center;'>
+                                        {{-- <td style='padding:6px; border:1px solid #ddd; text-align:center;'>
                                             @if($imageUrl)
+                                            
                                                 <img src='{{ $imageUrl }}' alt='{{ $productName }}' style='max-width:40px; height:auto; object-fit:cover; border-radius:4px;'>
                                             @else
+                                             {{ dd("no image") }}
                                                 <span style='font-size:12px; color:#999;'>No Image</span>
                                             @endif
-                                        </td>
+                                        </td> --}}
+
+                                        
                                         <td style='padding:6px; border:1px solid #ddd;'>{{ $productName }}</td>
                                         <td style='padding:6px; border:1px solid #ddd;'>${{ number_format($price, 2) }}</td>
                                         <td style='padding:6px; border:1px solid #ddd;'>{{ $varientSize }}</td>

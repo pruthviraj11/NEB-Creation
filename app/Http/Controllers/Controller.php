@@ -102,6 +102,33 @@ class Controller extends BaseController
                     }
                 }
 
+                if($photo->is_gift_product === "yes" && !empty($photo->gift_product_id))
+                {
+                    $giftdata = array_filter(explode(",", trim($photo->gift_product_id)));
+                    $giftItems = GiftProduct::whereIn('id', $giftdata)->get();
+
+                    if($giftItems->count() > 0)
+                    {
+                        foreach($giftItems as $gift)
+                        {
+                            $filePath = $gift->product_image;
+                        }
+                        if (!empty($filePath) && Storage::disk('public')->exists($filePath)) 
+                            {
+                                $attachments[] = public_path(path: Storage::url($filePath));
+                               
+                                if($photo->is_richard_photo == "Yes") {
+                                    $richaredphotos[] = public_path(path: Storage::url($filePath));
+                                }
+                                               
+                            } 
+                    }  
+                    
+                    
+                    
+                }    
+                
+
                 // Send emails using proper Mailable classes with error handling
                 $emailRecipients = [
                     ['email' => trim($emailAddress), 'subject' => 'Your Order Details'],
