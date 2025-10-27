@@ -87,13 +87,13 @@
                             <h5><i class="bi bi-geo-alt"></i> Address</h5>
                             <p class="w-75">40/b Rahgari Chok <br>San Francisco, California</p>
 
-                            <h5><i class="bi bi-globe"></i> Follow Us</h5>
+                            {{-- <h5><i class="bi bi-globe"></i> Follow Us</h5>
                             <div class="social-links">
                                 <a href="#" target="_blank"><i class="bi bi-instagram"></i></a>
                                 <a href="#" target="_blank"><i class="bi bi-facebook"></i></a>
                                 <a href="#" target="_blank"><i class="bi bi-twitter-x"></i></a>
                                 <a href="#" target="_blank"><i class="bi bi-linkedin"></i></a>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
