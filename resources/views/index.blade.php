@@ -183,10 +183,7 @@
             <div class="about-box py-3">
                 <h2 class="mt-2">About Me</h2>
                 <p class="py-4 mb-0">
-                    Lorem Ipsum Dolor Sit Amet Consectetur. Massa Egestas Pulvinar Mi Donec
-                    Velit Urna Ac Maecenas. Ultrices Convallis Pulvinar Lobortis Viverra Morbi.
-                    Dignissim Gravida Mattis In Non Mauris Orci In. Dui Enim Urna Sed In Molestie.
-                    Placerat Amet Diam Neque Mi. Quam Neque Volutpat Enim Risus Enim Leo Vestibulum Magna.
+                    “I’ve always believed that when we leave this world, the only things that truly remain are the memories we create with those we love and the impact we leave behind. That belief inspired my passion for photography — to capture moments that tell stories, evoke emotion, and preserve memories that can last a lifetime. Through my work, I strive to make every photo an everlasting reminder of life’s most meaningful moments.”
                 </p>
             </div>
         </div>

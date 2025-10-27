@@ -25,15 +25,11 @@
             <div class="col-md-6 d-flex align-items-center bg-dark text-white p-5">
                 <div class="about-content">
                     <h2 class="fw-bold">About Us</h2>
-                    <p class="fst-italic">Look even slightly believable. If you are going to use a passage.</p>
+                    {{-- <p class="fst-italic">Look even slightly believable. If you are going to use a passage.</p> --}}
                     <p>
-                        There are many variations of passages of Lorem Ipsum available,
-                        but the majority have suffered alteration in some form, by injected humour,
+                        “I’ve always believed that when we leave this world, the only things that truly remain are the memories we create with those we love and the impact we leave behind. That belief inspired my passion for photography — to capture moments that tell stories, evoke emotion, and preserve memories that can last a lifetime. Through my work, I strive to make every photo an everlasting reminder of life’s most meaningful moments.”
                     </p>
-                    <p>
-                        Integer sed tincidunt dui. Cras tincidunt at risus vitae ultrices.
-                        Sed at placerat diam. Nam ornare feugiat blandit. Suspendisse potenti.
-                    </p>
+                  
                 </div>
             </div>
 
