@@ -107,7 +107,7 @@
         }
 
         .main-img-product {
-            /*max-height: 350px;*/
+           max-height: 420px;
             overflow: hidden;
             display: flex;
             justify-content: center;

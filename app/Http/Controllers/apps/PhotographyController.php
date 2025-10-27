@@ -181,8 +181,8 @@ class PhotographyController extends Controller
                 
                 $watermark = Image::read(public_path('home/logo/neb.png'));
                 
-                $watermark->resize(100, 100);
-                 $image->resize(width: 526, height: 490);
+                $watermark->resize(150, 150);
+                //$image->resize(width: 526, height: 490);
 
                 $image->place($watermark, 'center');
 
@@ -371,8 +371,8 @@ class PhotographyController extends Controller
                 
                 $watermark = Image::read(public_path('home/logo/neb.png'));
                 
-                $watermark->resize(100, 100);
-                 $image->resize(width: 526, height: 490);
+                $watermark->resize(150, 150);
+                //$image->resize(width: 526, height: 490);
 
                 $image->place($watermark, 'center');
 
