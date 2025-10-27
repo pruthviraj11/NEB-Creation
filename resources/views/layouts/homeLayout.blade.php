@@ -124,21 +124,21 @@
         <span>© 2025 NEB Creations . All rights reserved.</span>
 
     </div>
-    <div class="footer_page p-2">
+    {{-- <div class="footer_page p-2">
         <ul class="d-flex gap-4 list-unstyled mb-0 ">
             <li><a href="#">Privacy Policy</a></li>
             <li><a href="#">Terms of Service</a></li>
         </ul>
-    </div>
+    </div> --}}
     <!-- footer social -->
-    <div class="footer-social p-2">
+    {{-- <div class="footer-social p-2">
         <ul>
             <li><a href="#" target="_blank"><i class="bi bi-instagram"></i></a></li>
             <li><a href="#" target="_blank"><i class="bi bi-facebook"></i></a></li>
             <li><a href="#" target="_blank"><i class="bi bi-twitter-x"></i></a></li>
             <li><a href="#" target="_blank"><i class="bi bi-linkedin"></i></a></li>
         </ul>
-    </div>
+    </div> --}}
     <!-- <div class="to-top"><i class="fa fa-angle-up"></i></div> -->
 </footer>   
 

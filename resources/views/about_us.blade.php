@@ -95,7 +95,7 @@
     <div class="container">
         <h2 class="fw-bold mb-3">Join Us</h2>
         <p class="mb-4 text-center">Buy stunning photos and bring your projects to life.</p>
-        <a href="#" class="btn btn-dark rounded-pill px-4 py-2 more_photo">Join now</a>
+        <a href="{{ route('front-contact') }}" class="btn btn-dark rounded-pill px-4 py-2 more_photo">Join now</a>
     </div>
 </div>
 
