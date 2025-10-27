@@ -68,9 +68,9 @@ return DataTables::of($category)
     ->addColumn('category', function ($row) {
         return $row->category;
     })
-    ->addColumn('parent_id', function ($row) {
-        return $row->parentCategory ? $row->parentCategory->category : '-';
-    })
+    // ->addColumn('parent_id', function ($row) {
+    //     return $row->parentCategory ? $row->parentCategory->category : '-';
+    // })
     ->addColumn('status', function ($row) {
         if ($row->status == 'active' || $row->status == 1) {
             return '<span class="badge bg-success">Active</span>';
@@ -124,7 +124,7 @@ return DataTables::of($category)
             $slug = $this->generateUniqueSlug($request->get('category'));
 
             $categoryData['category'] = $request->category;
-            $categoryData['parent_id'] = $categoryId;
+            // $categoryData['parent_id'] = $categoryId;
             $categoryData['status'] = $request->get('status') == 'on' ? true : false;
            
             
@@ -204,7 +204,7 @@ return DataTables::of($category)
             $categoryId = $subcategory !== '' ? $subcategory : null;
 
             $categoryData['category'] = $request->category;
-            $categoryData['parent_id'] = $categoryId;
+            // $categoryData['parent_id'] = $categoryId;
             $updated = $this->categoryService->updateCategory($id, $categoryData);
           
 

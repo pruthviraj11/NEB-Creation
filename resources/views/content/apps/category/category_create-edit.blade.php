@@ -40,7 +40,7 @@
                         <div class="row">
 
 
-                            <div class="col-md-6 col-sm-12 mb-1">
+                            <div class="col-md-12 col-sm-12 mb-1">
                                 <label class="form-label" for="first_name">
                                     Category</label>
                                 <input type="text" id="title" class="form-control" placeholder="Category Name"
@@ -53,7 +53,7 @@
                                 </span>
                             </div>
 
-                            <div class="col-md-6 col-sm-12 mb-1">
+                            {{-- <div class="col-md-6 col-sm-12 mb-1">
                                 <label class="form-label" for="first_name">
                                     Parent Category</label>
                                 <select name="category_id" id="category_id" class="form-control">
@@ -72,7 +72,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
-                            </div>
+                            </div> --}}
 
 
 

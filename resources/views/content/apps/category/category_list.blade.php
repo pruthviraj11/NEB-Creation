@@ -35,7 +35,7 @@
                             <tr>
 
                                 <th>Category</th>
-                                <th>Parent Category</th>
+                                {{-- <th>Parent Category</th> --}}
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -81,11 +81,7 @@
                         data: 'category',
                         name: 'category'
                     },
-                    {
-                        data: 'parent_id',
-                        name: 'parent_id'
-                    },
-
+                   
                     {
                         data: 'status',
                         name: 'status'

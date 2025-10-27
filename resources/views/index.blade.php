@@ -143,9 +143,7 @@
                         <div>
                             <span>${{$price}}</span>
                             <div class="link-btns mt-3">
-                                {{-- <button type="submit" class="btn btn-outline btn-dark m-0 btn-sm">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart
-                                </button> --}}
+                               
                                 <a href="{{route('front-photo_details',$photo->slug)}}" class="btn btn-outline btn-dark m-0 btn-sm">
                                     <i class="bi bi-eye"></i> View
                                 </a>
@@ -155,9 +153,7 @@
                 </div>
 
                 <div class="link-btns d-flex align-items-center d-md-none mt-3 w-100">
-                    {{-- <button type="submit" class="btn btn-dark m-0 btn-sm">
-                        <i class="bi bi-cart-plus"></i> Add to Cart
-                    </button> --}}
+                  
                     <a href="{{route('front-photo_details',$photo->slug)}}" class="btn btn-dark m-0 btn-sm">
                         <i class="bi bi-eye"></i> View
                     </a>
@@ -173,9 +169,7 @@
 
            
         </div>
-        {{-- <div class="mt-5">
-            <a href="#" class="btn btn-dark more_photo">More <i class="bi bi-arrow-down"></i></a>
-        </div> --}}
+      
     </div>
 </section>
 

@@ -168,7 +168,7 @@
                         @php $total += $cart->total_amount; @endphp
                         <li class="list-group-item d-flex justify-content-between lh-sm">
                             <div><h6 class="my-0">{{ $cart->title }}</h6></div>
-                            <span>₹{{ $cart->total_amount }}</span>
+                            <span>${{ $cart->total_amount }}</span>
                         </li>
                     @endforeach
                     
@@ -191,7 +191,7 @@
                     <li class="list-group-item">
                         <div class="d-flex justify-content-between text-muted small">
                             <span>Product Total</span>
-                            <span id="product_total">₹{{ $total }}</span>
+                            <span id="product_total">${{ $total }}</span>
                         </div>
                         <div class="d-flex justify-content-between text-muted small">
                             <span>Delivery Charge</span>
@@ -199,11 +199,11 @@
                         </div>
                         <div class="d-flex justify-content-between text-muted small border-bottom pb-2 mb-2">
                             <span>Tax ({{ $tax_rate }}%)</span>
-                            <span id="tax_amount">₹{{ number_format(($total + $delivery_charge) * ($tax_rate / 100), 2) }}</span>
+                            <span id="tax_amount">${{ number_format(($total + $delivery_charge) * ($tax_rate / 100), 2) }}</span>
                         </div>
                         <div class="d-flex justify-content-between fw-bold">
                             <span>Subtotal</span>
-                            <span id="subtotal">₹{{ number_format($total + $delivery_charge + (($total + $delivery_charge) * ($tax_rate / 100)), 2) }}</span>
+                            <span id="subtotal">${{ number_format($total + $delivery_charge + (($total + $delivery_charge) * ($tax_rate / 100)), 2) }}</span>
                         </div>
                         <div id="discount_section" class="d-flex justify-content-between text-success" style="display: none;">
                             <span>Coupon Discount (<span id="discount_code"></span>)</span>
@@ -211,7 +211,7 @@
                         </div>
                         <div class="d-flex justify-content-between fw-bold fs-5 border-top pt-2 mt-2 text-primary">
                             <span>Final Total</span>
-                            <span id="final_total">₹{{ number_format($total + $delivery_charge + (($total + $delivery_charge) * ($tax_rate / 100)), 2) }}</span>
+                            <span id="final_total">${{ number_format($total + $delivery_charge + (($total + $delivery_charge) * ($tax_rate / 100)), 2) }}</span>
                         </div>
                     </li>
                 </ul>
@@ -254,11 +254,11 @@ $(document).ready(function() {
         const finalTotal = subtotal - currentDiscount;
         
         // Update display
-        $('#product_total').text(`₹${PRODUCT_TOTAL.toFixed(2)}`);
+        $('#product_total').text(`$${PRODUCT_TOTAL.toFixed(2)}`);
         $('#delivery_charge').text(`$${DELIVERY_CHARGE.toFixed(2)}`);
-        $('#tax_amount').text(`₹${taxAmount.toFixed(2)}`);
-        $('#subtotal').text(`₹${subtotal.toFixed(2)}`);
-        $('#final_total').text(`₹${finalTotal.toFixed(2)}`);
+        $('#tax_amount').text(`$${taxAmount.toFixed(2)}`);
+        $('#subtotal').text(`$${subtotal.toFixed(2)}`);
+        $('#final_total').text(`$${finalTotal.toFixed(2)}`);
         
         // Update hidden form fields
         $('#product_total_input').val(PRODUCT_TOTAL);

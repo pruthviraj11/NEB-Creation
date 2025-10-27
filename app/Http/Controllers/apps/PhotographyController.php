@@ -161,6 +161,43 @@ class PhotographyController extends Controller
             $Photography['status'] = $request->get('status') == 'on' ? true : false;
 
 
+
+            if ($request->hasFile('original')) {
+                $originalphoto = $request->file('original');
+                $originalphotoName = time() . '.' . $originalphoto->getClientOriginalExtension();
+           // Store original image
+                $originalphoto->storeAs('public/photos/original', $originalphotoName);
+                $Photography['back_image'] = 'photos/original/' . $originalphotoName;
+              
+            }
+
+             if ($request->hasFile('image')) {
+                $photo = $request->file('image');
+                $photoName = time() . '.' . $photo->getClientOriginalExtension();
+                $watermarkedName = time() . '_watermarked.' . $photo->getClientOriginalExtension();
+
+               
+                $image = Image::read($photo->getRealPath()); // In v3 use read()
+                
+                $watermark = Image::read(public_path('home/logo/neb.png'));
+                
+                $watermark->resize(100, 100);
+                 $image->resize(width: 526, height: 490);
+
+                $image->place($watermark, 'center');
+
+                $path = storage_path('app/public/photos/watermark/'. $watermarkedName);
+                $image->save($path);
+
+                if (!file_exists($path)) {
+                    mkdir($path, 0755, true);
+                }
+                $Photography['front_image'] = 'photos/watermark/' . $watermarkedName;
+            }
+
+
+
+
         //     if ($request->hasFile('image')) {
         //     $photo = $request->file('image');
         //     $photoName = time() . '.' . $photo->getClientOriginalExtension();
@@ -188,47 +225,7 @@ class PhotographyController extends Controller
 
 
 
-            if ($request->hasFile('image')) {
-                $photo = $request->file('image');
-                $photoName = time() . '.' . $photo->getClientOriginalExtension();
-                $watermarkedName = time() . '_watermarked.' . $photo->getClientOriginalExtension();
-
-                // Store original image
-                $photo->storeAs('public/photos/original', $photoName);
-                $Photography['back_image'] = 'photos/original/' . $photoName;
-
-
-                $image = Image::read($photo->getRealPath()); // In v3 use read()
-
-                //$imageLogo = asset('home/logo/neb_logo.png');
-
-                $watermark = Image::read(public_path('home/logo/neb.png'));
-
-                 // Optional: resize watermark relative to main image
-                $watermark->resize(100, 100);
-
-             $image->place($watermark, 'center');
-
-
-                // $image->text('NEB Creation', $image->width() / 2, $image->height() / 2, function ($font) {
-
-                //     $font->filename(public_path('fonts/arialbd.ttf'));
-                //     $font->size(750);
-                //     $font->color('rgba(255, 255, 255, 0.5)');
-                //     $font->align('center');
-                //     $font->valign('middle');
-                // });
-
-
-                $path = storage_path('app/public/photos/watermark/'. $watermarkedName);
-                $image->save($path);
-
-                if (!file_exists($path)) {
-                    mkdir($path, 0755, true);
-                }
-                $Photography['front_image'] = 'photos/watermark/' . $watermarkedName;
-            }
-
+           
 
 
 
@@ -354,37 +351,30 @@ class PhotographyController extends Controller
             $Photography['status'] = $request->get('status') == 'on' ? true : false;
 
 
-            // if ($request->hasFile('image')) {
-            // $photo = $request->file('image');
-            // $photoName = time() . '.' . $photo->getClientOriginalExtension();
-            // $photo->storeAs('public/photos/original', $photoName);
-            // $Photography['back_image'] = 'photos/original/' . $photoName;
-            // }
 
-            if ($request->hasFile('image')) {
+             if ($request->hasFile('original')) {
+                $originalphoto = $request->file('original');
+                $originalphotoName = time() . '.' . $originalphoto->getClientOriginalExtension();
+           // Store original image
+                $originalphoto->storeAs('public/photos/original', $originalphotoName);
+                $Photography['back_image'] = 'photos/original/' . $originalphotoName;
+              
+            }
+
+             if ($request->hasFile('image')) {
                 $photo = $request->file('image');
                 $photoName = time() . '.' . $photo->getClientOriginalExtension();
                 $watermarkedName = time() . '_watermarked.' . $photo->getClientOriginalExtension();
 
-                // Store original image
-                $photo->storeAs('public/photos/original', $photoName);
-                $Photography['back_image'] = 'photos/original/' . $photoName;
-
-
+               
                 $image = Image::read($photo->getRealPath()); // In v3 use read()
-
+                
                 $watermark = Image::read(public_path('home/logo/neb.png'));
-                 $watermark->resize(100, 100);
-                 $image->place($watermark, 'center');
-                // $image->text('NEB Creation', $image->width() / 2, $image->height() / 2, function ($font) {
+                
+                $watermark->resize(100, 100);
+                 $image->resize(width: 526, height: 490);
 
-                //     $font->filename(public_path('fonts/arialbd.ttf'));
-                //     $font->size(750);
-                //     $font->color('rgba(255, 255, 255, 0.5)');
-                //     $font->align('center');
-                //     $font->valign('middle');
-                // });
-
+                $image->place($watermark, 'center');
 
                 $path = storage_path('app/public/photos/watermark/'. $watermarkedName);
                 $image->save($path);
@@ -394,6 +384,49 @@ class PhotographyController extends Controller
                 }
                 $Photography['front_image'] = 'photos/watermark/' . $watermarkedName;
             }
+
+
+
+            // if ($request->hasFile('image')) {
+            // $photo = $request->file('image');
+            // $photoName = time() . '.' . $photo->getClientOriginalExtension();
+            // $photo->storeAs('public/photos/original', $photoName);
+            // $Photography['back_image'] = 'photos/original/' . $photoName;
+            // }
+
+            // if ($request->hasFile('image')) {
+            //     $photo = $request->file('image');
+            //     $photoName = time() . '.' . $photo->getClientOriginalExtension();
+            //     $watermarkedName = time() . '_watermarked.' . $photo->getClientOriginalExtension();
+
+            //     // Store original image
+            //     $photo->storeAs('public/photos/original', $photoName);
+            //     $Photography['back_image'] = 'photos/original/' . $photoName;
+
+
+            //     $image = Image::read($photo->getRealPath()); // In v3 use read()
+
+            //     $watermark = Image::read(public_path('home/logo/neb.png'));
+            //      $watermark->resize(100, 100);
+            //      $image->place($watermark, 'center');
+            //     // $image->text('NEB Creation', $image->width() / 2, $image->height() / 2, function ($font) {
+
+            //     //     $font->filename(public_path('fonts/arialbd.ttf'));
+            //     //     $font->size(750);
+            //     //     $font->color('rgba(255, 255, 255, 0.5)');
+            //     //     $font->align('center');
+            //     //     $font->valign('middle');
+            //     // });
+
+
+            //     $path = storage_path('app/public/photos/watermark/'. $watermarkedName);
+            //     $image->save($path);
+
+            //     if (!file_exists($path)) {
+            //         mkdir($path, 0755, true);
+            //     }
+            //     $Photography['front_image'] = 'photos/watermark/' . $watermarkedName;
+            // }
 
             $updated = $this->photographyService->updatePhoto($id, $Photography);
 

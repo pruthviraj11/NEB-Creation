@@ -218,11 +218,11 @@
                                     @enderror
                                 </span>
 
-                                @if ($photograpghy && $photograpghy->back_image)
+                                @if ($photograpghy && $photograpghy->front_image)
                                     @php
                                         $PhotoimageUrl =
-                                            isset($photograpghy->back_image) && Storage::disk('public')->exists($photograpghy->back_image)
-                                                ? Storage::url($photograpghy->back_image)
+                                            isset($photograpghy->front_image) && Storage::disk('public')->exists($photograpghy->front_image)
+                                                ? Storage::url($photograpghy->front_image)
                                                 : asset('no_image/no_image.png');
 
                                     @endphp
@@ -250,12 +250,62 @@
                                         
                                         </div>
 
-                                        <a href="{{Storage::url($photograpghy->front_image)}}" class="ml-5 watermark" target="_blank">View Watermark Photo</a>
+                                        {{-- <a href="{{Storage::url($photograpghy->front_image)}}" class="ml-5 watermark" target="_blank">View Watermark Photo</a> --}}
 
                                         
                                 @endif
                                 
                             </div>
+
+
+                            <!------- Download Image --------->
+                            <div class="col-md-12 col-sm-12 my-2">
+                                <label class="form-label" for="image"><strong>Download Photo<strong></label>
+                                <input type="file" id="original" name="original" class="form-control"
+                                    accept="image/*">
+                               
+                                <span class="text-danger">
+                                    @error('image')
+                                        {{ $message }}
+                                    @enderror
+                                </span>
+
+                                @if ($photograpghy && $photograpghy->back_image)
+                                    @php
+                                        $PhotoimageUrl =
+                                            isset($photograpghy->back_image) && Storage::disk('public')->exists($photograpghy->back_image)
+                                                ? Storage::url($photograpghy->back_image)
+                                                : asset('no_image/no_image.png');
+
+                                    @endphp
+                                   
+
+                                    <div class="position-relative d-inline-block project-image-wrapper"
+                                        style="width: 150px;">
+                                        
+                                        <img src="{{ $PhotoimageUrl }}" class="img-fluid"
+                                            style="height: 150px; object-fit: cover; width: 100%;">
+
+                                        <a href="javascript:void(0);"
+                                            class="btn btn-sm btn-danger delete-file position-absolute top-0 end-0 m-1"
+                                            data-idos="{{ $photograpghy->id }}" data-image="banner"
+                                            style="padding: 2px 6px; border-radius: 50%;">
+                                            {{-- SVG remove icon --}}
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                fill="white" viewBox="0 0 24 24">
+                                                <path d="M3 6h18v2H3zm2 3h14l-1.5 13.5h-11L5 9zm5-6h4v2h-4z" />
+                                            </svg>
+                                        </a>
+           
+                                        </div>
+                                        
+                                @endif
+                                
+                            </div>
+
+
+
+
                               <div class="row">
 
                                     <div class="col-md-6 col-sm-12 mb-1">
