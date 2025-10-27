@@ -77,6 +77,7 @@
                 serverSide: true,
                 "lengthMenu": [10, 25, 50, 100, 200],
                 ajax: "{{ route('app-order-get-all') }}",
+                order: [[0, 'desc']],
                 columns: [{
                         data: 'guest_id',
                         name: 'guest_id'
@@ -98,6 +99,7 @@
                         searchable: false
                     }
                 ],
+                
                 drawCallback: function() {
                     feather.replace();
                     $('[data-bs-toggle="tooltip"]').tooltip();

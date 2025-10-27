@@ -294,7 +294,7 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
                     applyDiscount(response.discount_amount, response.discount_percentage, promoCode, response.coupon_name);
-                    showPromoResult(`${promoCode} applied! You saved ₹${response.discount_amount}`, 'success');
+                    showPromoResult(`${promoCode} applied! You saved $${response.discount_amount}`, 'success');
                 } else {
                     showPromoResult(response.message, 'error');
                     resetDiscount();
