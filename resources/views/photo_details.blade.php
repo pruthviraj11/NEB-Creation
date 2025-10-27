@@ -107,7 +107,7 @@
         }
 
         .main-img-product {
-           max-height: 420px;
+           /* max-height: 420px; */
             overflow: hidden;
             display: flex;
             justify-content: center;
@@ -117,9 +117,10 @@
         }
 
         .main-img-product img {
-            width: 100%;
+            max-width: 100%;
+            width:auto !important;
             height: 100%;
-            object-fit: contain;
+            object-fit: contain !important;
         }
 
         .list-cards .small-img {
@@ -194,7 +195,7 @@
 
                         <div class="main-img-product">
                             <img src="{{ $imageUrl }}" alt="Product Image"
-                                class="img-fluid rounded shadow w-100 h-100 object-fit-cover">
+                                class="img-fluid rounded shadow h-100 object-fit-contain">
                         </div>
                     </div>
 
