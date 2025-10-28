@@ -104,8 +104,9 @@ class FrontController extends Controller
     $pageTitle['page_name'] = "Home";
 
     $photos = Photography::where('is_home','yes')->where('status','1')->orderBy('id','desc')->take(8)->get();
+    $categories = Category::take(4)->get();
 
-    return view('index',compact('pageTitle','photos'));
+    return view('index',compact('pageTitle','photos', 'categories'));
   }
 
   public function about_us()
@@ -283,7 +284,7 @@ $quantity = 1; // default = 1
     // $checkData = TempCart::where('guest_id',$guestId)->where('photo_id',$photo_Id)->where('order_status','pending')->count();
     // if ($checkData == 0)
     // {
-       
+
 
     //     TempCart::create([
     //         'guest_id'     => $guestId,
@@ -317,7 +318,7 @@ $quantity = 1; // default = 1
     //     'is_gift_product'  => $is_gift,
     //     'gift_product_id'  => $gift_id,
     //     'varient_id'       => $varient_id,
-    // ]); 
+    // ]);
 
     $cartItem = TempCart::where('guest_id', $guestId)
     ->where('photo_id', $photo_Id)

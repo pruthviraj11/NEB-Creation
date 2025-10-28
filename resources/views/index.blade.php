@@ -103,7 +103,7 @@
 
     <div class=" my-5">
         <div class="row g-5">
-           
+
             @foreach($photos as $photo)
              @php
             if($photo->discount_price != '')
@@ -118,10 +118,10 @@
             }
         @endphp
 
-            
+
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <form action="{{ route('front-add-cart') }}" method="POST" class="d-flex flex-column flex-sm-row align-items-start gap-2">
-            @csrf 
+            @csrf
             <input type="hidden" name="photo_id" value="{{ $photo->id }}">
             <input type="hidden" name="cart_price" value="{{ $cartPrice }}">
                 <div class="photo-card w-100">
@@ -143,7 +143,7 @@
                         <div>
                             <span>${{$price}}</span>
                             <div class="link-btns mt-3">
-                               
+
                                 <a href="{{route('front-photo_details',$photo->slug)}}" class="btn btn-outline btn-dark m-0 btn-sm">
                                     <i class="bi bi-eye"></i> View
                                 </a>
@@ -153,27 +153,27 @@
                 </div>
 
                 <div class="link-btns d-flex align-items-center d-md-none mt-3 w-100">
-                  
+
                     <a href="{{route('front-photo_details',$photo->slug)}}" class="btn btn-dark m-0 btn-sm">
                         <i class="bi bi-eye"></i> View
                     </a>
                 </div>
                  </form>
             </div>
-            
-       
+
+
             @endforeach
-             
-
-             
 
 
-           
+
+
+
+
         </div>
           <div>
             <a href="{{ route('front-photos') }}" class="btn btn-dark btn-md w-auto add-btn-cart mt-5">View More</a>
           </div>
-      
+
     </div>
 </section>
 
@@ -190,25 +190,18 @@
 
         <div class="col-md-5">
             <div class="row custom-gap">
+              @foreach($categories as $category)
                 <div class="col-6">
-                    <a href="#" class="category text-decoration-none">Weddings</a>
+                    <a href="#" class="category text-decoration-none">{{$category->category}}</a>
                 </div>
-                <div class="col-6">
-                    <a href="#" class="category text-decoration-none">Nature</a>
-                </div>
-                <div class="col-6">
-                    <a href="#" class="category text-decoration-none">Studio</a>
-                </div>
-                <div class="col-6">
-                    <a href="#" class="category text-decoration-none">Events</a>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
 </div>
 
 
-<div class="testimonial-section position-relative" 
+<div class="testimonial-section position-relative"
      style="background: url('{{ asset('home/images/coustomer_say_bg.jpg') }}') no-repeat center/cover;">
     <div class="testimonial-overlay"></div>
 
@@ -324,7 +317,7 @@
         </div>
     </div>
 
-    
+
 </div>
 
 
