@@ -69,7 +69,7 @@ return DataTables::of(source: $creative)
         return $row->title;
     })
     ->addColumn('price', function ($row) {
-        return $row->title ? $row->title : '-';
+        return $row->price ? $row->price : '-';
     })
     ->addColumn('status', function ($row) {
         if ($row->status == 'active' || $row->status == 1) {
