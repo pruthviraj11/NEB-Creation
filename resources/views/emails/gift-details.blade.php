@@ -133,7 +133,7 @@
                         <tr>
                          <td style='padding:6px; border:1px solid #ddd; text-align:center;'>
 
-                          {{ dd($giftimageUrl) }}
+                          
                             @if($giftimageUrl)
                                 <img src="{{ $giftimageUrl }}" alt="{{ $productName }}" style='max-width:40px; height:auto; object-fit:cover; border-radius:4px;'>
                             @else
