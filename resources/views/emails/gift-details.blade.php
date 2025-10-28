@@ -115,7 +115,11 @@
                         //   }
 
                           if (!empty($giftfilePath) && Storage::disk('public')->exists($giftfilePath)) {
-                            $giftimageUrl = public_path(Storage::url($giftfilePath));
+                            
+                           // public_path(Storage::url($photo->back_image));
+                           
+                           $giftimageUrl = asset(Storage::url($giftfilePath));
+                                  
                         }
 
                           $productName = htmlspecialchars($gift->product_name ?? 'N/A', ENT_QUOTES);
@@ -128,7 +132,8 @@
 
                         <tr>
                          <td style='padding:6px; border:1px solid #ddd; text-align:center;'>
-                            
+
+                        
                             @if($giftimageUrl)
                                 <img src="{{ $giftimageUrl }}" alt="{{ $productName }}" style='max-width:40px; height:auto; object-fit:cover; border-radius:4px;'>
                             @else
