@@ -5,79 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
 </head>
-<body style='font-family: Arial, sans-serif; margin:0; padding:0; background-color:#f4f4f4;'>
-    <div style='background-color:#ffffff; max-width:600px; margin:20px auto; border:1px solid #dddddd;'>
-        
-        <!-- Header -->
-        <div style='background-color:#17365d; color:white; text-align:center; padding:15px;'>
-            <h3 style='margin:0; font-size:24px;'>Order Details</h3>
-        </div>
+<body style="font-family: Arial, sans-serif; margin:0; padding:0; background-color:#f4f4f4;">
+  <div style="background-color:#ffffff; max-width:650px; margin:20px auto; border:1px solid #dddddd; box-shadow:0 2px 6px rgba(0,0,0,0.1); border-radius:6px; overflow:hidden;">
 
-        <!-- Order Summary -->
-        <div style='padding:20px;'>
-            <h4 style='margin:10px 0;'>Order Summary</h4>
-            <table style='width:100%; border-collapse:collapse;'>
-                <tr>
-                    <td style='padding:8px; font-weight:bold;'>Name:</td>
-                    <td style='padding:8px;'>{{ $order->fname }} {{ $order->lname }}</td>
-                </tr>
-                <tr>
-                    <td style='padding:8px; font-weight:bold;'>Transaction Id:</td>
-                    <td style='padding:8px;'>{{ $order->transaction_id }}</td>
-                </tr>
-                <tr>
-                    <td style='padding:8px; font-weight:bold;'>Payment Mode:</td>
-                    <td style='padding:8px;'>{{ $order->order_type }}</td>
-                </tr>
-                <tr>
-                    <td style='padding:8px; font-weight:bold;'>Order Status:</td>
-                    <td style='padding:8px;'>{{ $order->order_status }}</td>
-                </tr>
-                <tr>
-                    <td style='padding:8px; font-weight:bold;'>Total Amount:</td>
-                    <td style='padding:8px;'>${{ number_format($order->total_amount, 2) }}</td>
-                </tr>
-            </table>
-        </div>
+    <!-- Header -->
+    <div style="background-color:#17365d; color:#ffffff; padding:20px 25px;">
+  <table style="width:100%; border-collapse:collapse;">
+    <tr>
+      <td style="text-align:left;">
+        <h2 style="margin:0; font-size:24px; font-weight:600;">Order Details</h2>
+      </td>
+      <td style="text-align:right; font-size:14px; color:#cbd4e1;">
+        {{ date('M d, Y') }}
+      </td>
+    </tr>
+  </table>
+</div>
+
+    <!-- Body -->
+    <div style="padding:25px; color:#333;">
+      <p style="font-size:15px; line-height:1.6; margin:0 0 15px;">
+                Dear <strong>NEB Creations Photography</strong>,
+            </p>
+            <p style="font-size:15px; line-height:1.6;">
+                You have received a new order from <strong>{{ $order->fname }} {{ $order->lname }}</strong>. Please find the order details below.
+            </p>
+
+
+      <!-- Shipping Details -->
+      <h3 style="margin-top:25px; font-size:18px; color:#17365d; border-bottom:2px solid #17365d; padding-bottom:6px;">Shipping Details</h3>
+
+      <table style="width:100%; border-collapse:collapse; margin-top:10px; font-size:14px;">
+        <tr>
+          <td style="padding:10px; border:1px solid #ccc; font-weight:bold; width:30%;">Name</td>
+          <td style="padding:10px; border:1px solid #ccc;">{{ $order->fname }} {{ $order->lname }}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid #ccc; font-weight:bold;">Email</td>
+          <td style="padding:10px; border:1px solid #ccc;">{{ $order->email }}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid #ccc; font-weight:bold;">Mobile No</td>
+          <td style="padding:10px; border:1px solid #ccc;">{{ $order->mobile }}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid #ccc; font-weight:bold;">Address</td>
+          <td style="padding:10px; border:1px solid #ccc;">{{ $order->address1 }}<br>{{ $order->address2 }}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid #ccc; font-weight:bold;">Country</td>
+          <td style="padding:10px; border:1px solid #ccc;">{{ $order->country }}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid #ccc; font-weight:bold;">State</td>
+          <td style="padding:10px; border:1px solid #ccc;">{{ $order->state }}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid #ccc; font-weight:bold;">Zip</td>
+          <td style="padding:10px; border:1px solid #ccc;">{{ $order->zip }}</td>
+        </tr>
+      </table>
+    </div>
 
         <!-- Pricing Breakdown -->
         @if(isset($order->product_total))
-        <div style='padding:20px; padding-top:0;'>
-            <h4 style='color:#17365d; margin:15px 0 10px 0;'>Pricing Breakdown</h4>
-            <table style='width:100%; border-collapse:collapse; background-color:#f9f9f9; border:1px solid #ddd;'>
-                <tr>
-                    <td style='padding:12px; border:1px solid #ddd; background-color:#f1f1f1;'>Product Total:</td>
-                    <td style='padding:12px; border:1px solid #ddd; text-align:right; background-color:#f1f1f1;'>${{ number_format($order->product_total, 2) }}</td>
-                </tr>
-                <tr>
-                    <td style='padding:12px; border:1px solid #ddd;'>Delivery Charge:</td>
-                    <td style='padding:12px; border:1px solid #ddd; text-align:right;'>${{ number_format($order->delivery_charge, 2) }}</td>
-                </tr>
-                <tr>
-                    <td style='padding:12px; border:1px solid #ddd;'>Tax ({{ number_format($order->tax_rate, 2) }}%):</td>
-                    <td style='padding:12px; border:1px solid #ddd; text-align:right;'>${{ number_format($order->tax_amount, 2) }}</td>
-                </tr>
-                <tr style='font-weight:bold;'>
-                    <td style='padding:12px; border:1px solid #ddd; background-color:#f1f1f1;'>Subtotal:</td>
-                    <td style='padding:12px; border:1px solid #ddd; text-align:right; background-color:#f1f1f1;'>${{ number_format($order->total_before_discount, 2) }}</td>
-                </tr>
-                
-                @if($order->discount_amount > 0 && !empty($order->promo_code))
-                <tr style='color:#28a745;'>
-                    <td style='padding:12px; border:1px solid #ddd;'>Coupon Discount ({{ strtoupper($order->promo_code) }}):</td>
-                    <td style='padding:12px; border:1px solid #ddd; text-align:right;'>-${{ number_format($order->discount_amount, 2) }}</td>
-                </tr>
-                @endif
-                
-                <tr style='font-weight:bold; background-color:#17365d; color:white; font-size:16px;'>
-                    <td style='padding:15px; border:1px solid #ddd;'>Total Amount:</td>
-                    <td style='padding:15px; border:1px solid #ddd; text-align:right;'>${{ number_format($order->total_amount, 2) }}</td>
-                </tr>
-            </table>
-        </div>
-        @endif
 
-        <!-- Product Details -->
         <div style='padding:20px;'>
             <h4 style='color:#17365d;'>Product Details</h4>
             <table style='width:100%; border-collapse:collapse;'>
@@ -189,37 +181,41 @@
                                 <p style='margin:5px 0; font-weight:bold; color:#17365d;'>Gift Products:</p>
                                 <table style='width:90%; margin-left:10px; border-collapse:collapse; font-size:14px;'>
                                     <tr style='background-color:#fafafa;'>
-                                        {{-- <th style='padding:6px; text-align:left; border:1px solid #ddd;'>Image</th> --}}
+                                        <th style='padding:6px; text-align:left; border:1px solid #ddd;'>Image</th>
                                         <th style='padding:6px; text-align:left; border:1px solid #ddd;'>Title</th>
-                                        <th style='padding:6px; text-align:left; border:1px solid #ddd;'>Price</th>
-                                        <th style='padding:6px; text-align:left; border:1px solid #ddd;'>Variant</th>
+                                        {{-- <th style='padding:6px; text-align:left; border:1px solid #ddd;'>Price</th> --}}
+                                        <th style='padding:6px; text-align:left; border:1px solid #ddd;'>Size</th>
                                     </tr>
                                     @foreach($giftItems as $gift)
                                     @php
                                         try {
-                                           // $filePath = $gift->product_image ?? '';
-                                           $filePath = $gift->product_image;
-                                           // $imageUrl = Storage::url($gift->product_image ?? '');
-                                            if (!empty($filePath) && Storage::disk('public')->exists($filePath)) {
-                                                // Generate full URL for email (absolute)
-                                               // $imageUrl = url(Storage::url($filePath));
-                                               $imageUrl = public_path(Storage::url($filePath));
+                                        //    // $filePath = $gift->product_image ?? '';
+                                        //    $filePath = $gift->product_image;
+                                        //    // $imageUrl = Storage::url($gift->product_image ?? '');
+                                        //     if (!empty($filePath) && Storage::disk('public')->exists($filePath)) {
+                                        //         // Generate full URL for email (absolute)
+                                        //        // $imageUrl = url(Storage::url($filePath));
+                                        //        $imageUrl = public_path(Storage::url($filePath));
                                                
-                                            } else {
-                                                // Fallback image
-                                                $imageUrl = '';
-                                            }
+                                        //     } else {
+                                        //         // Fallback image
+                                        //         $imageUrl = '';
+                                        //     }
 
+                                        $giftfilePath = $gift->product_image ?? '';
+                                        $giftimageUrl = '';
+
+                                         if (!empty($giftfilePath) && Storage::disk('public')->exists($giftfilePath)) 
+                                         {
+                                            $giftimageUrl = public_path(Storage::url($giftfilePath));
+                                        }
                                             $productName = htmlspecialchars($gift->product_name ?? 'N/A', ENT_QUOTES);
                                             $price = floatval($gift->product_price ?? 0);
                                             
                                             $varientSize = "NA";
-                                            if($gift->product_varient == 1 && !empty($photo->varient_id)) {
-                                                $gvarients = array_filter(explode(",", trim($photo->varient_id)));
-                                                $product_variant = \App\Models\ProductVarient::whereIn('id', $gvarients)->first();
-                                                if($product_variant) {
-                                                    $varientSize = $product_variant->title ?? 'NA';
-                                                }
+                                            if ($gift->product_varient == 1) {
+                                                $variant = \App\Models\ProductVarient::find($gift->id);
+                                                $varientSize = $variant->title ?? 'NA';
                                             }
                                         } catch (\Exception $e) {
                                             $imageUrl = '';
@@ -230,19 +226,17 @@
                                     @endphp
                                    
                                     <tr>
-                                        {{-- <td style='padding:6px; border:1px solid #ddd; text-align:center;'>
-                                            @if($imageUrl)
-                                            
-                                                <img src='{{ $imageUrl }}' alt='{{ $productName }}' style='max-width:40px; height:auto; object-fit:cover; border-radius:4px;'>
-                                            @else
-                                             {{ dd("no image") }}
-                                                <span style='font-size:12px; color:#999;'>No Image</span>
-                                            @endif
-                                        </td> --}}
-
+                                        <td style='padding:6px; border:1px solid #ddd; text-align:center;'>
+                            
+                                        @if($giftimageUrl)
+                                            <img src='{{ $giftimageUrl }}' alt='{{ $productName }}' style='max-width:40px; height:auto; object-fit:cover; border-radius:4px;'>
+                                        @else
+                                            <span style='font-size:12px; color:#999;'>No Image</span>
+                                        @endif
+                                    </td>  
                                         
                                         <td style='padding:6px; border:1px solid #ddd;'>{{ $productName }}</td>
-                                        <td style='padding:6px; border:1px solid #ddd;'>${{ number_format($price, 2) }}</td>
+                                        {{-- <td style='padding:6px; border:1px solid #ddd;'>${{ number_format($price, 2) }}</td> --}}
                                         <td style='padding:6px; border:1px solid #ddd;'>{{ $varientSize }}</td>
                                     </tr>
                                     @endforeach
@@ -256,10 +250,50 @@
             </table>
         </div>
 
+
+        <div style='padding:20px; padding-top:0;'>
+            <h4 style='color:#17365d; margin:15px 0 10px 0;'>Pricing Breakdown</h4>
+            <table style='width:100%; border-collapse:collapse; background-color:#f9f9f9; border:1px solid #ddd;'>
+                <tr>
+                    <td style='padding:12px; border:1px solid #ddd; background-color:#f1f1f1;'>Product Total:</td>
+                    <td style='padding:12px; border:1px solid #ddd; text-align:right; background-color:#f1f1f1;'>${{ number_format($order->product_total, 2) }}</td>
+                </tr>
+                <tr>
+                    <td style='padding:12px; border:1px solid #ddd;'>Delivery Charge:</td>
+                    <td style='padding:12px; border:1px solid #ddd; text-align:right;'>${{ number_format($order->delivery_charge, 2) }}</td>
+                </tr>
+                <tr>
+                    <td style='padding:12px; border:1px solid #ddd;'>Tax ({{ number_format($order->tax_rate, 2) }}%):</td>
+                    <td style='padding:12px; border:1px solid #ddd; text-align:right;'>${{ number_format($order->tax_amount, 2) }}</td>
+                </tr>
+                <tr style='font-weight:bold;'>
+                    <td style='padding:12px; border:1px solid #ddd; background-color:#f1f1f1;'>Subtotal:</td>
+                    <td style='padding:12px; border:1px solid #ddd; text-align:right; background-color:#f1f1f1;'>${{ number_format($order->total_before_discount, 2) }}</td>
+                </tr>
+                
+                @if($order->discount_amount > 0 && !empty($order->promo_code))
+                <tr style='color:#28a745;'>
+                    <td style='padding:12px; border:1px solid #ddd;'>Coupon Discount ({{ strtoupper($order->promo_code) }}):</td>
+                    <td style='padding:12px; border:1px solid #ddd; text-align:right;'>-${{ number_format($order->discount_amount, 2) }}</td>
+                </tr>
+                @endif
+                
+                <tr style='font-weight:bold; background-color:#17365d; color:white; font-size:16px;'>
+                    <td style='padding:15px; border:1px solid #ddd;'>Total Amount:</td>
+                    <td style='padding:15px; border:1px solid #ddd; text-align:right;'>${{ number_format($order->total_amount, 2) }}</td>
+                </tr>
+            </table>
+        </div>
+        @endif
+
+        <!-- Product Details -->
+        
+
         <!-- Footer -->
-        <div style='background-color:#f1f1f1; text-align:center; padding:10px; font-size:12px; color:#777;'>
-            Thank you for your purchase!
+         <div style="background-color:#17365d; color:white; text-align:center; padding:12px; font-size:13px;">
+            &copy; {{ date('Y') }} NEB Creations Photography. All rights reserved.
         </div>
     </div>
 </body>
 </html>
+

@@ -6,7 +6,7 @@
 <head>
     <!--=============== basic  ===============-->
     <meta charset="UTF-8">
-    <title>@yield('title', 'NEB Creations')</title>
+    <title>@yield('title', 'NEB Creations Photography')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="robots" content="index, follow" />
     <meta name="keywords" content="" />
@@ -121,7 +121,7 @@
 
     <footer class="d-flex flex-wrap align-items-center justify-content-around">
     <div class="policy-box p-2">
-        <span>© 2025 NEB Creations . All rights reserved.</span>
+        <span>© 2025 NEB Creations Photography. All rights reserved.</span>
 
     </div>
     {{-- <div class="footer_page p-2">
