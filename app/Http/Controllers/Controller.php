@@ -278,26 +278,26 @@ class Controller extends BaseController
             }
 
             // Always send all details to admin
-            // if (!empty($setting->admin_email)) {
-            //     try {
-            //         Mail::to(trim($setting->admin_email))
-            //             ->send(new OrderDetailsMail($order, $photos, 'Order Received From NEB Creations Photography', $attachments));
-            //         Log::info("Admin email sent successfully to: {$setting->admin_email}");
-            //     } catch (\Exception $e) {
-            //         Log::error("Failed to send admin email: " . $e->getMessage());
-            //     }
-            // }
+            if (!empty($setting->admin_email)) {
+                try {
+                    Mail::to(trim($setting->admin_email))
+                        ->send(new OrderDetailsMail($order, $photos, 'Order Received From NEB Creations Photography', $attachments));
+                    Log::info("Admin email sent successfully to: {$setting->admin_email}");
+                } catch (\Exception $e) {
+                    Log::error("Failed to send admin email: " . $e->getMessage());
+                }
+            }
 
             // Send creative art–only details to partner
-            // if ($creativePhotos->isNotEmpty() && !empty($setting->partner_email)) {
-            //     try {
-            //         Mail::to(trim($setting->partner_email))
-            //             ->send(new PartnerDetailsMail($order, $creativePhotos, 'Order Received From NEB Creations Photography', []));
-            //         Log::info("Creative Art email sent to: {$setting->partner_email}");
-            //     } catch (\Exception $e) {
-            //         Log::error("Failed to send Creative Art email: " . $e->getMessage());
-            //     }
-            // }
+            if ($creativePhotos->isNotEmpty() && !empty($setting->partner_email)) {
+                try {
+                    Mail::to(trim($setting->partner_email))
+                        ->send(new PartnerDetailsMail($order, $creativePhotos, 'Order Received From NEB Creations Photography', []));
+                    Log::info("Creative Art email sent to: {$setting->partner_email}");
+                } catch (\Exception $e) {
+                    Log::error("Failed to send Creative Art email: " . $e->getMessage());
+                }
+            }
 
             // Send gift-only details to printify
             if ($giftPhotos->isNotEmpty() && !empty($setting->printify_email)) {

@@ -207,7 +207,8 @@
 
                                          if (!empty($giftfilePath) && Storage::disk('public')->exists($giftfilePath)) 
                                          {
-                                            $giftimageUrl = public_path(Storage::url($giftfilePath));
+                                            //$giftimageUrl = public_path(Storage::url($giftfilePath));
+                                                $giftimageUrl = asset(Storage::url($giftfilePath));
                                         }
                                             $productName = htmlspecialchars($gift->product_name ?? 'N/A', ENT_QUOTES);
                                             $price = floatval($gift->product_price ?? 0);
