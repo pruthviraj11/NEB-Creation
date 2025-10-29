@@ -1,6 +1,6 @@
 {
   "menu": [
-  
+
     {
       "name": "Photography",
       "icon": "menu-icon tf-icons ti ti-camera",
@@ -16,9 +16,9 @@
         "url": "admin/photography/list",
         "name": "Photography",
         "slug": "app-photography-list"
-        
+
       }
-     
+
       ]
     },
     {
@@ -26,14 +26,21 @@
       "name": "Orders",
       "icon": "menu-icon tf-icons ti ti-receipt",
       "slug": "app-order-list"
-      
+
+    },
+      {
+      "url": "admin/testimonial/list",
+      "name": "Testimonial",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "app-testimonial-list"
+
     },
     {
       "url": "admin/contact/list",
       "name": "Contacts",
        "icon": "menu-icon tf-icons ti ti-address-book",
       "slug": "app-contact-list"
-      
+
     },
 
 
@@ -66,21 +73,21 @@
           "icon": "menu-icon tf-icons ti ti-address-book",
           "slug": "app-gift_product-list"
         }
-      
+
         ]
       },
 
 
 
-    
+
     {
       "url": "admin/setting/list",
       "name": "Setting",
       "icon": "menu-icon tf-icons ti ti-settings",
       "slug": "app-setting-list"
-      
+
     }
 
-    
+
   ]
 }
