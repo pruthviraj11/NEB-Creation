@@ -174,6 +174,7 @@ use App\Http\Controllers\apps\VarientController;
 use App\Http\Controllers\apps\GiftProductController;
 
 
+use App\Http\Controllers\apps\TestimonialController;
 use Illuminate\Support\Facades\Auth;
 
 // Main Page Route
@@ -463,6 +464,17 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('destroy/{encrypted_id}', [CategoryController::class, 'destroy'])->name('destroy');
     Route::get('getAll', [CategoryController::class, 'getAll'])->name('get-all');
   });
+
+  Route::prefix('testimonial')->name('app-testimonial-')->group(function () {
+    Route::get('list', [TestimonialController::class, 'index'])->name('list');
+    Route::get('add', [TestimonialController::class, 'create'])->name('add');
+    Route::post('store', [TestimonialController::class, 'store'])->name('store');
+    Route::get('edit/{encrypted_id}', [TestimonialController::class, 'edit'])->name('edit');
+    Route::put('update/{encrypted_id}', [TestimonialController::class, 'update'])->name('update');
+    Route::get('destroy/{encrypted_id}', [TestimonialController::class, 'destroy'])->name('destroy');
+    Route::get('getAll', [TestimonialController::class, 'getAll'])->name('get-all');
+  });
+
 
 
   Route::prefix('photography')->name('app-photography-')->group(function () {

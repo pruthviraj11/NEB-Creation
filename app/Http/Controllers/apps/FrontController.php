@@ -20,6 +20,7 @@ use App\Models\ProductVarientPrice;
 
 
 
+use App\Models\Testimonial;
 use App\Services\ContactService;
 
 use Illuminate\Support\Facades\Storage;
@@ -105,8 +106,10 @@ class FrontController extends Controller
 
     $photos = Photography::where('is_home', 'yes')->where('status', '1')->orderBy('id', 'desc')->take(8)->get();
     $categories = Category::take(4)->get();
+    $testimonials = Testimonial::take(4)->where('status', true)->get();
+    // dd($testimonials);
 
-    return view('index', compact('pageTitle', 'photos', 'categories'));
+    return view('index', compact('pageTitle', 'photos', 'categories', 'testimonials'));
   }
 
   public function about_us()

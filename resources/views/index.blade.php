@@ -228,7 +228,39 @@
                     <!-- Swiper -->
                     <div class="swiper mySwiper">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide">
+                            @foreach ($testimonials as $testimonial)
+                                <div class="swiper-slide">
+                                    <div class="testimonial-card">
+                                        <div class="testimonial-header">
+                                            <div class="testimonial-user">
+                                                {{-- <img src="{{ asset('uploads/testimonials/' . $testimonial->profile_pic) }}" --}}
+                                                {{-- alt=""> --}}
+                                                <img src="{{ $testimonial->profile_pic ? asset('uploads/testimonials/' . $testimonial->profile_pic) : 'https://i.pravatar.cc/100?u=' . $testimonial->id }}"
+                                                    alt="{{ $testimonial->name }}">
+                                                <div>
+                                                    <strong>{{ $testimonial->name }}</strong><br>
+                                                    <small class="text-muted">{{ $testimonial->designation }}</small>
+                                                </div>
+                                            </div>
+                                            <div class="stars">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($i <= $testimonial->star)
+                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                    @else
+                                                        <i class="bi bi-star text-warning"></i>
+                                                    @endif
+                                                @endfor
+                                            </div>
+                                        </div>
+                                        <p class="mt-3">“{{ $testimonial->message }}”</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        {{-- <div class="swiper-wrapper"> --}}
+
+                        {{-- <div class="swiper-slide">
                                 <div class="testimonial-card">
                                     <div class="testimonial-header">
                                         <div class="testimonial-user">
@@ -317,17 +349,17 @@
                                     </div>
                                     <p class="mt-3">Absolutely love the quality of the prints!</p>
                                 </div>
-                            </div>
-                            <!-- <div class="swiper-slide">Slide 6</div>
-                            <div class="swiper-slide">Slide 7</div>
-                            <div class="swiper-slide">Slide 8</div>
-                            <div class="swiper-slide">Slide 9</div> -->
-                        </div>
-                        <!-- <div class="swiper-pagination"></div> -->
+                            </div> --}}
+                        <!-- <div class="swiper-slide">Slide 6</div>
+                                                            <div class="swiper-slide">Slide 7</div>
+                                                            <div class="swiper-slide">Slide 8</div>
+                                                            <div class="swiper-slide">Slide 9</div> -->
                     </div>
+                    <!-- <div class="swiper-pagination"></div> -->
                 </div>
             </div>
         </div>
+    </div>
 
 
     </div>
