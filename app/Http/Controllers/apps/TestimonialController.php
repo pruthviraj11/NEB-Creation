@@ -79,7 +79,7 @@ class TestimonialController extends Controller
       $data['profile_pic'] = $filename;
     }
 
-    dd($data);
+//    dd($data);
     $this->testimonialService->create($data);
     return redirect()->route('app-testimonial-list')->with('success', 'Testimonial Added Successfully');
   }
