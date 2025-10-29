@@ -185,6 +185,9 @@ Route::get('/about_us', [FrontController::class, 'about_us'])->name('front-about
 Route::get('/contact_us', [FrontController::class, 'contact_us'])->name('front-contact');
 Route::get('/photos', [FrontController::class, 'photos'])->name('front-photos');
 
+
+Route::get('/photos/{slug?}', [FrontController::class, 'photos'])->name('front-photos');
+
 Route::get('/details/{slug}', [FrontController::class, 'photo_details'])->name('front-photo_details');
 
 Route::post('/add_cart', [FrontController::class, 'add_cart'])->name('front-add-cart');
@@ -421,36 +424,36 @@ Auth::routes();
 
 // Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth'])->prefix('admin')->group(function () {
-    Route::get('/home', [Analytics::class, 'index'])->name('home');
-    Route::get('permissions', [RoleController::class, 'permissions_list'])->name('app-permissions-list');
-    Route::get('roles/list', [RoleController::class, 'index'])->name('app-roles-list');
-    Route::get('roles/getAll', [RoleController::class, 'getAll'])->name('app-roles-get-all');
-    Route::post('roles/store', [RoleController::class, 'store'])->name('app-roles-store');
-    Route::get('roles/add', [RoleController::class, 'create'])->name('app-roles-add');
-    Route::get('roles/edit/{encrypted_id}', [RoleController::class, 'edit'])->name('app-roles-edit');
-    Route::put('roles/update/{encrypted_id}', [RoleController::class, 'update'])->name('app-roles-update');
-    Route::get('roles/destroy/{encrypted_id}', [RoleController::class, 'destroy'])->name('app-roles-delete');
-    // Route::get('/profile/{encrypted_id}', [UsersController::class, 'profile'])->name('profile.show');
-    Route::post('/profile/update/{encrypted_id}', [UsersController::class, 'updateProfile'])->name('profile-update');
-    Route::get('users/list', [UsersController::class, 'index'])->name('app-users-list');
-    Route::get('users/add', [UsersController::class, 'create'])->name('app-users-add');
-    Route::post('users/store', [UsersController::class, 'store'])->name('app-users-store');
-    Route::get('users/edit/{encrypted_id}', [UsersController::class, 'edit'])->name('app-users-edit');
-    Route::put('users/update/{encrypted_id}', [UsersController::class, 'update'])->name('app-users-update');
-    Route::get('users/destroy/{encrypted_id}', [UsersController::class, 'destroy'])->name('app-users-destroy');
-    Route::get('users/getAll', [UsersController::class, 'getAll'])->name('app-users-get-all');
-    Route::get('site-users/list', [UsersController::class, 'siteUserIndex'])->name('app-site-users-list');
-    Route::get('site-users/getAllSiteUsers', [UsersController::class, 'getAllSiteUsers'])->name('app-site-users-get-all');
+  Route::get('/home', [Analytics::class, 'index'])->name('home');
+  Route::get('permissions', [RoleController::class, 'permissions_list'])->name('app-permissions-list');
+  Route::get('roles/list', [RoleController::class, 'index'])->name('app-roles-list');
+  Route::get('roles/getAll', [RoleController::class, 'getAll'])->name('app-roles-get-all');
+  Route::post('roles/store', [RoleController::class, 'store'])->name('app-roles-store');
+  Route::get('roles/add', [RoleController::class, 'create'])->name('app-roles-add');
+  Route::get('roles/edit/{encrypted_id}', [RoleController::class, 'edit'])->name('app-roles-edit');
+  Route::put('roles/update/{encrypted_id}', [RoleController::class, 'update'])->name('app-roles-update');
+  Route::get('roles/destroy/{encrypted_id}', [RoleController::class, 'destroy'])->name('app-roles-delete');
+  // Route::get('/profile/{encrypted_id}', [UsersController::class, 'profile'])->name('profile.show');
+  Route::post('/profile/update/{encrypted_id}', [UsersController::class, 'updateProfile'])->name('profile-update');
+  Route::get('users/list', [UsersController::class, 'index'])->name('app-users-list');
+  Route::get('users/add', [UsersController::class, 'create'])->name('app-users-add');
+  Route::post('users/store', [UsersController::class, 'store'])->name('app-users-store');
+  Route::get('users/edit/{encrypted_id}', [UsersController::class, 'edit'])->name('app-users-edit');
+  Route::put('users/update/{encrypted_id}', [UsersController::class, 'update'])->name('app-users-update');
+  Route::get('users/destroy/{encrypted_id}', [UsersController::class, 'destroy'])->name('app-users-destroy');
+  Route::get('users/getAll', [UsersController::class, 'getAll'])->name('app-users-get-all');
+  Route::get('site-users/list', [UsersController::class, 'siteUserIndex'])->name('app-site-users-list');
+  Route::get('site-users/getAllSiteUsers', [UsersController::class, 'getAllSiteUsers'])->name('app-site-users-get-all');
 
 
 
-    Route::put('/roles/update/{id}', [AccessRoles::class, 'update'])->name('app-access-roles.update');
-    Route::delete('/app/roles/delete/{id}', [AccessRoles::class, 'destroy'])->name('app-access-roles.destroy');
-    // Route::get('/users/list', [UserList::class, 'getList'])->name('users.list');
+  Route::put('/roles/update/{id}', [AccessRoles::class, 'update'])->name('app-access-roles.update');
+  Route::delete('/app/roles/delete/{id}', [AccessRoles::class, 'destroy'])->name('app-access-roles.destroy');
+  // Route::get('/users/list', [UserList::class, 'getList'])->name('users.list');
 
 
-    /*------ Category ----------*/
-    Route::prefix('category')->name('app-category-')->group(function () {
+  /*------ Category ----------*/
+  Route::prefix('category')->name('app-category-')->group(function () {
     /*---- Blog Categry ---*/
     Route::get('list', [CategoryController::class, 'index'])->name('list');
     Route::get('add', [CategoryController::class, 'create'])->name('add');
@@ -472,13 +475,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('destroy/{encrypted_id}', [PhotographyController::class, 'destroy'])->name('destroy');
     Route::get('getAll', [PhotographyController::class, 'getAll'])->name('get-all');
     Route::get('category/{catId}', [PhotographyController::class, 'getParentCategory'])->name('parent-category');
-  Route::get('remove_files/{encrypted_id}/{file_type}', [PhotographyController::class, 'remove_files'])->name('remove-files');
+    Route::get('remove_files/{encrypted_id}/{file_type}', [PhotographyController::class, 'remove_files'])->name('remove-files');
 
   });
 
 
-   /*------ Order Details Information  ----------*/
-    Route::prefix('order')->name('app-order-')->group(function () {
+  /*------ Order Details Information  ----------*/
+  Route::prefix('order')->name('app-order-')->group(function () {
     /*---- Blog Categry ---*/
     Route::get('list', [OrderController::class, 'index'])->name('list');
     Route::get('add', [OrderController::class, 'create'])->name('add');
@@ -495,13 +498,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::prefix('contact')->name('app-contact-')->group(function () {
     Route::get('list', action: [ContactController::class, 'index'])->name('list');
     Route::get('destroy/{encrypted_id}', [ContactController::class, 'destroy'])->name('destroy');
-    Route::get('getAll', [ContactController::class,'getAll'])->name('get-all');
+    Route::get('getAll', [ContactController::class, 'getAll'])->name('get-all');
   });
 
 
   /*----------- Creative Arts ------------*/
 
-    Route::prefix('creative')->name('app-creative-')->group(function () {
+  Route::prefix('creative')->name('app-creative-')->group(function () {
     Route::get('list', [CreativeController::class, 'index'])->name('list');
     Route::get('add', [CreativeController::class, 'create'])->name('add');
     Route::post('store', [CreativeController::class, 'store'])->name('store');
@@ -513,8 +516,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
 
 
-   /*----------- Bulk purchasse ------------*/
-    Route::prefix('bulk')->name('app-bulk-')->group(function () {
+  /*----------- Bulk purchasse ------------*/
+  Route::prefix('bulk')->name('app-bulk-')->group(function () {
     Route::get('list', [BulkController::class, 'index'])->name('list');
     Route::get('add', [BulkController::class, 'create'])->name('add');
     Route::post('store', [BulkController::class, 'store'])->name('store');
@@ -526,7 +529,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
 
   /*----------- Varient purchasse ------------*/
-    Route::prefix('varient')->name('app-varient-')->group(function () {
+  Route::prefix('varient')->name('app-varient-')->group(function () {
     Route::get('list', action: [VarientController::class, 'index'])->name('list');
     Route::get('add', [VarientController::class, 'create'])->name('add');
     Route::post('store', [VarientController::class, 'store'])->name('store');
@@ -537,7 +540,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   });
 
   /*----------- Gift  Product ------------*/
-    Route::prefix('gift_product')->name('app-gift_product-')->group(function () {
+  Route::prefix('gift_product')->name('app-gift_product-')->group(function () {
     Route::get('list', action: [GiftProductController::class, 'index'])->name('list');
     Route::get('add', [GiftProductController::class, 'create'])->name('add');
     Route::post('store', [GiftProductController::class, 'store'])->name('store');
@@ -546,8 +549,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('destroy/{encrypted_id}', [GiftProductController::class, 'destroy'])->name('destroy');
     Route::get('getAll', [GiftProductController::class, 'getAll'])->name('get-all');
     Route::get('remove_files/{encrypted_id}', [GiftProductController::class, 'remove_files'])->name('gift_remove-files');
-  
-  
+
+
   });
 
 
