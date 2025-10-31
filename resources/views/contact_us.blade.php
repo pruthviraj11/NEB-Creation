@@ -18,7 +18,7 @@
 
                 <!-- Left side: Image -->
                 <div class="col-md-4 contact-img mb-4 mb-md-0">
-                    <img src="{{ asset('home/images/57.jpg') }}" alt="Contact Image" class="img-fluid rounded shadow">
+                    <img src="{{ asset('home/images/contact_img.jpeg') }}" alt="Contact Image" style="max-height: 480px; width: 100%; object-fit: cover; object-position: center;" class="img-fluid rounded shadow">
                 </div>
 
                 <!-- Right side -->
