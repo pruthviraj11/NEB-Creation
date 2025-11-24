@@ -195,6 +195,7 @@ Route::post('/add_cart', [FrontController::class, 'add_cart'])->name('front-add-
 Route::get('/cart', [FrontController::class, 'cart'])->name('front-view-cart');
 Route::get('removecart/{cartId}', [FrontController::class, 'removeTempCart'])->name('front-remove-cart');
 Route::get('/checkout', [FrontController::class, 'checkout'])->name('front-checkout');
+Route::get('/states', [FrontController::class, 'getStates'])->name('states.byCountry');
 Route::post('/add_checkout', [FrontController::class, 'add_checkout'])->name('front-add-checkout');
 Route::post('/validate-promo-code', [FrontController::class, 'validatePromoCode'])->name('validate-promo-code');
 Route::get('/debug-promo-codes', [FrontController::class, 'debugPromoCodes'])->name('debug-promo-codes');

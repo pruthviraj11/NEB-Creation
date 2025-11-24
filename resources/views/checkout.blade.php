@@ -2,6 +2,8 @@
 @section('title', $pageTitle['page_name']." | ".'NEB Creation')
 
 @push('styles')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 <style>
     .promo-code-applied {
         background-color: #d1edff !important;
@@ -9,6 +11,7 @@
         color: #0d6efd !important;
     }
 </style>
+
 @endpush
 
 @section('content')
@@ -111,23 +114,23 @@
 
                     <div class="col-md-5">
                         <label for="country" class="form-label">Country <span class="text-danger">*</span></label>
-                        <select class="form-select" id="country" name="country" required>
+                        <select class="form-control select2" id="country" name="country" required>
                             <option value="">Choose Your Country</option>
-                            <option {{ (old('country', $billingDetails['country'] ?? '') == 'India') ? 'selected' : '' }}>India</option>
-                            <option {{ (old('country', $billingDetails['country'] ?? '') == 'Dubai') ? 'selected' : '' }}>Dubai</option>
-                            <option {{ (old('country', $billingDetails['country'] ?? '') == 'America') ? 'selected' : '' }}>America</option>
+                              
+                                @foreach($countries as $country)
+                                    <option value="{{ $country['code2'] }}" {{ $country['code2'] == 'US' ? 'selected' : '' }}>
+                                        {{ $country['name'] }}
+                                    </option>
+                                @endforeach
+
+
                         </select>
                     </div>
 
                     <div class="col-md-4">
                         <label for="state" class="form-label">State <span class="text-danger">*</span></label>
-                        <select class="form-select" id="state" name="state" required>
-                            <option value="">Choose Your State</option>
-                            <option {{ (old('state', $billingDetails['state'] ?? '') == 'Gujarat') ? 'selected' : '' }}>Gujarat</option>
-                            <option {{ (old('state', $billingDetails['state'] ?? '') == 'Mumbai') ? 'selected' : '' }}>Mumbai</option>
-                            <option {{ (old('state', $billingDetails['state'] ?? '') == 'Bangalore') ? 'selected' : '' }}>Bangalore</option>
-                            <option {{ (old('state', $billingDetails['state'] ?? '') == 'Pune') ? 'selected' : '' }}>Pune</option>
-                            <option {{ (old('state', $billingDetails['state'] ?? '') == 'Delhi') ? 'selected' : '' }}>Delhi</option>
+                        <select class="form-control select2" id="state" name="state" required>
+                            <option value="">-- Select State --</option>
                         </select>
                     </div>
 
@@ -391,6 +394,68 @@ $(document).ready(function() {
     calculateAndUpdatePricing();
 });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+
+$(document).ready(function () {
+
+        $('#country, #state').select2({
+            width: '100%',
+            placeholder: 'Select an option',
+            allowClear: true
+        });
+
+
+
+    function loadStates(countryCode) {
+        var $stateSelect = $('#state');
+     
+        // Clear existing options
+        $stateSelect.empty().append('<option value="">-- Select State --</option>');
+
+        if (!countryCode) return;
+
+        $.ajax({
+            url: "{{ route('states.byCountry') }}",
+            type: 'GET',
+            data: { code2: countryCode },
+            success: function (states) {
+                $.each(states, function (index, state) {
+                    $stateSelect.append(
+                        $('<option>', {
+                            value: state.code,
+                            text: state.name
+                        })
+                    );
+                });
+
+                // Auto-select old value if exists
+                let selectedState = "{{ old('state', $billingDetails['state'] ?? '') }}";
+                if (selectedState) {
+                    $stateSelect.val(selectedState);
+                }
+            },
+            error: function (xhr) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+    // 🔥 Load states on page load (default: US already selected in Blade)
+    var initialCountry = $('#country').val();
+    loadStates(initialCountry);
+
+    // 🔥 Load states when user changes country
+    $('#country').on('change', function () {
+        var newCountry = $(this).val();
+        loadStates(newCountry);
+    });
+
+});
+</script>
+
+
 @endpush
  
 @endsection

@@ -484,10 +484,43 @@ class FrontController extends Controller
     $delivery_charge = $settings ? $settings->delivery_charge : 5.00;
     $tax_rate = $settings ? $settings->tax_rate : 9.25;
 
+
+    $json = Storage::disk('local')->get('countries.json');
+    $countries = json_decode($json, true) ?? [];
+   
+   
+
     $pageTitle['page_name'] = "Checkout";
-    return view('checkout', compact('pageTitle', 'carts', 'billingDetails', 'delivery_charge', 'tax_rate'));
+    return view('checkout', compact('pageTitle', 'carts', 'billingDetails', 'delivery_charge', 'tax_rate','countries'));
 
   }
+
+
+  /*---- Country Select state -----------*/
+  public function getStates(Request $request)
+    {
+        $code2 = $request->query('code2'); // e.g. AF, IN
+
+        if (!$code2) {
+            return response()->json([]);
+        }
+
+        $json = Storage::disk('local')->get('countries.json');
+        $countries = json_decode($json, true) ?? [];
+
+        $states = [];
+
+        foreach ($countries as $country) {
+            if (isset($country['code2']) && $country['code2'] === $code2) {
+                if (!empty($country['states']) && is_array($country['states'])) {
+                    $states = $country['states'];
+                }
+                break;
+            }
+        }
+
+        return response()->json($states);
+    } 
 
 
   public function add_checkout(Request $request)
