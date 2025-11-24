@@ -485,9 +485,13 @@ class FrontController extends Controller
     $tax_rate = $settings ? $settings->tax_rate : 9.25;
 
 
-    $json = Storage::disk('local')->get('countries.json');
+    // $json = Storage::disk('local')->get('countries.json');
+    // $countries = json_decode($json, true) ?? [];
+    
+    $path = public_path('countries.json'); // points to /public/countries.json
+    $json = file_get_contents($path);
     $countries = json_decode($json, true) ?? [];
-   
+      
    
 
     $pageTitle['page_name'] = "Checkout";
@@ -505,7 +509,11 @@ class FrontController extends Controller
             return response()->json([]);
         }
 
-        $json = Storage::disk('local')->get('countries.json');
+        // $json = Storage::disk('local')->get('countries.json');
+        // $countries = json_decode($json, true) ?? [];
+
+        $path = public_path('countries.json'); // points to /public/countries.json
+        $json = file_get_contents($path);
         $countries = json_decode($json, true) ?? [];
 
         $states = [];
