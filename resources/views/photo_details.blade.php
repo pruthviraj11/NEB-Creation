@@ -306,11 +306,11 @@
                                         </div>
 
                                         <div class="row px-2 p-md-0">
-                                            <div class="col-md-6 col-12">
+                                            <div class="col-12">
                                                 <h6 class="fw-bold mt-2">Bulk Purchase</h6>
                                                 @foreach ($bulkpurchases as $bulk)
                                                     <div
-                                                        class="form-check d-flex align-items-center justify-content-between  mb-2">
+                                                        class="form-check d-flex align-items-center justify-content-start  mb-2">
                                                         <div>
                                                             <input class="form-check-input bulk-check me-2" type="checkbox"
                                                                 name="bulk_id[]" id="{{ $bulk->id }}"
@@ -334,20 +334,33 @@
                                                 @endforeach
                                             </div>
 
-                                            <div class="col-md-6 col-12">
-                                                <h6 class="fw-bold mt-2">Canvas</h6>
-                                                <div class="form-check d-flex align-items-center mb-2">
-                                                    <input class="form-check-input canvas_input me-2" type="checkbox"
-                                                        name="canvas" id="canvas" value="195">
-
-                                                    <label class="form-check-label checkbox_text me-3" for="canvas">
-                                                        Buy 2 16x20's $195 Get 1 Free
-                                                    </label>
-                                                </div>
-                                            </div>
-
                                         </div>
 
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3">
+                                <!-- Clickable Header -->
+                                <a class="bg-dark text-white card-header d-flex justify-content-between align-items-center text-decoration-none text-dark"
+                                    data-bs-toggle="collapse" href="#canvasCollapse" role="button"
+                                    aria-expanded="false" aria-controls="canvasCollapse" style="cursor: pointer;">
+
+                                    <h5 class="fw-bold mb-0">Canvas</h5>
+                                    <i class="bi bi-chevron-down collapse-icon transition"></i>
+                                </a>
+
+                                <!-- Collapsible Body -->
+                                <div class="collapse" id="canvasCollapse">
+                                    <div class="card-body pb-2">
+                                        <div class="form-check d-flex align-items-center mb-2">
+                                            <input class="form-check-input canvas_input me-2" type="checkbox"
+                                                name="canvas" id="canvas" value="195">
+
+                                            <label class="form-check-label checkbox_text me-3" for="canvas">
+                                                Buy 2 16x20's $195 Get 1 Free
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
